@@ -24,6 +24,44 @@ vector<string> get_tokens(string s)
 	return ans;
 }
 
+bool is_subseq_greedy(string lhs, string rhs)
+{
+	int last_pos = -1;
+	for (int j = 0; j < (int) lhs.size(); j ++)
+		for (last_pos ++; last_pos < (int) rhs.size(); last_pos ++)
+			if (rhs[last_pos] == lhs[j])
+				break;
+
+	return last_pos < (int) rhs.size();
+}
+
+bool is_subseq_dp(string lhs, string rhs)
+{
+	vector<string> token_set = get_tokens(rhs);
+	int n = (int) lhs.size();
+	int m = (int) token_set.size();
+	vector<vector<bool>> dp(n + 1, vector<bool>(m + 1, false));
+	dp[0][0] = true;
+	for (int i = 1; i <= n; i ++)
+		for (int j = 1; j <= m; j ++)
+		{
+			for (int k = 0; k < i - 1; k ++)
+				if (dp[k][j - 1])
+				{
+					string cur_substr = lhs.substr(k, i - k);
+					if (cur_substr[0] != token_set[j - 1][0])
+						continue;
+					if (is_subseq_greedy(cur_substr.substr(1), token_set[j - 1].substr(1)))
+					{
+						dp[i][j] = true;
+						break;
+					}
+				}
+		}
+
+	return dp[n][m];
+}
+
 int main()
 {
 	freopen("dept_names.in", "r", stdin);
@@ -43,8 +81,9 @@ int main()
 			for (int y = x; y < (int) tokens[i].size(); y ++)
 			{
 				string cur_string = "";
-				for (int j = x; j <= y; j ++)
+				for (int j = x; j < y; j ++)
 					cur_string += tokens[i][j] + " ";
+				cur_string += tokens[i][y];
 				occurrence[cur_string] ++;
 			}
 
@@ -72,24 +111,22 @@ int main()
 					int cur_occurrence = cp.second;
 
 					//check whether cur_lhs is a sub sequence of cur_string
-					int last_pos = -1;
-					for (int j = 0; j < (int) cur_lhs.size(); j ++)
-						for (last_pos ++; last_pos < (int) cur_string.size(); last_pos ++)
-							if (cur_string[last_pos] == cur_lhs[j])
-								break;
-
-					if (last_pos < (int) cur_string.size())
+					if (is_subseq_dp(cur_lhs, cur_string))
 						if (cur_occurrence > max_occurrence)
-							max_occurrence = cur_occurrence, cur_repair = cur_string;
+						{
+							max_occurrence = cur_occurrence;
+							cur_repair = cur_string;
+						}
 				}
 
-				repairs[cur_lhs] = cur_repair;
+				if (max_occurrence > 0)
+					repairs[cur_lhs] = cur_repair;
 			}
 		}
 
 	for (auto cp : repairs)
         if (cp.first != cp.second)
-		    cout << cp.first << " ==> " << cp.second << endl;
+			cout << cp.first << " ==> " << cp.second << endl;
 
 	return 0;
 }
