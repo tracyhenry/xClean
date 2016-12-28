@@ -2,22 +2,11 @@
 // Created by Wenbo Tao on 12/27/16.
 //
 
-#include "RuleGenerator.h"
+#include "SlowRuleGenerator.h"
 
 SlowLCSRuleGenerator::SlowLCSRuleGenerator(vector<string> s, vector<int> w)
 	: RuleGenerator(s, w)
 {
-	//build token sets and token maps
-	tokens.clear();
-	token_maps.clear();
-	for (int i = 0; i < n; i ++)
-	{
-		tokens.push_back(Common::get_tokens(cells[i]));
-		token_maps.push_back(umpsi());
-		for (string s : tokens[i])
-			token_maps[i][s] ++;
-	}
-
 	//count occurrences
 	occurrence.clear();
 	for (int i = 0; i < n; i ++)
@@ -40,7 +29,7 @@ vector<t_rule> SlowLCSRuleGenerator::gen_rules()
 		for (int x = 0; x < (int) tokens[i].size(); x ++)
 		{
 			string cur_lhs = tokens[i][x];
-			if (cur_lhs.size() < 3)
+			if (cur_lhs.size() < LHS_SIZE_LIM)
 				continue;
 			if (lhs_set.count(cur_lhs))
 				continue;
@@ -48,6 +37,7 @@ vector<t_rule> SlowLCSRuleGenerator::gen_rules()
 			for (auto cp : occurrence)
 			{
 				string cur_string = cp.first;
+
 				//check whether cur_lhs is a constrainted-subsequence of cur_string
 				if (Common::is_subseq_dp(cur_lhs, cur_string))
 					rules.emplace_back(Common::get_tokens(cur_lhs), Common::get_tokens(cur_string));
@@ -55,8 +45,8 @@ vector<t_rule> SlowLCSRuleGenerator::gen_rules()
 		}
 
 	//add reverse rules
-	for (int i = 0, n = (int) rules.size(); i < n; i ++)
-		rules.push_back(make_pair(rules[i].second, rules[i].first));
+//	for (int i = 0, n = (int) rules.size(); i < n; i ++)
+//		rules.push_back(make_pair(rules[i].second, rules[i].first));
 
 	return rules;
 }

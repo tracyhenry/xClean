@@ -33,3 +33,4 @@
 *.txt
 
 .DS_Store
+cmake-build-debug/

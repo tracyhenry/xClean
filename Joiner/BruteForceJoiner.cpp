@@ -2,7 +2,7 @@
 // Created by Wenbo Tao on 12/27/16.
 //
 
-#include "Joiner.h"
+#include "BruteForceJoiner.h"
 using namespace std;
 
 BruteForceJoiner::BruteForceJoiner(vector<t_rule> r, vector<string> s, vector<int> w)

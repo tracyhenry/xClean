@@ -4,9 +4,9 @@
 
 #ifndef XCLEAN_SOLVER_H
 #define XCLEAN_SOLVER_H
-#include "Common.h"
-#include "RuleGenerator.h"
-#include "Joiner.h"
+#include "../Common.h"
+#include "../RuleGenerator/RuleGenerator.h"
+#include "../Joiner/Joiner.h"
 using namespace std;
 
 

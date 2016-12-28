@@ -4,7 +4,7 @@
 
 #ifndef XCLEAN_JOINER_H
 #define XCLEAN_JOINER_H
-#include "Common.h"
+#include "../Common.h"
 using namespace std;
 
 class Joiner
@@ -32,25 +32,10 @@ protected:
 
 	//number of rules
 	int r;
-};
 
-class BruteForceJoiner : public Joiner
-{
-public:
-	//constructors
-	BruteForceJoiner() {}
-	BruteForceJoiner(vector<t_rule>, vector<string>, vector<int>);
-
-	//overwrite the virtual method
-	vector<pair<string, string>> getJoinedStringPairs();
-
-private:
-	//token maps of each cell
+	//token sets and maps
+	vector<vector<string>> tokens;
 	vector<umpsi> token_maps;
-
-	//thresholds
-	const double JAC_THRESHOLD = 0.7;
-	const int APPLICABLE_THRESHOLD = 15;
 };
 
 
