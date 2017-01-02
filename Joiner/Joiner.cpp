@@ -45,11 +45,11 @@ void Joiner::gen_applicable_rules()
 		rule_invl[s].push_back(i);
 		max_lhs_size = max(max_lhs_size, (int) rules[i].first.size());
 	}
-
+/*
 	for (auto cp : rule_invl)
 		for (int rule_id : cp.second)
 			Common::print_rule(rules[rule_id]);
-/*
+
 	vector<pair<int, string>> sort_array;
 	for (auto cp : rule_invl)
 		sort_array.emplace_back(cp.second.size(), cp.first);

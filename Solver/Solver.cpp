@@ -5,6 +5,7 @@
 #include "Solver.h"
 #include "../RuleGenerator/FastLCSRuleGenerator.h"
 #include "../Joiner/BruteForceJoiner.h"
+#include "../Joiner/PolynomialJoiner.h"
 #include <fstream>
 using namespace std;
 
@@ -28,7 +29,6 @@ Solver::Solver(string string_file_name, string weights_file_name)
 	RuleGenerator *ruleGenerator = new FastLCSRuleGenerator(cells, weights);
 	vector<t_rule> rules = ruleGenerator->gen_rules();
 	cout << rules.size() << endl;
-
 /*
 	for (t_rule rule : rules)
 		Common::print_rule(rule);
@@ -36,7 +36,7 @@ Solver::Solver(string string_file_name, string weights_file_name)
 
 	//joins
 	cerr << "Joining......" << endl;
-	Joiner *joiner = new BruteForceJoiner(rules, cells, weights);
+	Joiner *joiner = new PolynomialJoiner(rules, cells, weights);
 /*
 	vector<pair<string, string>> joinedStringPairs = joiner->getJoinedStringPairs();
 

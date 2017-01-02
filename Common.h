@@ -4,6 +4,7 @@
 
 #ifndef XCLEAN_COMMON_H
 #define XCLEAN_COMMON_H
+#include <cmath>
 #include <vector>
 #include <string>
 #include <iostream>
