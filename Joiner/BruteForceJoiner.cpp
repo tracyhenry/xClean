@@ -12,20 +12,7 @@ BruteForceJoiner::BruteForceJoiner(vector<t_rule> r, vector<string> s, vector<in
 
 vector<pair<string, string>> BruteForceJoiner::getJoinedStringPairs()
 {
-	vector<umpsi> expansion_set;
 	vector<pair<string, string>> ans_pairs;
-
-	for (int i = 0; i < n; i ++)
-	{
-		umpsi cur_expansion_set = token_maps[i];
-		for (int rule_id : applicable_rule_ids[i])
-		{
-			t_rule rule = rules[rule_id];
-			for (string t : rule.second)
-				cur_expansion_set[t] ++;
-		}
-		expansion_set.push_back(cur_expansion_set);
-	}
 
 	//check
 	for (int i = 0; i < n; i ++)

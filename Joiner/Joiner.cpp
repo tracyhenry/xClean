@@ -23,6 +23,9 @@ Joiner::Joiner(vector<t_rule> r, vector<string> s, vector<int> w)
 
 	//generate applicable rules for each string
 	gen_applicable_rules();
+
+	//generate expansion set
+	gen_expansion_set();
 }
 
 void Joiner::gen_applicable_rules()
@@ -80,4 +83,20 @@ void Joiner::gen_applicable_rules()
 
 	cout << "MAX #applicable rule: " << max_r << endl;
 	cout << "AVG #applicable rule: " << sum_r / (double) n << endl;
+}
+
+void Joiner::gen_expansion_set()
+{
+	expansion_set.clear();
+	for (int i = 0; i < n; i ++)
+	{
+		umpsi cur_expansion_set = token_maps[i];
+		for (int rule_id : applicable_rule_ids[i])
+		{
+			t_rule rule = rules[rule_id];
+			for (string t : rule.second)
+				cur_expansion_set[t] ++;
+		}
+		expansion_set.push_back(cur_expansion_set);
+	}
 }

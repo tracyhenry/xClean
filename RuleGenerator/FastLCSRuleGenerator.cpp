@@ -99,5 +99,10 @@ vector<t_rule> FastLCSRuleGenerator::gen_rules()
 			}
 		}
 
+	//add reverse rules
+	vector<t_rule> rules_vector = vector<t_rule>(rules.begin(), rules.end());
+	for (int i = 0, n = (int) rules_vector.size(); i < n; i ++)
+		rules_vector.push_back(make_pair(rules_vector[i].second, rules_vector[i].first));
+
 	return vector<t_rule>(rules.begin(), rules.end());
 }

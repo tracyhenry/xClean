@@ -45,8 +45,8 @@ vector<t_rule> SlowLCSRuleGenerator::gen_rules()
 		}
 
 	//add reverse rules
-//	for (int i = 0, n = (int) rules.size(); i < n; i ++)
-//		rules.push_back(make_pair(rules[i].second, rules[i].first));
+	for (int i = 0, n = (int) rules.size(); i < n; i ++)
+		rules.push_back(make_pair(rules[i].second, rules[i].first));
 
 	return rules;
 }
