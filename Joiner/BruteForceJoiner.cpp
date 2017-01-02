@@ -8,15 +8,6 @@ using namespace std;
 BruteForceJoiner::BruteForceJoiner(vector<t_rule> r, vector<string> s, vector<int> w)
 	: Joiner(r, s, w)
 {
-	token_maps.clear();
-	//build token maps
-	for (int i = 0; i < n; i ++)
-	{
-		vector<string> cur_token_set = Common::get_tokens(cells[i]);
-		token_maps.push_back(umpsi());
-		for (string s : cur_token_set)
-			token_maps[i][s] ++;
-	}
 }
 
 vector<pair<string, string>> BruteForceJoiner::getJoinedStringPairs()
@@ -24,6 +15,7 @@ vector<pair<string, string>> BruteForceJoiner::getJoinedStringPairs()
 	vector<umpsi> expansion_set;
 	vector<vector<int>> applicable_rule_ids;
 	vector<pair<string, string>> ans_pairs;
+
 	for (int i = 0; i < n; i ++)
 	{
 		umpsi cur_expansion_set = token_maps[i];
@@ -48,7 +40,6 @@ vector<pair<string, string>> BruteForceJoiner::getJoinedStringPairs()
 			applicable_rule_ids[i].push_back(j);
 			for (string t : rule.second)
 				cur_expansion_set[t] ++;
-
 		}
 		expansion_set.push_back(cur_expansion_set);
 	}

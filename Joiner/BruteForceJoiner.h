@@ -16,11 +16,6 @@ public:
 
 	//overwrite the virtual method
 	vector<pair<string, string>> getJoinedStringPairs();
-
-private:
-	//thresholds
-	const double JAC_THRESHOLD = 0.7;
-	const int APPLICABLE_THRESHOLD = 15;
 };
 
 

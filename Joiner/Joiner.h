@@ -36,6 +36,16 @@ protected:
 	//token sets and maps
 	vector<vector<string>> tokens;
 	vector<umpsi> token_maps;
+
+	//applicable rules
+	vector<vector<int>> applicable_rule_ids;
+
+	//thresholds
+	const double JAC_THRESHOLD = 0.7;
+	const int APPLICABLE_THRESHOLD = 15;
+
+	//functions
+	void gen_applicable_rules();
 };
 
 
