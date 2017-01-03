@@ -5,8 +5,8 @@
 #include "DpSigBuilder.h"
 using namespace std;
 
-DpSigBuilder::DpSigBuilder(vector<string> tks, vector<t_rule> rules, umpsi rankings, double th)
-		: SigBuilder(tks, rules, rankings, th)
+DpSigBuilder::DpSigBuilder(vector<string> &tks, vector<t_rule> &rules, umpsi &rankings, umpsi &e_set, double th)
+		: SigBuilder(tks, rules, rankings, e_set, th)
 {
 }
 
@@ -27,19 +27,15 @@ unordered_set<string> DpSigBuilder::genSignatures()
 			if (ok)
 				rule_inv[st].push_back(rule);
 		}
-	unordered_set<string> all_tokens(tokens.begin(), tokens.end());
-	for (t_rule rule : applicable_rules)
-		for (string t : rule.second)
-			all_tokens.insert(t);
 
 	//limit on the number of tokens in the transformed string
 	int LIM = 20;
 
 	//enumerate all tokens in the full expansion set
 	unordered_set<string> signatures;
-	for (string t : all_tokens)
+	for (auto cp : exp_set)
 	{
-		int cur_ranking = token_rankings[t];
+		int cur_ranking = token_rankings[cp.first];
 		int tot_len = (int) tokens.size();
 
 		//dp
@@ -54,7 +50,7 @@ unordered_set<string> DpSigBuilder::genSignatures()
 				int wt;
 				//no transformation
 				wt = (token_rankings[tokens[cur]] < cur_ranking ? 1 : 0);
-				if (opt[cur][len] + wt < opt[cur + 1][len + 1])
+				if (len < LIM && opt[cur][len] + wt < opt[cur + 1][len + 1])
 					opt[cur + 1][len + 1] = opt[cur][len] + wt;
 
 				//using transformations starting at cur
@@ -66,7 +62,7 @@ unordered_set<string> DpSigBuilder::genSignatures()
 							wt ++;
 					int next_cur = cur + (int) rule.first.size();
 					int next_len = len + (int) rule.second.size();
-					if (opt[cur][len] + wt < opt[next_cur][next_len])
+					if (next_len <= LIM && opt[cur][len] + wt < opt[next_cur][next_len])
 						opt[next_cur][next_len] = opt[cur][len] + wt;
 				}
 			}
@@ -74,13 +70,13 @@ unordered_set<string> DpSigBuilder::genSignatures()
 		//check
 		bool in_prefix = false;
 		for (int len = 1; len <= LIM; len ++)
-			if (opt[tot_len][len] + 1 <= (int) tot_len - ceil(len * JAC_THRESHOLD) + 1)
+			if (opt[tot_len][len] + 1 <= tot_len - ceil(len * JAC_THRESHOLD) + 1)
 			{
 				in_prefix = true;
 				break;
 			}
 		if (in_prefix)
-			signatures.insert(t);
+			signatures.insert(cp.first);
 	}
 	return signatures;
 }

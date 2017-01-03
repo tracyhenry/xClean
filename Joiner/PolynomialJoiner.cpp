@@ -32,8 +32,11 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 		vector<t_rule> applicable_rules;
 		for (int rule_id : applicable_rule_ids[i])
 			applicable_rules.push_back(rules[rule_id]);
-		SigBuilder *sigBuilder = new DpSigBuilder(tokens[i], applicable_rules, token_rankings, JAC_THRESHOLD);
+
+		SigBuilder *sigBuilder = new DpSigBuilder(tokens[i], applicable_rules, token_rankings, expansion_set[i], JAC_THRESHOLD);
 		signatures.push_back(sigBuilder->genSignatures());
+
+		cout << i << " : " << signatures.back().size() << endl;
 		delete sigBuilder;
 	}
 }

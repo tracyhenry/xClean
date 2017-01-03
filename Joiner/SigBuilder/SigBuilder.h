@@ -12,24 +12,26 @@ using namespace std;
 class SigBuilder
 {
 public:
-	SigBuilder() {}
-	SigBuilder(vector<string>, vector<t_rule>, umpsi, double);
+	SigBuilder(vector<string> &, vector<t_rule> &, umpsi &, umpsi &, double);
 
 	//abstract method for generating signatures
 	virtual unordered_set<string> genSignatures() = 0;
 
 	//virtual destructor
-	virtual ~SigBuilder() {}
+	virtual ~SigBuilder() = default;
 
 protected:
 	//set of tokens
-	vector<string> tokens;
+	vector<string> &tokens;
 
 	//set of applicable rules
-	vector<t_rule> applicable_rules;
+	vector<t_rule> &applicable_rules;
 
 	//token rankings
-	umpsi token_rankings;
+	umpsi &token_rankings;
+
+	//expansion set
+	umpsi &exp_set;
 
 	//Jaccard threshold
 	double JAC_THRESHOLD;

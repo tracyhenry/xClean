@@ -15,7 +15,6 @@ public:
 	PolynomialJoiner() {}
 	PolynomialJoiner(vector<t_rule>, vector<string>, vector<int>);
 
-	//
 	//overwrite the virtual method
 	vector<pair<string, string>> getJoinedStringPairs();
 

@@ -11,7 +11,7 @@ using namespace std;
 class DpSigBuilder : public SigBuilder
 {
 public:
-	DpSigBuilder(vector<string>, vector<t_rule>, umpsi, double);
+	DpSigBuilder(vector<string> &, vector<t_rule> &, umpsi &, umpsi &, double);
 
 	//overwrite base class virtual function
 	unordered_set<string> genSignatures();

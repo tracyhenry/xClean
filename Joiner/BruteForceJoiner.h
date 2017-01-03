@@ -7,6 +7,7 @@
 #include "Joiner.h"
 using namespace std;
 
+
 class BruteForceJoiner : public Joiner
 {
 public:
