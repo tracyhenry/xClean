@@ -8,7 +8,7 @@
 using namespace std;
 
 
-//hash function for pairs
+//hash function for rules
 struct rule_hash
 {
 	std::size_t operator () (const std::pair<vector<string>, vector<string>> &p) const

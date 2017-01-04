@@ -12,24 +12,44 @@ DpSigBuilder::DpSigBuilder(vector<string> &tks, vector<t_rule> &rules, umpsi &ra
 
 unordered_set<string> DpSigBuilder::genSignatures()
 {
+	//limit on the number of tokens in the transformed string
+	int LIM = 20;
+
 	//generate for each starting point, an inverted list of applicable rules
-	vector<vector<t_rule>> rule_inv(tokens.size());
+	vector<unordered_map<pair<int, int>, vector<int>, pair_hash>> rule_inv(tokens.size());
+
 	for (t_rule rule : applicable_rules)
 		for (int st = 0; st + (int) rule.first.size() - 1 < (int) tokens.size(); st ++)
 		{
 			bool ok = true;
-			for (int j = 0; j < (int) rule.first.size(); j ++)
-				if (rule.first[j] != tokens[st + j])
+			for (int i = 0; i < (int) rule.first.size(); i ++)
+				if (rule.first[i] != tokens[st + i])
 				{
 					ok = false;
 					break;
 				}
 			if (ok)
-				rule_inv[st].push_back(rule);
-		}
+			{
+				for (int x = 0; x < rule.second.size(); x ++)
+					for (int y = x + 1; y < rule.second.size(); y ++)
+						if (token_rankings[rule.second[x]] > token_rankings[rule.second[y]])
+							swap(rule.second[x], rule.second[y]);
+				int lhs_size = (int) rule.first.size();
+				int rhs_size = (int) rule.second.size();
+				auto cp = make_pair(lhs_size, rhs_size);
+				if (! rule_inv[st].count(cp))
+					rule_inv[st][cp] = vector<int>(rhs_size, -1);
 
-	//limit on the number of tokens in the transformed string
-	int LIM = 20;
+				for (int i = 0; i < rhs_size; i ++)
+				{
+					int cur = (int) token_rankings.size();
+					if (i < (int) rule.second.size())
+						cur = token_rankings[rule.second[i]];
+					if (cur > rule_inv[st][cp][i])
+						rule_inv[st][cp][i] = cur;
+				}
+			}
+		}
 
 	//enumerate all tokens in the full expansion set
 	unordered_set<string> signatures;
@@ -54,14 +74,17 @@ unordered_set<string> DpSigBuilder::genSignatures()
 					opt[cur + 1][len + 1] = opt[cur][len] + wt;
 
 				//using transformations starting at cur
-				for (t_rule rule : rule_inv[cur])
+				for (auto it : rule_inv[cur])
 				{
-					wt = 0;
-					for (string t : rule.second)
-						if (token_rankings[t] < cur_ranking)
-							wt ++;
-					int next_cur = cur + (int) rule.first.size();
-					int next_len = len + (int) rule.second.size();
+					int lhs_size = it.first.first;
+					int rhs_size = it.first.second;
+					int next_cur = cur + lhs_size;
+					int next_len = len + rhs_size;
+
+					for (wt = 0; wt < rhs_size; wt ++)
+						if (it.second[wt] >= cur_ranking)
+							break;
+
 					if (next_len <= LIM && opt[cur][len] + wt < opt[next_cur][next_len])
 						opt[next_cur][next_len] = opt[cur][len] + wt;
 				}

@@ -16,6 +16,14 @@ typedef unordered_map<string, int> umpsi;
 typedef pair<vector<string>, vector<string>> t_rule;
 
 
+struct pair_hash
+{
+	std::size_t operator () (const std::pair<int, int> &p) const
+	{
+		return (size_t) ((long long) p.first * (long long) p.second % 9999997LL);
+	}
+};
+
 class Common
 {
 public:
