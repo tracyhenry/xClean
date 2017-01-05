@@ -12,7 +12,7 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 	umpsi g_token_map;
 	for (int i = 0; i < n; i ++)
 		for (string t : tokens[i])
-			g_token_map[t] ++;
+			g_token_map[t] += weights[i];
 
 	vector<pair<int, string>> sort_array;
 	for (auto cp : g_token_map)
@@ -39,6 +39,24 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 //		cout << i << " : " << signatures.back().size() << endl;
 		delete sigBuilder;
 	}
+
+	cerr << "Signature built." << endl;
+	//build inverted lists
+	unordered_map<string, vector<int>> inv_list;
+	for (int i = 0; i < n; i ++)
+		for (string t : signatures[i])
+			inv_list[t].push_back(i);
+
+	int sum = 0;
+	for (int i = 0; i < n; i ++)
+	{
+		unordered_set<int> candidates;
+		for (string t : signatures[i])
+			for (int v : inv_list[t])
+				candidates.insert(v);
+		sum += candidates.size();
+	}
+	cout << sum << endl;
 }
 
 vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()

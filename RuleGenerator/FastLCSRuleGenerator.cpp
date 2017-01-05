@@ -64,7 +64,7 @@ vector<t_rule> FastLCSRuleGenerator::gen_rules()
 				for (int node : nodes[cur_iter ^ 1])
 				{
 					//not include current character
-					if (start_token[j] == -1)
+					if (start_token[j] == -1 || stop_words.count(tokens[i][start_token[j]]))
 						nodes[cur_iter].insert(node);
 
 					//include current character
@@ -82,6 +82,8 @@ vector<t_rule> FastLCSRuleGenerator::gen_rules()
 						en = start_token[j + 1] - 1;
 					for (int k = st; k <= en; k ++)
 						rhs.push_back(tokens[i][k]);
+					if (stop_words.count(tokens[i][st]) || stop_words.count(tokens[i][en]))
+						continue;
 
 					//for every node in the previous iteration
 					for (int node : nodes[cur_iter])

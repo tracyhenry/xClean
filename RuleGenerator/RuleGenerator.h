@@ -50,6 +50,10 @@ protected:
 
 	//lhs size limit
 	const int LHS_SIZE_LIM = 1;
+
+	//stop words
+	const unordered_set<string> stop_words =
+			unordered_set<string>({"for", "to", "in", "and", "of", "on"});
 };
 
 

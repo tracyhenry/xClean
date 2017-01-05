@@ -34,10 +34,10 @@ Solver::Solver(string string_file_name, string weights_file_name)
 		Common::print_rule(rule);
 */
 
+/*
 	//joins
 	cerr << "Joining......" << endl;
 	Joiner *joiner = new PolynomialJoiner(rules, cells, weights);
-/*
 	vector<pair<string, string>> joinedStringPairs = joiner->getJoinedStringPairs();
 
 	//output
