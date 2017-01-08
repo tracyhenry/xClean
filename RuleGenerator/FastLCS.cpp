@@ -2,9 +2,9 @@
 // Created by Wenbo Tao on 12/27/16.
 //
 
-#include "FastLCSRuleGenerator.h"
+#include "FastLCS.h"
 
-FastLCSRuleGenerator::FastLCSRuleGenerator(vector<string> s, vector<int> w)
+FastLCS::FastLCS(vector<string> s, vector<int> w)
 		: RuleGenerator(s, w)
 {
 	//build trie
@@ -33,7 +33,7 @@ FastLCSRuleGenerator::FastLCSRuleGenerator(vector<string> s, vector<int> w)
 		}
 }
 
-vector<t_rule> FastLCSRuleGenerator::gen_rules()
+vector<t_rule> FastLCS::gen_rules()
 {
 	unordered_set<t_rule, rule_hash> rules;
 	for (int i = 0; i < n; i ++)
@@ -91,6 +91,8 @@ vector<t_rule> FastLCSRuleGenerator::gen_rules()
 						{
 							vector<string> lhs;
 							lhs.push_back(contain_word[node]);
+							if (stop_words.count(lhs[0]))
+								continue;
 
 							//get rid of identity rules
 							if (rhs.size() == 1 && lhs[0] == rhs[0])
@@ -100,11 +102,6 @@ vector<t_rule> FastLCSRuleGenerator::gen_rules()
 				}
 			}
 		}
-
-	//add reverse rules
-	vector<t_rule> rules_vector = vector<t_rule>(rules.begin(), rules.end());
-	for (int i = 0, n = (int) rules_vector.size(); i < n; i ++)
-		rules_vector.push_back(make_pair(rules_vector[i].second, rules_vector[i].first));
 
 	return vector<t_rule>(rules.begin(), rules.end());
 }

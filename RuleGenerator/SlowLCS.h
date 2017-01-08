@@ -8,11 +8,11 @@
 using namespace std;
 
 
-class SlowLCSRuleGenerator : public RuleGenerator
+class SlowLCS : public RuleGenerator
 {
 public:
 	//constructor
-	SlowLCSRuleGenerator(vector<string>, vector<int>);
+	SlowLCS(vector<string>, vector<int>);
 
 	//overwrite the virtual method
 	vector<t_rule> gen_rules();

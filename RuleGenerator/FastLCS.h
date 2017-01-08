@@ -10,11 +10,11 @@
 #include "RuleGenerator.h"
 using namespace std;
 
-class FastLCSRuleGenerator : public RuleGenerator
+class FastLCS : public RuleGenerator
 {
 public:
 	//constructor
-	FastLCSRuleGenerator(vector<string>, vector<int>);
+	FastLCS(vector<string>, vector<int>);
 
 	//overwrite the virtual method
 	vector<t_rule> gen_rules();

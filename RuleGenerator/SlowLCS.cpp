@@ -2,9 +2,9 @@
 // Created by Wenbo Tao on 12/27/16.
 //
 
-#include "SlowRuleGenerator.h"
+#include "SlowLCS.h"
 
-SlowLCSRuleGenerator::SlowLCSRuleGenerator(vector<string> s, vector<int> w)
+SlowLCS::SlowLCS(vector<string> s, vector<int> w)
 	: RuleGenerator(s, w)
 {
 	//count occurrences
@@ -21,7 +21,7 @@ SlowLCSRuleGenerator::SlowLCSRuleGenerator(vector<string> s, vector<int> w)
 			}
 }
 
-vector<t_rule> SlowLCSRuleGenerator::gen_rules()
+vector<t_rule> SlowLCS::gen_rules()
 {
 	vector<t_rule> rules;
 	unordered_set<string> lhs_set;

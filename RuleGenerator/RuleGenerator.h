@@ -34,6 +34,9 @@ public:
 	//abstract method for generating rules
 	virtual vector<t_rule> gen_rules() = 0;
 
+	//virtual destructor
+	virtual ~RuleGenerator() = default;
+
 protected:
 	//cells
 	vector<string> cells;
@@ -53,7 +56,7 @@ protected:
 
 	//stop words
 	const unordered_set<string> stop_words =
-			unordered_set<string>({"for", "to", "in", "and", "of", "on"});
+			unordered_set<string>({"the", "for", "to", "in", "and", "of", "on"});
 };
 
 
