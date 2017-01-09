@@ -51,7 +51,7 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 	for (int i = 0; i < n; i ++)
 	{
 		unordered_set<int> candidates;
-		for (string t : signatures[i])
+		for (string t : tokens[i])
 			for (int v : inv_list[t])
 				candidates.insert(v);
 		sum += candidates.size();

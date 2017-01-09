@@ -25,7 +25,7 @@ private:
 			unordered_set<char>({'a', 'e', 'i', 'o', 'u'});
 
 	//skip percentage
-	double SKIP_PCTG = 0.35;
+	double SKIP_PCTG = 0.5;
 };
 
 

@@ -82,7 +82,7 @@ vector<t_rule> FastLCS::gen_rules()
 						en = start_token[j + 1] - 1;
 					for (int k = st; k <= en; k ++)
 						rhs.push_back(tokens[i][k]);
-					if (stop_words.count(tokens[i][st]) || stop_words.count(tokens[i][en]))
+					if (st < en && (stop_words.count(tokens[i][st]) || stop_words.count(tokens[i][en])))
 						continue;
 
 					//for every node in the previous iteration

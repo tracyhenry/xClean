@@ -44,100 +44,83 @@ vector<t_rule> SimpleNLP::gen_rules()
 		if (has_digit)
 			continue;
 
-		//directly approve initialism
-		if (rule.first.size() == 1 && rule.second.size() == 1)
-			if (rule.second[0].find(rule.first[0]) == 0)
-			{
-				sort_array.emplace_back(0, rule);
-				continue;
-			}
-
 		//string representation of left & right hand side
 		string lhs = "", rhs = "";
 		for (string t : rule.first)
 			lhs += t;
 		for (string t : rule.second)
 			rhs += t;
-
-		//whether a char in rhs is the beginning of a token
-		vector<int> word_beginning;
-		for (string t : rule.second)
-		{
-			if (! stop_words.count(t))
-				word_beginning.push_back(0);
-			else
-				word_beginning.push_back((int) t.size());
-			for (int i = 1; i < (int) t.size(); i ++)
-				word_beginning.push_back((int) t.size());
-		}
-
-		//consonant counting
-		vector<vector<int>> cons_counting(rhs.size(), vector<int>(rhs.size(), 0));
-		for (int i = 0; i < (int) rhs.size(); i ++)
-			for (int j = i; j < (int) rhs.size(); j ++)
-			{
-				cons_counting[i][j] = (j == i ? 0 : cons_counting[i][j - 1]);
-				if (! vowels.count(rhs[j]))
-					cons_counting[i][j] ++;
-			}
-
-		//calculate a best LCS matching
 		int len_l = (int) lhs.size();
 		int len_r = (int) rhs.size();
-		vector<vector<int>> opt(len_l + 1, vector<int>(len_r + 1, -1));
-		opt[0][0] = 0;
-		for (int i = 1; i <= len_l; i ++)
-			for (int j = 1; j <= len_r; j ++)
+
+		//directly approve initialism
+		if (rule.second.size() == 1)
+			if (rhs.find(lhs) == 0)
 			{
-				if (lhs[i - 1] != rhs[j - 1])
-					continue;
-
-				//enumerate the matching for i - 1
-				for (int k = j - 1; k >= 0; k --)
-				{
-					if (word_beginning[j - 1] && vowels.count(lhs[i - 1]) && k < j - 1)
-						break;
-					if (word_beginning[j - 1])
-					{
-						if ((double) j - k - 1 > (double) word_beginning[j - 1] * SKIP_PCTG)
-							break;
-						if (cons_counting[k][j - 2] > 1)
-							break;
-					}
-
-					int wt = (word_beginning[j - 1] ? cons_counting[k][j - 2] : 0);
-					if (opt[i - 1][k] != -1 && (opt[i][j] == -1 || opt[i - 1][k] + wt < opt[i][j]))
-						opt[i][j] = opt[i - 1][k] + wt;
-
-					//do not skip the beginning of a word
-					if (k > 0 && word_beginning[k - 1] == 0)
-						break;
-				}
+				sort_array.emplace_back(0, rule);
+				continue;
 			}
 
-		//optimal
-		int min_skip = -1;
-		for (int j = 1; j <= len_r; j ++)
-			if (opt[len_l][j] != -1 && (j == len_r || opt[len_l][j] + cons_counting[j][len_r - 1] <= 2))
-				if (min_skip == -1 || opt[len_l][j] < min_skip)
-					min_skip = opt[len_l][j];
+		//specially treat acronym
+		if (rule.second.size() > 1)
+		{
+			int n_rhs_token = (int) rule.second.size();
+			vector<vector<bool>> ok(len_l + 1, vector<bool>(n_rhs_token + 1, false));
+			ok[0][0] = true;
+			for (int i = 0; i <= len_l; i ++)
+				for (int j = 1; j <= n_rhs_token; j ++)
+				{
+					if (i)
+						if (lhs[i - 1] == rule.second[j - 1][0])
+							if (ok[i - 1][j - 1])
+								ok[i][j] = true;
 
-		if (min_skip == -1)
+					if (stop_words.count(rule.second[j - 1]))
+						if (ok[i][j - 1])
+							ok[i][j] = true;
+				}
+
+			if (ok[len_l][n_rhs_token])
+				sort_array.emplace_back(0, rule);
+
+			continue;
+		}
+
+		//greedily find a matching
+		vector<int> m_inds;
+		for (int i = 0; i < len_l; i ++)
+		{
+			int st = (m_inds.size() ? m_inds.back() + 1 : 0);
+			while (rhs[st] != lhs[i])
+				st ++;
+			m_inds.push_back(st);
+		}
+
+		//check vowels
+		bool ok = true;
+		for (int i = 1; i < (int) m_inds.size(); i ++)
+			if (vowels.count(rhs[m_inds[i]]))
+				if (m_inds[i - 1] + 1 != m_inds[i])
+					ok = false;
+		if (! ok)
 			continue;
 
-		//rhs size equals one, min_skip should be less than 2
-		if (rule.second.size() == 1 && min_skip > 1)
-			continue;
+		//number of consonants
+		int lhs_n_cons = 0, rhs_n_cons = 0;
+		for (int i = 0; i < (int) lhs.size(); i ++)
+			if (! vowels.count(lhs[i]))
+				lhs_n_cons ++;
 
-		//acronym should have min_skip = 0
-		if (rule.second.size() > 1 && min_skip)
-			continue;
+		for (int i = 0; i < (int) rhs.size(); i ++)
+			if (! vowels.count(rhs[i]))
+				rhs_n_cons ++;
 
-		sort_array.emplace_back((double) min_skip, rule);
+		if (rhs_n_cons == 0 || lhs_n_cons / (double) rhs_n_cons >= 0.6)
+			sort_array.emplace_back(0, rule);
 	}
 
 	//sort by percentage of skip
-	sort(sort_array.begin(), sort_array.end());
+//	sort(sort_array.begin(), sort_array.end());
 
 	vector<t_rule> rules;
 	for (auto cp : sort_array)
