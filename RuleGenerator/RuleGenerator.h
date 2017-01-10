@@ -8,22 +8,6 @@
 using namespace std;
 
 
-//hash function for rules
-struct rule_hash
-{
-	std::size_t operator () (const std::pair<vector<string>, vector<string>> &p) const
-	{
-		size_t a = 1;
-		for (string s : p.first)
-			a = (size_t) ((long long) a * (long long) std::hash<string>{}(s) % 9999997LL);
-		for (string s : p.second)
-			a = (size_t) ((long long) a * (long long) std::hash<string>{}(s) % 9999997LL);
-
-		return a;
-	}
-};
-
-
 class RuleGenerator
 {
 public:

@@ -25,6 +25,10 @@ private:
 
 	//signatures
 	vector<unordered_set<string>> signatures;
+
+	//SIGMOD 13 - similarity
+	double get_similarity(int, int);
+	double rule_gain(t_rule, umpsi, int);
 };
 
 

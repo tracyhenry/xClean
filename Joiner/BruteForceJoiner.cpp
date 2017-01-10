@@ -77,7 +77,7 @@ vector<pair<string, string>> BruteForceJoiner::getJoinedStringPairs()
 				}
 				max_sim = max(max_sim, Common::jaccard(cur_map, token_maps[j]));
 			}
-			if (max_sim > JAC_THRESHOLD)
+			if (max_sim >= JAC_THRESHOLD)
 				ans_pairs.emplace_back(cells[i], cells[j]);
 		}
 

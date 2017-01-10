@@ -16,7 +16,7 @@ unordered_set<string> DpSigBuilder::genSignatures()
 	int LIM = 20;
 
 	//generate for each starting point, an inverted list of applicable rules
-	vector<unordered_map<pair<int, int>, vector<int>, pair_hash>> rule_inv(tokens.size());
+	vector<unordered_map<pair<int, int>, vector<int>, pairii_hash>> rule_inv(tokens.size());
 
 	for (t_rule rule : applicable_rules)
 		for (int st = 0; st + (int) rule.first.size() - 1 < (int) tokens.size(); st ++)

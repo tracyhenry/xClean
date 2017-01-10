@@ -40,9 +40,9 @@ Solver::Solver(string string_file_name, string weights_file_name)
 	cerr << "Joining......" << endl;
 	Joiner *joiner = new PolynomialJoiner(rules, cells, weights);
 	vector<pair<string, string>> joinedStringPairs = joiner->getJoinedStringPairs();
-/*
+
 	//output
 	for (auto cp : joinedStringPairs)
 		cout << cp.first << endl << cp.second << endl << endl;
-*/
+
 }
