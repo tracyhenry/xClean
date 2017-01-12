@@ -42,6 +42,7 @@ Solver::Solver(string string_file_name, string weights_file_name)
 	vector<pair<string, string>> joinedStringPairs = joiner->getJoinedStringPairs();
 
 	//output
+	cout << joinedStringPairs.size() << endl;
 	for (auto cp : joinedStringPairs)
 		cout << cp.first << endl << cp.second << endl << endl;
 

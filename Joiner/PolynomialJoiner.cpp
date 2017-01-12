@@ -46,7 +46,7 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 {
 	vector<pair<string, string>> ans;
-	vector<pair<int, int>> candidates;
+	unordered_set<pair<int, int>, pairii_hash> candidates;
 
 	//build inverted lists
 	unordered_map<string, vector<int>> inv_list;
@@ -55,16 +55,18 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 			inv_list[t].push_back(i);
 
 	//generate candidates
-	int sum = 0;
 	for (int i = 0; i < n; i ++)
 	{
 		unordered_set<int> cur_set;
 		for (string t : tokens[i])
 			for (int v : inv_list[t])
-				if (i < v)
+				if (v != i)
 					cur_set.insert(v);
 		for (int v : cur_set)
-			candidates.emplace_back(i, v);
+		{
+			pair<int, int> cur_cp = make_pair(min(i, v), max(i, v));
+			candidates.insert(cur_cp);
+		}
 	}
 	cout << candidates.size() << endl;
 
@@ -194,7 +196,7 @@ double PolynomialJoiner::rule_gain(t_rule rule, umpsi token_map, int y)
 
 	//calculate G
 	for (string t : rule.second)
-		if (expansion_set[y].count(t) && ! token_map.count(t))
+		if (token_maps[y].count(t) && ! token_map.count(t))
 			G ++;
 
 	return G / U;
