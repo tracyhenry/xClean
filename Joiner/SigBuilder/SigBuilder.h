@@ -12,7 +12,7 @@ using namespace std;
 class SigBuilder
 {
 public:
-	SigBuilder(vector<string> &, vector<t_rule> &, umpsi &, umpsi &, double);
+	SigBuilder(vector<string> &, vector<t_rule>, umpsi &, umpsi &, double);
 
 	//abstract method for generating signatures
 	virtual unordered_set<string> genSignatures() = 0;
@@ -25,7 +25,7 @@ protected:
 	vector<string> &tokens;
 
 	//set of applicable rules
-	vector<t_rule> &applicable_rules;
+	vector<t_rule> applicable_rules;
 
 	//token rankings
 	umpsi &token_rankings;
