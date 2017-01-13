@@ -12,7 +12,7 @@ using namespace std;
 class LargeTokenDpSigBuilder : public SigBuilder
 {
 public:
-	LargeTokenDpSigBuilder(vector<string> &, vector<t_rule> &, umpsi &, umpsi &, double);
+	LargeTokenDpSigBuilder(vector<string> &, vector<t_rule> &, umpsi &, double);
 
 	//overwrite base class virtual function
 	unordered_set<string> genSignatures();

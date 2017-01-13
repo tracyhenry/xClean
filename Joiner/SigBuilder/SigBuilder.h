@@ -12,7 +12,7 @@ using namespace std;
 class SigBuilder
 {
 public:
-	SigBuilder(vector<string> &, vector<t_rule>, umpsi &, umpsi &, double);
+	SigBuilder(vector<string> &, vector<t_rule>, umpsi &, double);
 
 	//abstract method for generating signatures
 	virtual unordered_set<string> genSignatures() = 0;
@@ -29,9 +29,6 @@ protected:
 
 	//token rankings
 	umpsi &token_rankings;
-
-	//expansion set
-	umpsi &exp_set;
 
 	//Jaccard threshold
 	double JAC_THRESHOLD;

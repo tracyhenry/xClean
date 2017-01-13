@@ -5,8 +5,8 @@
 #include "DpSigBuilder.h"
 using namespace std;
 
-DpSigBuilder::DpSigBuilder(vector<string> &tks, vector<t_rule> &rules, umpsi &rankings, umpsi &e_set, double th)
-		: SigBuilder(tks, rules, rankings, e_set, th)
+DpSigBuilder::DpSigBuilder(vector<string> &tks, vector<t_rule> &rules, umpsi &rankings, double th)
+		: SigBuilder(tks, rules, rankings, th)
 {
 }
 
