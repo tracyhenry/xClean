@@ -4,6 +4,7 @@
 
 #include "PolynomialJoiner.h"
 #include "SigBuilder/DpSigBuilder.h"
+#include "SigBuilder/LargeTokenDpSigBuilder.h"
 
 PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<int> w)
 	: Joiner(r, s, w)
@@ -11,8 +12,14 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 	//make global token ranked list
 	umpsi g_token_map;
 	for (int i = 0; i < n; i ++)
-		for (string t : tokens[i])
-			g_token_map[t] += weights[i];
+		for (int st = 0; st < (int) tokens[i].size(); st ++)
+			for (int en = st; en < (int) tokens[i].size(); en ++)
+			{
+				string t = "";
+				for (int k = st; k <= en; k ++)
+					t += tokens[i][k] + (k == en ? "" :  " ");
+				g_token_map[t] += weights[i];
+			}
 
 	vector<pair<int, string>> sort_array;
 	for (auto cp : g_token_map)
