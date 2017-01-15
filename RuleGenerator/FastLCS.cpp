@@ -31,6 +31,17 @@ FastLCS::FastLCS(vector<string> s, vector<int> w)
 			}
 			contain_word[cur_node] = s;
 		}
+
+	//calculate D
+	unordered_map<char, int> b_factor;
+	for (auto mp : trie)
+		for (auto cp : mp)
+			b_factor[cp.first] ++;
+
+	double sum_b = 0;
+	for (auto cp : b_factor)
+		sum_b += cp.second;
+	cout << "Branching factor: " << sum_b / trie.size() / b_factor.size() << endl;
 }
 
 vector<t_rule> FastLCS::gen_rules()
