@@ -85,6 +85,16 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 			ans.emplace_back(cells[cp.first], cells[cp.second]);
 	}
 
+	//sort the rules
+	vector<pair<int, t_rule>> sort_array;
+	for (auto cp : best_rule_count)
+		sort_array.emplace_back(cp.second, cp.first);
+	sort(sort_array.begin(), sort_array.end());
+	for (auto cp : sort_array)
+	{
+		Common::print_rule(cp.second);
+		cout << "\t" << cp.first << endl;
+	}
 	return ans;
 }
 
@@ -146,6 +156,7 @@ double PolynomialJoiner::get_similarity(int x, int y)
 	for (auto cp : cy)
 		dy.insert(cp.first);
 
+	vector<t_rule> best_rules;
 	while (dx.size() || dy.size())
 	{
 		double max_rg = 0;
@@ -179,6 +190,9 @@ double PolynomialJoiner::get_similarity(int x, int y)
 			else
 				sy[t] ++;
 
+		//add count
+		best_rules.push_back(best_rule);
+
 		//remove best rule
 		if (i == 1)
 			dx.erase(best_rule);
@@ -186,7 +200,12 @@ double PolynomialJoiner::get_similarity(int x, int y)
 			dy.erase(best_rule);
 	}
 
-	return max(Common::jaccard(sx, sy), Common::jaccard(token_maps[x], token_maps[y]));
+	double sim = max(Common::jaccard(sx, sy), Common::jaccard(token_maps[x], token_maps[y]));;
+	if (sim >= JAC_THRESHOLD)
+		for (t_rule rule : best_rules)
+			best_rule_count[rule] ++;
+
+	return sim;
 }
 
 double PolynomialJoiner::rule_gain(t_rule rule, umpsi token_map, int y)
