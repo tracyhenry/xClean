@@ -32,6 +32,10 @@ private:
 	//SIGMOD 13 - similarity
 	double get_similarity(int, int);
 	double rule_gain(t_rule, umpsi, int);
+
+	//Sig builders
+	unordered_set<string> buildLargeTokenDpSigs(vector<string>, vector<t_rule>);
+	unordered_set<string> buildDpSigs(vector<string>, vector<t_rule>);
 };
 
 

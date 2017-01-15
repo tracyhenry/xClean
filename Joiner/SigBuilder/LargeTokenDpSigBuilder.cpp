@@ -2,15 +2,10 @@
 // Created by Wenbo Tao on 1/12/17.
 //
 
-#include "LargeTokenDpSigBuilder.h"
+#include "../PolynomialJoiner.h"
 using namespace std;
 
-LargeTokenDpSigBuilder::LargeTokenDpSigBuilder(vector<string> &tks, vector<t_rule> &rules, umpsi &rankings, double th)
-	: SigBuilder(tks, rules, rankings, th)
-{
-}
-
-unordered_set<string> LargeTokenDpSigBuilder::genSignatures()
+unordered_set<string> PolynomialJoiner::buildLargeTokenDpSigs(vector<string> tokens, vector<t_rule> applicable_rules)
 {
 	//add identity rules
 	for (int i = 0; i < (int) tokens.size(); i ++)

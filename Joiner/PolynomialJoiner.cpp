@@ -3,8 +3,6 @@
 //
 
 #include "PolynomialJoiner.h"
-#include "SigBuilder/DpSigBuilder.h"
-#include "SigBuilder/LargeTokenDpSigBuilder.h"
 
 PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<int> w)
 	: Joiner(r, s, w)
@@ -40,11 +38,8 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 		for (int rule_id : applicable_rule_ids[i])
 			applicable_rules.push_back(rules[rule_id]);
 
-		SigBuilder *sigBuilder = new LargeTokenDpSigBuilder(tokens[i], applicable_rules, token_rankings, JAC_THRESHOLD);
-		signatures.push_back(sigBuilder->genSignatures());
-
+		signatures.push_back(buildLargeTokenDpSigs(tokens[i], applicable_rules));
 //		cout << i << " : " << signatures.back().size() << endl;
-		delete sigBuilder;
 	}
 
 	cerr << "Signature built." << endl;

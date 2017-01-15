@@ -2,15 +2,10 @@
 // Created by Wenbo Tao on 1/3/17.
 //
 
-#include "DpSigBuilder.h"
+#include "../PolynomialJoiner.h"
 using namespace std;
 
-DpSigBuilder::DpSigBuilder(vector<string> &tks, vector<t_rule> &rules, umpsi &rankings, double th)
-		: SigBuilder(tks, rules, rankings, th)
-{
-}
-
-unordered_set<string> DpSigBuilder::genSignatures()
+unordered_set<string> PolynomialJoiner::buildDpSigs(vector<string> tokens, vector<t_rule> applicable_rules)
 {
 	//limit on the number of tokens in the transformed string
 	int LIM = 20;
