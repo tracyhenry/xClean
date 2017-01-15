@@ -30,7 +30,7 @@ private:
 	unordered_map<t_rule, int, rule_hash> best_rule_count;
 
 	//SIGMOD 13 - similarity
-	double get_similarity(int, int);
+	double sigmod13_get_similarity(int, int);
 	double rule_gain(t_rule, umpsi, int);
 
 	//Sig builders
