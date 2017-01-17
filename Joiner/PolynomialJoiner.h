@@ -24,12 +24,13 @@ private:
 	umpsi token_rankings;
 
 	//signatures
-	vector<unordered_set<string>> signatures;
+	vector<unordered_set<string>> t_signatures, o_signatures;
 
 	//best rule counting
 	unordered_map<t_rule, int, rule_hash> best_rule_count;
 
 	//Sig builders
+	unordered_set<string> buildOriginalSigs(int);
 	unordered_set<string> buildLargeTokenDpSigs(vector<string>, vector<t_rule>);
 	unordered_set<string> buildDpSigs(vector<string>, vector<t_rule>);
 
