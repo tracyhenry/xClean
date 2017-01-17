@@ -7,15 +7,6 @@ using namespace std;
 
 unordered_set<string> PolynomialJoiner::buildLargeTokenDpSigs(vector<string> tokens, vector<t_rule> applicable_rules)
 {
-	//add identity rules
-	for (int i = 0; i < (int) tokens.size(); i ++)
-	{
-		t_rule rule;
-		rule.first = vector<string>(1, tokens[i]);
-		rule.second = vector<string>(1, tokens[i]);
-		applicable_rules.push_back(rule);
-	}
-
 	//generate for each starting point, an inverted list of applicable rules
 	vector<unordered_map<int, int>> rule_inv(tokens.size());
 	for (t_rule rule : applicable_rules)
@@ -81,7 +72,19 @@ unordered_set<string> PolynomialJoiner::buildLargeTokenDpSigs(vector<string> tok
 						int next_cur = cur + lhs_size;
 						int next_len = len + 1;
 
+						//check if this rule application overlaps with the enumerated rule
+						ok = false;
+						if (next_cur <= st)
+							ok = true;
+						if (cur >= st + (int) rule.first.size())
+							ok = true;
 						if (cur == st && lhs_size == (int) rule.first.size())
+							ok = true;
+						if (! ok)
+							continue;
+
+						//calculate weight
+						if (cur == st)
 							wt = 0;
 						else
 							wt = (it.second >= cur_ranking ? 0 : 1);
@@ -94,7 +97,7 @@ unordered_set<string> PolynomialJoiner::buildLargeTokenDpSigs(vector<string> tok
 			//check
 			bool in_prefix = false;
 			for (int len = 1; len <= tot_len; len ++)
-				if (opt[tot_len][len] + 1 <= tot_len - ceil(len * JAC_THRESHOLD) + 1)
+				if (opt[tot_len][len] + 1 <= len - ceil(len * JAC_THRESHOLD) + 1)
 				{
 					in_prefix = true;
 					break;

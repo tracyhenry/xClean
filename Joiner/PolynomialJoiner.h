@@ -29,13 +29,16 @@ private:
 	//best rule counting
 	unordered_map<t_rule, int, rule_hash> best_rule_count;
 
+	//Sig builders
+	unordered_set<string> buildLargeTokenDpSigs(vector<string>, vector<t_rule>);
+	unordered_set<string> buildDpSigs(vector<string>, vector<t_rule>);
+
 	//SIGMOD 13 - similarity
 	double sigmod13_get_similarity(int, int);
 	double rule_gain(t_rule, umpsi, int);
 
-	//Sig builders
-	unordered_set<string> buildLargeTokenDpSigs(vector<string>, vector<t_rule>);
-	unordered_set<string> buildDpSigs(vector<string>, vector<t_rule>);
+	//simple greedy verifiers
+	double greedy_get_similarity(int, int);
 };
 
 

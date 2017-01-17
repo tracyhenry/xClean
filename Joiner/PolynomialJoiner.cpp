@@ -34,14 +34,21 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 	signatures.clear();
 	for (int i = 0; i < n; i ++)
 	{
+		//construct a different set of applicable rules
 		vector<t_rule> applicable_rules;
 		for (int rule_id : applicable_rule_ids[i])
 			applicable_rules.push_back(rules[rule_id]);
 
-		signatures.push_back(buildLargeTokenDpSigs(tokens[i], applicable_rules));
-//		cout << i << " : " << signatures.back().size() << endl;
-	}
+		for (auto cp : matchable_tokens[i])
+		{
+			vector<string> t;
+			for (int j = cp.first; j <= cp.second; j ++)
+				t.push_back(tokens[i][j]);
+			applicable_rules.push_back(make_pair(t, t));
+		}
 
+		signatures.push_back(buildLargeTokenDpSigs(tokens[i], applicable_rules));
+	}
 	cerr << "Signature built." << endl;
 }
 
@@ -76,7 +83,7 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 	best_rule_count.clear();
 	for (auto cp : candidates)
 	{
-		double sim = sigmod13_get_similarity(cp.first, cp.second);
+		double sim = greedy_get_similarity(cp.first, cp.second);
 		if (sim >= JAC_THRESHOLD)
 			ans.emplace_back(cells[cp.first], cells[cp.second]);
 	}

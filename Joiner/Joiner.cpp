@@ -21,8 +21,42 @@ Joiner::Joiner(vector<t_rule> r, vector<string> s, vector<int> w)
 			token_maps[i][s] ++;
 	}
 
+	//build rule hash table
+	rule_hash_table.clear();
+	for (t_rule rule : rules)
+		rule_hash_table.insert(rule);
+
 	//generate applicable rules for each string
 	gen_applicable_rules();
+
+	//build matchable tokens
+	matchable_tokens.clear();
+	matchable_tokens.resize(n);
+	for (int i = 0; i < n; i ++)
+	{
+		unordered_set<string> lhs_set;
+		for (int rule_id : applicable_rule_ids[i])
+		{
+			t_rule rule = rules[rule_id];
+			string lhs = "";
+			for (string t : rule.first)
+				lhs += t + " ";
+			lhs.erase((int) lhs.size() - 1, 1);
+			lhs_set.insert(lhs);
+		}
+		for (int st = 0; st < (int) tokens[i].size(); st ++)
+		{
+			string cur = "";
+			for (int en = st; en < (int) tokens[i].size(); en ++)
+			{
+				if (en > st)
+					cur += " ";
+				cur += tokens[i][en];
+				if (st == en || lhs_set.count(cur))
+					matchable_tokens[i].emplace_back(st, en);
+			}
+		}
+	}
 
 	//generate expansion set
 	gen_expansion_set();

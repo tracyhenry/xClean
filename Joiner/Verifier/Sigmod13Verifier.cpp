@@ -87,9 +87,6 @@ double PolynomialJoiner::sigmod13_get_similarity(int x, int y)
 		if (max_rg <= 0)
 			break;
 
-//		if (cells[x] == "ll director s office" && cells[y] == "ll contracting services department")
-//			Common::print_rule(best_rule);
-
 		//expand s[i]
 		for (string t : best_rule.second)
 			if (i == 1)
@@ -134,4 +131,3 @@ double PolynomialJoiner::rule_gain(t_rule rule, umpsi token_map, int y)
 
 	return G / U;
 }
-

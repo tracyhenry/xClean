@@ -20,6 +20,7 @@ public:
 protected:
 	//set of rules
 	vector<t_rule> rules;
+	unordered_set<t_rule, rule_hash> rule_hash_table;
 
 	//cells
 	vector<string> cells;
@@ -36,6 +37,7 @@ protected:
 	//token sets and maps
 	vector<vector<string>> tokens;
 	vector<umpsi> token_maps;
+	vector<vector<pair<int, int>>> matchable_tokens;
 
 	//applicable rules
 	vector<vector<int>> applicable_rule_ids;
