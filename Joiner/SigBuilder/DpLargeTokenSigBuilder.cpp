@@ -5,7 +5,7 @@
 #include "../PolynomialJoiner.h"
 using namespace std;
 
-unordered_set<string> PolynomialJoiner::buildLargeTokenDpSigs(vector<string> tokens, vector<t_rule> applicable_rules)
+unordered_set<string> PolynomialJoiner::buildDpLargeTokenSigs(vector<string> tokens, vector<t_rule> applicable_rules)
 {
 	//generate for each starting point, an inverted list of applicable rules
 	vector<unordered_map<int, int>> rule_inv(tokens.size());

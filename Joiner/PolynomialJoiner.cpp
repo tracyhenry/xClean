@@ -31,12 +31,17 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 	}
 
 	//build o_signatures
-	o_signatures.clear();
+	o_sigs.clear();
+	o_large_sigs.clear();
 	for (int i = 0; i < n; i ++)
-		o_signatures.push_back(buildOriginalSigs(i));
+	{
+		o_sigs.push_back(buildOriginalSigs(i));
+		o_large_sigs.push_back(buildOriginalLargeTokenSigs(i));
+	}
 
 	//build t_signatures
-	t_signatures.clear();
+	t_sigs.clear();
+	t_large_sigs.clear();
 	for (int i = 0; i < n; i ++)
 	{
 		//construct a different set of applicable rules
@@ -52,7 +57,8 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 			applicable_rules.push_back(make_pair(t, t));
 		}
 
-		t_signatures.push_back(buildDpSigs(tokens[i], applicable_rules));
+		t_sigs.push_back(buildDpSigs(tokens[i], applicable_rules));
+		t_large_sigs.push_back(buildDpLargeTokenSigs(tokens[i], applicable_rules));
 	}
 	cerr << "Signature built." << endl;
 }
@@ -65,14 +71,14 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 	//build inverted lists
 	unordered_map<string, vector<int>> inv_list;
 	for (int i = 0; i < n; i ++)
-		for (string t : t_signatures[i])
+		for (string t : t_large_sigs[i])
 			inv_list[t].push_back(i);
 
 	//generate candidates
 	for (int i = 0; i < n; i ++)
 	{
 		unordered_set<int> cur_set;
-		for (string t : o_signatures[i])
+		for (string t : o_large_sigs[i])
 			for (int v : inv_list[t])
 				if (v != i)
 					cur_set.insert(v);
