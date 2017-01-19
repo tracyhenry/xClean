@@ -105,7 +105,7 @@ double PolynomialJoiner::sigmod13_get_similarity(int x, int y)
 	}
 
 	double sim = max(Common::jaccard(sx, sy), Common::jaccard(token_maps[x], token_maps[y]));;
-	if (sim >= JAC_THRESHOLD)
+	if (sim >= Common::JAC_THRESHOLD)
 		for (t_rule rule : best_rules)
 			best_rule_count[rule] ++;
 

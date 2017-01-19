@@ -61,7 +61,7 @@ unordered_set<string> PolynomialJoiner::buildOriginalLargeTokenSigs(int x)
 		//check
 		bool in_prefix = false;
 		for (int len = 1; len <= tot_len; len ++)
-			if (opt[tot_len][len] + 1 <= len - ceil(len * JAC_THRESHOLD) + 1)
+			if (opt[tot_len][len] + 1 <= len - ceil(len * Common::JAC_THRESHOLD) + 1)
 			{
 				in_prefix = true;
 				break;

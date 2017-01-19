@@ -61,7 +61,7 @@ vector<t_rule> BadBoy::gen_rules()
 	for (t_rule rule : initial_rule_set)
 	{
 		bool ok = false;
-		if (lhs_freq[rule.first[0]] < BAD_THRESHOLD)
+		if (lhs_freq[rule.first[0]] < Common::BAD_THRESHOLD)
 			ok = true;
 		else
 			for (string t1 : neighbors[rule.first])

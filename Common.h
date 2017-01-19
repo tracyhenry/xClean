@@ -72,6 +72,12 @@ public:
 	//the jaccard similarity between to unordered maps
 	static double jaccard(umpsi a, umpsi b);
 
+	//parameters
+	static double JAC_THRESHOLD;
+	static int LHS_SIZE_LIM;
+	static int BAD_THRESHOLD;
+	static int APPLICABLE_THRESHOLD;
+	static double SKIP_PCTG;
 };
 
 

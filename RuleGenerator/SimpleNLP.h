@@ -23,9 +23,6 @@ private:
 	//vowels
 	const unordered_set<char> vowels =
 			unordered_set<char>({'a', 'e', 'i', 'o', 'u'});
-
-	//skip percentage
-	double SKIP_PCTG = 0.5;
 };
 
 

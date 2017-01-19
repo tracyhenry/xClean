@@ -45,10 +45,6 @@ protected:
 	//expansion sets
 	vector<umpsi> expansion_set;
 
-	//thresholds
-	const double JAC_THRESHOLD = 0.8;
-	const int APPLICABLE_THRESHOLD = 15;
-
 	//functions
 	void gen_applicable_rules();
 	void gen_expansion_set();

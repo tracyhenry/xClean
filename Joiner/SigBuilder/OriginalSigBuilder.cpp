@@ -15,7 +15,7 @@ unordered_set<string> PolynomialJoiner::buildOriginalSigs(int x)
 
 	unordered_set<string> signatures;
 	for (int i = 0; i < len; i ++)
-		if (i + 1 <= len - ceil(len * JAC_THRESHOLD) + 1)
+		if (i + 1 <= len - ceil(len * Common::JAC_THRESHOLD) + 1)
 			signatures.insert(sort_array[i].second);
 		else
 			break;

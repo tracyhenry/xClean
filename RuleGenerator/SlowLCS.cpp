@@ -29,7 +29,7 @@ vector<t_rule> SlowLCS::gen_rules()
 		for (int x = 0; x < (int) tokens[i].size(); x ++)
 		{
 			string cur_lhs = tokens[i][x];
-			if (cur_lhs.size() < LHS_SIZE_LIM)
+			if (cur_lhs.size() < Common::LHS_SIZE_LIM)
 				continue;
 			if (lhs_set.count(cur_lhs))
 				continue;

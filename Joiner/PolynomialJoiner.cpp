@@ -95,7 +95,7 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 	for (auto cp : candidates)
 	{
 		double sim = greedy_get_similarity(cp.first, cp.second);
-		if (sim >= JAC_THRESHOLD)
+		if (sim >= Common::JAC_THRESHOLD)
 			ans.emplace_back(cells[cp.first], cells[cp.second]);
 	}
 

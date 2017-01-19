@@ -42,7 +42,7 @@ vector<pair<string, string>> BruteForceJoiner::getJoinedStringPairs()
 					continue;
 				cur_applicable.push_back(applicable_rule_ids[i][k]);
 			}
-			if (cur_applicable.size() > APPLICABLE_THRESHOLD)
+			if (cur_applicable.size() > Common::APPLICABLE_THRESHOLD)
 				continue;
 
 			//brute-force
@@ -77,7 +77,7 @@ vector<pair<string, string>> BruteForceJoiner::getJoinedStringPairs()
 				}
 				max_sim = max(max_sim, Common::jaccard(cur_map, token_maps[j]));
 			}
-			if (max_sim >= JAC_THRESHOLD)
+			if (max_sim >= Common::JAC_THRESHOLD)
 				ans_pairs.emplace_back(cells[i], cells[j]);
 		}
 

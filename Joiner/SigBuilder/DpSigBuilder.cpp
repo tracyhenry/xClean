@@ -78,7 +78,7 @@ unordered_set<string> PolynomialJoiner::buildDpSigs(vector<string> tokens, vecto
 				for (int cur = 0; cur < tot_len; cur ++)
 					for (int len = 0; len <= LIM; len ++)
 					{
-						if (opt[cur][len] >= (int) LIM - ceil(LIM * JAC_THRESHOLD) + 1)
+						if (opt[cur][len] >= (int) LIM - ceil(LIM * Common::JAC_THRESHOLD) + 1)
 							continue;
 
 						//using transformations starting at cur
@@ -118,7 +118,7 @@ unordered_set<string> PolynomialJoiner::buildDpSigs(vector<string> tokens, vecto
 				//check
 				bool in_prefix = false;
 				for (int len = 1; len <= LIM; len ++)
-					if (opt[tot_len][len] + 1 <= len - ceil(len * JAC_THRESHOLD) + 1)
+					if (opt[tot_len][len] + 1 <= len - ceil(len * Common::JAC_THRESHOLD) + 1)
 					{
 						in_prefix = true;
 						break;

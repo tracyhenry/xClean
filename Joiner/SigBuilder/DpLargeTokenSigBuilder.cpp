@@ -61,7 +61,7 @@ unordered_set<string> PolynomialJoiner::buildDpLargeTokenSigs(vector<string> tok
 			for (int cur = 0; cur < tot_len; cur ++)
 				for (int len = 0; len <= tot_len; len ++)
 				{
-					if (opt[cur][len] >= (int) tot_len - ceil(tot_len * JAC_THRESHOLD) + 1)
+					if (opt[cur][len] >= (int) tot_len - ceil(tot_len * Common::JAC_THRESHOLD) + 1)
 						continue;
 
 					int wt;
@@ -97,7 +97,7 @@ unordered_set<string> PolynomialJoiner::buildDpLargeTokenSigs(vector<string> tok
 			//check
 			bool in_prefix = false;
 			for (int len = 1; len <= tot_len; len ++)
-				if (opt[tot_len][len] + 1 <= len - ceil(len * JAC_THRESHOLD) + 1)
+				if (opt[tot_len][len] + 1 <= len - ceil(len * Common::JAC_THRESHOLD) + 1)
 				{
 					in_prefix = true;
 					break;

@@ -17,9 +17,6 @@ public:
 
 	//overwrite virtual methods
 	vector<t_rule> gen_rules();
-
-private:
-	int BAD_THRESHOLD = 10;
 };
 
 

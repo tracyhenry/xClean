@@ -35,9 +35,6 @@ protected:
 	vector<vector<string>> tokens;
 	vector<umpsi> token_maps;
 
-	//lhs size limit
-	const int LHS_SIZE_LIM = 1;
-
 	//stop words
 	const unordered_set<string> stop_words =
 			unordered_set<string>({"the", "for", "to", "in", "and", "of", "on"});

@@ -14,7 +14,7 @@ FastLCS::FastLCS(vector<string> s, vector<int> w)
 	for (int i = 0; i < n; i ++)
 		for (string s : tokens[i])
 		{
-			if (s.size() < LHS_SIZE_LIM)
+			if (s.size() < Common::LHS_SIZE_LIM)
 				continue;
 
 			//insert s into trie
