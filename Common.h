@@ -16,6 +16,19 @@ typedef unordered_map<string, int> umpsi;
 typedef pair<vector<string>, vector<string>> t_rule;
 
 
+struct vectorstr_hash
+{
+	std::size_t operator () (const std::vector<string> &p) const
+	{
+		long long hash_value = 1;
+		for (auto i = 0; i < p.size(); i ++)
+			for (auto j = 0; j < p[i].size(); j ++)
+				hash_value = (long long) hash_value * (long long) p[i][j] % 99999997LL;
+
+		return (size_t) hash_value;
+	}
+};
+
 struct pairii_hash
 {
 	std::size_t operator () (const std::pair<int, int> &p) const

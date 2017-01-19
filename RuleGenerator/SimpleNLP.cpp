@@ -119,17 +119,9 @@ vector<t_rule> SimpleNLP::gen_rules()
 			sort_array.emplace_back(0, rule);
 	}
 
-	//sort by percentage of skip
-//	sort(sort_array.begin(), sort_array.end());
-
 	vector<t_rule> rules;
 	for (auto cp : sort_array)
 		rules.push_back(cp.second);
 
-	//add reverse rules
-	vector<t_rule> rules_vector = vector<t_rule>(rules.begin(), rules.end());
-	for (int i = 0, n = (int) rules_vector.size(); i < n; i ++)
-		rules_vector.push_back(make_pair(rules_vector[i].second, rules_vector[i].first));
-
-	return rules_vector;
+	return rules;
 }

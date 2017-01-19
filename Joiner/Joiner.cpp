@@ -3,6 +3,7 @@
 //
 
 #include "Joiner.h"
+using namespace std;
 
 Joiner::Joiner(vector<t_rule> r, vector<string> s, vector<int> w)
 		: rules(r), cells(s), weights(w)
