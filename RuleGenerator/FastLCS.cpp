@@ -41,6 +41,7 @@ FastLCS::FastLCS(vector<string> s, vector<int> w)
 	double sum_b = 0;
 	for (auto cp : b_factor)
 		sum_b += cp.second;
+
 	cout << "Branching factor: " << sum_b / trie.size() / b_factor.size() << endl;
 }
 

@@ -76,6 +76,7 @@ public:
 	static double JAC_THRESHOLD;
 	static int LHS_SIZE_LIM;
 	static int BAD_THRESHOLD;
+	static int LHS_FREQ_THRESHOLD;
 	static int APPLICABLE_THRESHOLD;
 	static double SKIP_PCTG;
 };

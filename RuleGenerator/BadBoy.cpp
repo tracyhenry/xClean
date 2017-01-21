@@ -17,6 +17,12 @@ vector<t_rule> BadBoy::gen_rules()
 	vector<t_rule> initial_rule_set = simpleNLP->gen_rules();
 	delete simpleNLP;
 
+	//token frequency
+	umpsi token_freq;
+	for (int i = 0; i < n; i ++)
+		for (string t : tokens[i])
+			token_freq[t] ++;
+
 	//make neighbors
 	unordered_map<vector<string>, unordered_set<string>, vectorstr_hash> neighbors;
 	for (int i = 0; i < n; i ++)
@@ -33,24 +39,18 @@ vector<t_rule> BadBoy::gen_rules()
 				nb = (st > 0 ? tokens[i][st - 1] : "");
 				neighbors[cur].insert(nb);
 				//en + 1
-				nb = (st < len - 1 ? tokens[i][en + 1] : "");
+				nb = (en < len - 1 ? tokens[i][en + 1] : "");
 				neighbors[cur].insert(nb);
 			}
 		}
 	}
-/*
-	cout << "-----" << endl;
-	for (auto i = 0; i < n; i ++)
-		if (token_maps[i].count("d"))
-			cout << cells[i] << endl;
-	cout << "-----" << endl;
-*/
+
 	for (auto& cp : neighbors)
 		if (cp.second.size() > 1)
 			cp.second.erase("");
 
 	//calculate lhs frequency
-	unordered_map<string, int> lhs_freq;
+	umpsi lhs_freq;
 	for (t_rule rule : initial_rule_set)
 		if ((rule.first.size() < rule.second.size()) ||
 			(rule.first.size() == 1 && rule.first[0].size() < rule.second[0].size()))
@@ -75,6 +75,8 @@ vector<t_rule> BadBoy::gen_rules()
 				if (ok)
 					break;
 			}
+		if (rule.first[0].size() <= 2 && token_freq[rule.first[0]] > Common::LHS_FREQ_THRESHOLD)
+			ok = false;
 		if (ok)
 			rules.push_back(rule);
 	}

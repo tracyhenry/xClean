@@ -29,7 +29,7 @@ Solver::Solver(string string_file_name, string weights_file_name)
 
 	//generate rules
 	cerr << "Generating rules......" << endl;
-	RuleGenerator *ruleGenerator = new SimpleNLP(cells, weights);
+	RuleGenerator *ruleGenerator = new BadBoy(cells, weights);
 	vector<t_rule> rules = ruleGenerator->gen_rules();
 	cout << "# Rule: " << rules.size() * 2 << endl;
 
