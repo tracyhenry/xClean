@@ -31,7 +31,44 @@ WildLCS::WildLCS(vector<string> s, vector<int> w)
 				cur_node = trie[cur_node][s[j]];
 			}
 			contain_word[cur_node] = s;
+
+			continue;
+			for (auto d = 0; d < s.size(); d ++)
+			{
+				string t = s; t.erase(d, 1);
+				if (t.size() < 3)
+					break;
+				int cur_node = 0;
+				for (auto j = 0; j < t.size(); j ++)
+				{
+					if (! trie[cur_node].count(t[j]))
+					{
+						trie[cur_node][t[j]] = (int) trie.size();
+						trie.push_back(unordered_map<char, int>());
+						contain_word.push_back("");
+					}
+					cur_node = trie[cur_node][t[j]];
+				}
+				contain_word[cur_node] = s;
+			}
 		}
+
+	unordered_map<char, int> b_factor;
+	for (auto mp : trie)
+		for (auto cp : mp)
+			b_factor[cp.first] ++;
+
+	double sum_b = 0;
+	for (auto cp : b_factor)
+		sum_b += cp.second;
+
+	double max_b = 0;
+	for (auto cp : b_factor)
+		max_b = max(max_b, (double) cp.second);
+
+	cout << b_factor.size() << endl;
+	cout << "Branching factor: " << sum_b / trie.size() / b_factor.size() << endl;
+	cout << "Max factor: " << max_b / trie.size() << endl;
 }
 
 vector<t_rule> WildLCS::gen_rules()
@@ -51,9 +88,6 @@ vector<t_rule> WildLCS::gen_rules()
 				cur_string += tokens[i][j][k];
 				token_id.push_back(j);
 			}
-
-//		for (auto j = 0; j < cur_string.size(); j ++)
-//			token_id.push_back(1);
 
 		//traversal
 		H.clear();
@@ -97,7 +131,11 @@ vector<t_rule> WildLCS::gen_rules()
 			lhs.push_back(contain_word[node]);
 			for (int j = st - 1; j < en; j ++)
 				rhs.push_back(tokens[i][j]);
-//			rhs.push_back(cur_string);
+
+			//get rid of identity rules
+			if (rhs.size() == 1 && lhs[0] == rhs[0])
+				continue;
+
 			rules.insert(make_pair(lhs, rhs));
 		}
 	}

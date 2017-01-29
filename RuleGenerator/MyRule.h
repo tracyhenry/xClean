@@ -10,11 +10,11 @@
 using namespace std;
 
 
-class SimpleNLP: public RuleGenerator
+class MyRule: public RuleGenerator
 {
 public:
 	//constructor
-	SimpleNLP(vector<string>, vector<int>);
+	MyRule(vector<string>, vector<int>);
 
 	//overwrite virtual methods
 	vector<t_rule> gen_rules();

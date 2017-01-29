@@ -3,7 +3,7 @@
 //
 
 #include "BadBoy.h"
-#include "SimpleNLP.h"
+#include "MyRule.h"
 using namespace std;
 
 BadBoy::BadBoy(vector<string> s, vector<int> w)
@@ -13,7 +13,7 @@ BadBoy::BadBoy(vector<string> s, vector<int> w)
 
 vector<t_rule> BadBoy::gen_rules()
 {
-	RuleGenerator *simpleNLP = new SimpleNLP(cells, weights);
+	RuleGenerator *simpleNLP = new MyRule(cells, weights);
 	vector<t_rule> initial_rule_set = simpleNLP->gen_rules();
 	delete simpleNLP;
 

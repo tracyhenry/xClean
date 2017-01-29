@@ -2,17 +2,17 @@
 // Created by Wenbo Tao on 1/6/17.
 //
 
-#include "SimpleNLP.h"
+#include "MyRule.h"
 #include "FastLCS.h"
 
 using namespace std;
 
-SimpleNLP::SimpleNLP(vector<string> s, vector<int> w)
+MyRule::MyRule(vector<string> s, vector<int> w)
 	: RuleGenerator(s, w)
 {
 }
 
-vector<t_rule> SimpleNLP::gen_rules()
+vector<t_rule> MyRule::gen_rules()
 {
 	RuleGenerator *fastLCS = new FastLCS(cells, weights);
 	vector<t_rule> initial_rule_set = fastLCS->gen_rules();
