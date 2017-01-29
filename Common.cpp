@@ -10,7 +10,9 @@ int Common::LHS_SIZE_LIM = 1;
 int Common::BAD_THRESHOLD = 10;
 int Common::LHS_FREQ_THRESHOLD = 100;
 int Common::APPLICABLE_THRESHOLD = 15;
+int Common::DELTA_ABBR_LEN = 3;
 double Common::SKIP_PCTG = 0.5;
+bool Common::ENABLE_DELTA = false;
 
 vector<string> Common::get_tokens(string s)
 {

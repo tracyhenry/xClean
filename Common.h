@@ -78,7 +78,9 @@ public:
 	static int BAD_THRESHOLD;
 	static int LHS_FREQ_THRESHOLD;
 	static int APPLICABLE_THRESHOLD;
+	static int DELTA_ABBR_LEN;
 	static double SKIP_PCTG;
+	static bool ENABLE_DELTA;
 };
 
 

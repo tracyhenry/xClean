@@ -30,6 +30,29 @@ FastLCS::FastLCS(vector<string> s, vector<int> w)
 				cur_node = trie[cur_node][s[j]];
 			}
 			contain_word[cur_node] = s;
+
+			if (! Common::ENABLE_DELTA)
+				continue;
+
+			for (auto d = 0; d < s.size(); d ++)
+			{
+				string t = s; t.erase(d, 1);
+				if (t.size() < Common::DELTA_ABBR_LEN)
+					break;
+
+				int cur_node = 0;
+				for (auto j = 0; j < t.size(); j ++)
+				{
+					if (! trie[cur_node].count(t[j]))
+					{
+						trie[cur_node][t[j]] = (int) trie.size();
+						trie.push_back(unordered_map<char, int>());
+						contain_word.push_back("");
+					}
+					cur_node = trie[cur_node][t[j]];
+				}
+				contain_word[cur_node] = s;
+			}
 		}
 
 	//calculate D

@@ -51,7 +51,6 @@ vector<t_rule> MyRule::gen_rules()
 		for (string t : rule.second)
 			rhs += t;
 		int len_l = (int) lhs.size();
-		int len_r = (int) rhs.size();
 
 		//directly approve initialism
 		if (rule.second.size() == 1)
@@ -107,11 +106,11 @@ vector<t_rule> MyRule::gen_rules()
 
 		//number of consonants
 		int lhs_n_cons = 0, rhs_n_cons = 0;
-		for (int i = 0; i < (int) lhs.size(); i ++)
-			if (! vowels.count(lhs[i]))
+		for (auto i = 0; i < m_inds.size(); i ++)
+			if (! vowels.count(rhs[m_inds[i]]))
 				lhs_n_cons ++;
 
-		for (int i = 0; i < (int) rhs.size(); i ++)
+		for (auto i = 0; i < rhs.size(); i ++)
 			if (! vowels.count(rhs[i]))
 				rhs_n_cons ++;
 

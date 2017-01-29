@@ -32,7 +32,9 @@ WildLCS::WildLCS(vector<string> s, vector<int> w)
 			}
 			contain_word[cur_node] = s;
 
-			continue;
+			if (! Common::ENABLE_DELTA)
+				continue;
+
 			for (auto d = 0; d < s.size(); d ++)
 			{
 				string t = s; t.erase(d, 1);
