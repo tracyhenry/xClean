@@ -40,8 +40,8 @@ private:
 	double sigmod13_get_similarity(int, int);
 	double rule_gain(t_rule, umpsi, int);
 
-	//simple greedy verifiers
-	double greedy_get_similarity(int, int);
+	//large token greedy verifier
+	double large_token_get_similarity(int, int);
 };
 
 

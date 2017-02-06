@@ -5,7 +5,7 @@
 #include "../PolynomialJoiner.h"
 using namespace std;
 
-double PolynomialJoiner::greedy_get_similarity(int x, int y)
+double PolynomialJoiner::large_token_get_similarity(int x, int y)
 {
 //	cout << endl;
 //	cout << cells[x] << endl << cells[y] << endl;

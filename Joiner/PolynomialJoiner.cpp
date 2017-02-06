@@ -71,14 +71,14 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 	//build inverted lists
 	unordered_map<string, vector<int>> inv_list;
 	for (int i = 0; i < n; i ++)
-		for (string t : t_large_sigs[i])
+		for (string t : t_sigs[i])
 			inv_list[t].push_back(i);
 
 	//generate candidates
 	for (int i = 0; i < n; i ++)
 	{
 		unordered_set<int> cur_set;
-		for (string t : o_large_sigs[i])
+		for (string t : o_sigs[i])
 			for (int v : inv_list[t])
 				if (v != i)
 					cur_set.insert(v);
@@ -94,7 +94,7 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 	best_rule_count.clear();
 	for (auto cp : candidates)
 	{
-		double sim = greedy_get_similarity(cp.first, cp.second);
+		double sim = sigmod13_get_similarity(cp.first, cp.second);
 		if (sim >= Common::JAC_THRESHOLD)
 			ans.emplace_back(cells[cp.first], cells[cp.second]);
 	}
