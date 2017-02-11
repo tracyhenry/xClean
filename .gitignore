@@ -30,9 +30,9 @@
 
 #idea
 .idea
-*.txt
 
 .DS_Store
+data/
 cmake-build-debug/
 CMakeFiles/
 Makefile
