@@ -73,6 +73,9 @@ public:
 	//the jaccard similarity between to unordered maps
 	static double jaccard(umpsi a, umpsi b);
 
+	//set parameters to default values
+	static void set_default();
+
 	//parameters
 	static double JAC_THRESHOLD;
 	static int LHS_SIZE_LIM;
@@ -80,7 +83,6 @@ public:
 	static int LHS_FREQ_THRESHOLD;
 	static int APPLICABLE_THRESHOLD;
 	static int DELTA_ABBR_LEN;
-	static double SKIP_PCTG;
 	static bool ENABLE_DELTA;
 };
 

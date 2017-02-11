@@ -6,13 +6,12 @@
 using namespace std;
 
 double Common::JAC_THRESHOLD = 0.8;
+bool Common::ENABLE_DELTA = false;
+int Common::DELTA_ABBR_LEN = 3;
 int Common::LHS_SIZE_LIM = 1;
 int Common::BAD_THRESHOLD = 10;
 int Common::LHS_FREQ_THRESHOLD = 100;
 int Common::APPLICABLE_THRESHOLD = 15;
-int Common::DELTA_ABBR_LEN = 3;
-double Common::SKIP_PCTG = 0.5;
-bool Common::ENABLE_DELTA = false;
 
 vector<string> Common::get_tokens(string s)
 {
@@ -108,4 +107,15 @@ double Common::jaccard(umpsi a, umpsi b)
 			unn += cp.second;
 
 	return itsct / unn;
+}
+
+void Common::set_default()
+{
+	JAC_THRESHOLD = 0.8;
+	ENABLE_DELTA = false;
+	DELTA_ABBR_LEN = 1;
+	LHS_SIZE_LIM = 1;
+	BAD_THRESHOLD = 10;
+	LHS_FREQ_THRESHOLD = 100;
+	APPLICABLE_THRESHOLD = 15;
 }
