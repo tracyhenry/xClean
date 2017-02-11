@@ -11,7 +11,7 @@
 #include "../RuleGenerator/WildLCS.h"
 #include "../RuleGenerator/NLPRule.h"
 #include <fstream>
-//using namespace std;
+using namespace std;
 
 Solver::Solver(string string_file_name, string weights_file_name)
 {

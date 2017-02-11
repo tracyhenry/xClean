@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <algorithm>
 #include <sys/time.h>
 #include <unordered_map>
 #include <unordered_set>
