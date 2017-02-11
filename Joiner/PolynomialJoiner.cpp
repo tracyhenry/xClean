@@ -94,8 +94,9 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 	best_rule_count.clear();
 	for (auto cp : candidates)
 	{
-		double sim = greedy_get_similarity(cp.first, cp.second);
-		//double sim = sigmod13_get_similarity(cp.first, cp.second);
+		//double sim = greedy_get_similarity(cp.first, cp.second);
+		double sim = sigmod13_get_similarity(cp.first, cp.second);
+		//double sim = large_token_get_similarity(cp.first, cp.second);
 		if (sim >= Common::JAC_THRESHOLD)
 			ans.emplace_back(cells[cp.first], cells[cp.second]);
 	}

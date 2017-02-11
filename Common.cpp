@@ -5,7 +5,7 @@
 #include "Common.h"
 using namespace std;
 
-double Common::JAC_THRESHOLD = 0.85;
+double Common::JAC_THRESHOLD = 0.8;
 int Common::LHS_SIZE_LIM = 1;
 int Common::BAD_THRESHOLD = 10;
 int Common::LHS_FREQ_THRESHOLD = 100;

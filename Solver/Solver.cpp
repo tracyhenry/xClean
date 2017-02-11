@@ -6,8 +6,10 @@
 #include "../RuleGenerator/FastLCS.h"
 #include "../Joiner/BruteForceJoiner.h"
 #include "../Joiner/PolynomialJoiner.h"
-#include "../RuleGenerator/SimpleNLP.h"
+#include "../RuleGenerator/MyRule.h"
 #include "../RuleGenerator/BadBoy.h"
+#include "../RuleGenerator/WildLCS.h"
+#include "../RuleGenerator/NLPRule.h"
 #include <fstream>
 //using namespace std;
 
@@ -66,6 +68,7 @@ Solver::Solver(string string_file_name, string weights_file_name)
 
 	//output
 	cout << joinedStringPairs.size() << endl;
+	sort(joinedStringPairs.begin(), joinedStringPairs.end());
 	for (auto cp : joinedStringPairs)
 		cout << cp.first << endl << cp.second << endl << endl;
 }
