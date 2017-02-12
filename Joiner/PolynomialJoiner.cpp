@@ -30,6 +30,25 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 //		e_sigs.push_back(buildExpansionSigs(tokens[i], applicable_rules));
 		t_large_sigs.push_back(buildDpLargeTokenSigs(tokens[i], applicable_rules));
 	}
+
+	//build a_rule_inv_list
+	a_rule_inv_list.clear();
+	for (int i = 0; i < n; i ++)
+	{
+		unordered_map<string, unordered_set<int>> inv_list;
+		inv_list.clear();
+		for (int rule_id : applicable_rule_ids[i])
+		{
+			t_rule rule = rules[rule_id];
+			for (string t : rule.second)
+			{
+				if (! inv_list.count(t))
+					inv_list[t].clear();
+				inv_list[t].insert(rule_id);
+			}
+		}
+		a_rule_inv_list.push_back(inv_list);
+	}
 	cerr << "Signature built." << endl;
 }
 

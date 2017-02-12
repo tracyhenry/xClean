@@ -15,7 +15,6 @@ double PolynomialJoiner::greedy_get_similarity(int x, int y)
 double PolynomialJoiner::greedy_directed_get_similarity(int x, int y)
 {
 	vector<pair<t_rule, int>> good_rules;
-
 	//identity
 	for (auto i = 0; i < tokens[x].size(); i ++)
 		if (token_maps[y].count(tokens[x][i]))
@@ -25,22 +24,22 @@ double PolynomialJoiner::greedy_directed_get_similarity(int x, int y)
 			good_rules.emplace_back(make_pair(lhs, rhs), i);
 		}
 
+	//use inv list to build a candidate rule list
+	unordered_set<int> good_rule_ids;
+	for (string t : tokens[y])
+		if (a_rule_inv_list[x].count(t))
+			for (int rule_id : a_rule_inv_list[x][t])
+				good_rule_ids.insert(rule_id);
+
 	//transformation
-	for (int rule_id : applicable_rule_ids[x])
+	for (int rule_id : good_rule_ids)
 	{
 		t_rule rule = rules[rule_id];
-		bool good = false;
-		for (string t : rule.second)
-			if (token_maps[y].count(t))
-				good = true;
-		if (! good)
-			continue;
-
 		for (auto i = 0; i < tokens[x].size(); i ++)
 		{
 			if (i + rule.first.size() > tokens[x].size())
 				break;
-			good = true;
+			bool good = true;
 			for (auto j = 0; j < rule.first.size(); j ++)
 				if (tokens[x][i + j] != rule.first[j])
 				{
@@ -52,7 +51,6 @@ double PolynomialJoiner::greedy_directed_get_similarity(int x, int y)
 			good_rules.emplace_back(rule, i);
 		}
 	}
-
 
 	//greedy algorithm
 	vector<bool> rule_used(good_rules.size(), false);

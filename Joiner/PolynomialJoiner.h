@@ -25,6 +25,9 @@ private:
 	//best rule counting
 	unordered_map<t_rule, int, rule_hash> best_rule_count;
 
+	//inverted list for applicable rules, speed up verification
+	vector<unordered_map<string, unordered_set<int>>> a_rule_inv_list;
+
 	//Sig builders
 	unordered_set<string> buildDpSigs(vector<string>, vector<t_rule>);
 	unordered_set<string> buildExpansionSigs(vector<string>, vector<t_rule>);
