@@ -6,6 +6,7 @@
 using namespace std;
 
 double Common::JAC_THRESHOLD = 0.8;
+double Common::VLDB09_JAC_THRESHOLD = 0.6;
 bool Common::ENABLE_DELTA = false;
 int Common::DELTA_ABBR_LEN = 3;
 int Common::LHS_SIZE_LIM = 1;
@@ -112,6 +113,7 @@ double Common::jaccard(umpsi a, umpsi b)
 void Common::set_default()
 {
 	JAC_THRESHOLD = 0.8;
+	VLDB09_JAC_THRESHOLD = 0.6;
 	ENABLE_DELTA = false;
 	DELTA_ABBR_LEN = 1;
 	LHS_SIZE_LIM = 1;

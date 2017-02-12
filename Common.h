@@ -7,6 +7,7 @@
 #include <cmath>
 #include <vector>
 #include <string>
+#include <fstream>
 #include <iostream>
 #include <algorithm>
 #include <sys/time.h>
@@ -78,6 +79,7 @@ public:
 
 	//parameters
 	static double JAC_THRESHOLD;
+	static double VLDB09_JAC_THRESHOLD;
 	static int LHS_SIZE_LIM;
 	static int BAD_THRESHOLD;
 	static int LHS_FREQ_THRESHOLD;
