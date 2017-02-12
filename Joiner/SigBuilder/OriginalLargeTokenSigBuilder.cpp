@@ -2,10 +2,10 @@
 // Created by Wenbo Tao on 1/17/17.
 //
 
-#include "../PolynomialJoiner.h"
+#include "../Joiner.h"
 using namespace std;
 
-unordered_set<string> PolynomialJoiner::buildOriginalLargeTokenSigs(int x)
+unordered_set<string> Joiner::buildOriginalLargeTokenSigs(int x)
 {
 	int tot_len = (int) tokens[x].size();
 

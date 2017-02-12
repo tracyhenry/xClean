@@ -19,21 +19,15 @@ public:
 	vector<pair<string, string>> getJoinedStringPairs();
 
 private:
-	//global token rank list
-	vector<string> global_list;
-	umpsi token_rankings;
-
 	//signatures
-	vector<unordered_set<string>> o_sigs, o_large_sigs;
-	vector<unordered_set<string>> t_sigs, t_large_sigs;
+	vector<unordered_set<string>> t_sigs, e_sigs, t_large_sigs;
 
 	//best rule counting
 	unordered_map<t_rule, int, rule_hash> best_rule_count;
 
 	//Sig builders
-	unordered_set<string> buildOriginalSigs(int);
-	unordered_set<string> buildOriginalLargeTokenSigs(int);
 	unordered_set<string> buildDpSigs(vector<string>, vector<t_rule>);
+	unordered_set<string> buildExpansionSigs(vector<string>, vector<t_rule>);
 	unordered_set<string> buildDpLargeTokenSigs(vector<string>, vector<t_rule>);
 
 	//SIGMOD 13 - similarity

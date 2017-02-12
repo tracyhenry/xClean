@@ -15,6 +15,7 @@ double PolynomialJoiner::greedy_get_similarity(int x, int y)
 double PolynomialJoiner::greedy_directed_get_similarity(int x, int y)
 {
 	vector<pair<t_rule, int>> good_rules;
+
 	//identity
 	for (auto i = 0; i < tokens[x].size(); i ++)
 		if (token_maps[y].count(tokens[x][i]))
@@ -59,6 +60,8 @@ double PolynomialJoiner::greedy_directed_get_similarity(int x, int y)
 	vector<bool> y_used(tokens[y].size(), false);
 
 	int n_uncovered = 0, n_covered = 0;
+	umpsi x_map = token_maps[x];
+	double max_sim = Common::jaccard(x_map, token_maps[y]);
 	while (true)
 	{
 		double max_rule_gain = -1;
@@ -125,14 +128,14 @@ double PolynomialJoiner::greedy_directed_get_similarity(int x, int y)
 			else
 				n_uncovered ++;
 		}
+
+		//update x_map and max_sim
+		for (auto j = 0; j < rule.first.size(); j ++)
+			x_map[tokens[x][st + j]] --;
+		for (string t : rule.second)
+			x_map[t] ++;
+		max_sim = max(max_sim, Common::jaccard(x_map, token_maps[y]));
 	}
 
-	for (auto i = 0; i < tokens[x].size(); i ++)
-		if (! x_used[i])
-			n_uncovered ++;
-	for (auto i = 0; i < tokens[y].size(); i ++)
-		if (! y_used[i])
-			n_uncovered ++;
-
-	return (double) n_covered / (double) (n_covered + n_uncovered);
+	return max_sim;
 }

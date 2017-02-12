@@ -7,40 +7,9 @@
 PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<int> w)
 	: Joiner(r, s, w)
 {
-	//make global token ranked list
-	umpsi g_token_map;
-	for (int i = 0; i < n; i ++)
-		for (int st = 0; st < (int) tokens[i].size(); st ++)
-			for (int en = st; en < (int) tokens[i].size(); en ++)
-			{
-				string t = "";
-				for (int k = st; k <= en; k ++)
-					t += tokens[i][k] + (k == en ? "" :  " ");
-				g_token_map[t] += weights[i];
-			}
-
-	vector<pair<int, string>> sort_array;
-	for (auto cp : g_token_map)
-		sort_array.emplace_back(cp.second, cp.first);
-	sort(sort_array.begin(), sort_array.end());
-
-	for (int i = 0; i < (int) sort_array.size(); i ++)
-	{
-		global_list.push_back(sort_array[i].second);
-		token_rankings[sort_array[i].second] = i;
-	}
-
-	//build o_signatures
-	o_sigs.clear();
-	o_large_sigs.clear();
-	for (int i = 0; i < n; i ++)
-	{
-		o_sigs.push_back(buildOriginalSigs(i));
-		o_large_sigs.push_back(buildOriginalLargeTokenSigs(i));
-	}
-
 	//build t_signatures
 	t_sigs.clear();
+	e_sigs.clear();
 	t_large_sigs.clear();
 	for (int i = 0; i < n; i ++)
 	{
@@ -58,6 +27,7 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 		}
 
 		t_sigs.push_back(buildDpSigs(tokens[i], applicable_rules));
+//		e_sigs.push_back(buildExpansionSigs(tokens[i], applicable_rules));
 		t_large_sigs.push_back(buildDpLargeTokenSigs(tokens[i], applicable_rules));
 	}
 	cerr << "Signature built." << endl;
@@ -94,8 +64,8 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 	best_rule_count.clear();
 	for (auto cp : candidates)
 	{
-		//double sim = greedy_get_similarity(cp.first, cp.second);
-		double sim = sigmod13_get_similarity(cp.first, cp.second);
+		double sim = greedy_get_similarity(cp.first, cp.second);
+		//double sim = sigmod13_get_similarity(cp.first, cp.second);
 		//double sim = large_token_get_similarity(cp.first, cp.second);
 		if (sim >= Common::JAC_THRESHOLD)
 			ans.emplace_back(cells[cp.first], cells[cp.second]);

@@ -126,7 +126,7 @@ double PolynomialJoiner::rule_gain(t_rule rule, umpsi token_map, int y)
 
 	//calculate G
 	for (string t : rule.second)
-		if (token_maps[y].count(t) && ! token_map.count(t))
+		if (expansion_set[y].count(t) && ! token_map.count(t))
 			G ++;
 
 	return G / U;

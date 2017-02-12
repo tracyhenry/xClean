@@ -61,6 +61,12 @@ Joiner::Joiner(vector<t_rule> r, vector<string> s, vector<int> w)
 
 	//generate expansion set
 	gen_expansion_set();
+
+	//generate global ranking list
+	gen_global_ranking();
+
+	//generate original signatures
+	gen_original_signatures();
 }
 
 void Joiner::gen_applicable_rules()
@@ -80,18 +86,7 @@ void Joiner::gen_applicable_rules()
 		rule_invl[s].push_back(i);
 		max_lhs_size = max(max_lhs_size, (int) rules[i].first.size());
 	}
-/*
-	for (auto cp : rule_invl)
-		for (int rule_id : cp.second)
-			Common::print_rule(rules[rule_id]);
 
-	vector<pair<int, string>> sort_array;
-	for (auto cp : rule_invl)
-		sort_array.emplace_back(cp.second.size(), cp.first);
-	sort(sort_array.begin(), sort_array.end(), greater<pair<int, string>>());
-	for (int i = 0; i < (int) sort_array.size(); i ++)
-		cout << sort_array[i].second << " : " << sort_array[i].first << endl;
-*/
 	//generate applicable rule ids
 	int sum_r = 0, max_r = 0;
 	for (int i = 0; i < n; i ++)
@@ -133,5 +128,43 @@ void Joiner::gen_expansion_set()
 				cur_expansion_set[t] ++;
 		}
 		expansion_set.push_back(cur_expansion_set);
+	}
+}
+
+void Joiner::gen_global_ranking()
+{
+	//make global token ranked list
+	umpsi g_token_map;
+	for (int i = 0; i < n; i ++)
+		for (int st = 0; st < (int) tokens[i].size(); st ++)
+			for (int en = st; en < (int) tokens[i].size(); en ++)
+			{
+				string t = "";
+				for (int k = st; k <= en; k ++)
+					t += tokens[i][k] + (k == en ? "" :  " ");
+				g_token_map[t] += weights[i];
+			}
+
+	vector<pair<int, string>> sort_array;
+	for (auto cp : g_token_map)
+		sort_array.emplace_back(cp.second, cp.first);
+	sort(sort_array.begin(), sort_array.end());
+
+	for (int i = 0; i < (int) sort_array.size(); i ++)
+	{
+		global_list.push_back(sort_array[i].second);
+		token_rankings[sort_array[i].second] = i;
+	}
+}
+
+void Joiner::gen_original_signatures()
+{
+	//build o_signatures
+	o_sigs.clear();
+	o_large_sigs.clear();
+	for (int i = 0; i < n; i ++)
+	{
+		o_sigs.push_back(buildOriginalSigs(i));
+		o_large_sigs.push_back(buildOriginalLargeTokenSigs(i));
 	}
 }

@@ -10,6 +10,7 @@
 #include "../RuleGenerator/BadBoy.h"
 #include "../RuleGenerator/WildLCS.h"
 #include "../RuleGenerator/NLPRule.h"
+#include "../RuleGenerator/Vldb09.h"
 #include <fstream>
 using namespace std;
 
@@ -32,6 +33,7 @@ Solver::Solver(string string_file_name, string weights_file_name)
 	//generate rules
 	cerr << "Generating rules......" << endl;
 	RuleGenerator *ruleGenerator = new BadBoy(cells, weights);
+//	RuleGenerator *ruleGenerator = new Vldb09(cells, weights);
 	vector<t_rule> rules = ruleGenerator->gen_rules();
 	cout << "# Rule: " << rules.size() * 2 << endl;
 
@@ -55,7 +57,7 @@ Solver::Solver(string string_file_name, string weights_file_name)
 	for (auto cp : lhs_set)
 		sort_array.emplace_back(cp.second, cp.first);
 	sort(sort_array.begin(), sort_array.end(), greater<pair<int, string>>());
-	for (int i = 0; i < 10; i ++)
+	for (auto i = 0; i < min((int) sort_array.size(), 10); i ++)
 		cout << sort_array[i].second<< " : " << sort_array[i].first << endl;
 
 

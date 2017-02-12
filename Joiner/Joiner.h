@@ -45,9 +45,20 @@ protected:
 	//expansion sets
 	vector<umpsi> expansion_set;
 
+	//global token rank list
+	vector<string> global_list;
+	umpsi token_rankings;
+
+	//original signatures
+	vector<unordered_set<string>> o_sigs, o_large_sigs;
+
 	//functions
+	unordered_set<string> buildOriginalSigs(int);
+	unordered_set<string> buildOriginalLargeTokenSigs(int);
 	void gen_applicable_rules();
 	void gen_expansion_set();
+	void gen_global_ranking();
+	void gen_original_signatures();
 };
 
 

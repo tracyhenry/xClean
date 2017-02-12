@@ -2,10 +2,10 @@
 // Created by Wenbo Tao on 1/17/17.
 //
 
-#include "../PolynomialJoiner.h"
+#include "../Joiner.h"
 using namespace std;
 
-unordered_set<string> PolynomialJoiner::buildOriginalSigs(int x)
+unordered_set<string> Joiner::buildOriginalSigs(int x)
 {
 	int len = (int) tokens[x].size();
 	vector<pair<int, string>> sort_array;
