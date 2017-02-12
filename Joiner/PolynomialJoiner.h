@@ -28,14 +28,20 @@ private:
 	//inverted list for applicable rules, speed up verification
 	vector<unordered_map<string, unordered_set<int>>> a_rule_inv_list;
 
+	//pair of applicable rules and starting points
+	vector<vector<pair<t_rule, int>>> app_rule_w_st;
+
 	//Sig builders
 	unordered_set<string> buildDpSigs(vector<string>, vector<t_rule>);
 	unordered_set<string> buildExpansionSigs(vector<string>, vector<t_rule>);
 	unordered_set<string> buildDpLargeTokenSigs(vector<string>, vector<t_rule>);
 
-	//SIGMOD 13 - similarity
+	//SIGMOD 13 verifier
 	double sigmod13_get_similarity(int, int);
 	double rule_gain(t_rule, umpsi, int);
+
+	//icde 08 verifier
+	double icde08_get_similarity(int, int);
 
 	//large token verifier
 	double large_token_get_similarity(int, int);

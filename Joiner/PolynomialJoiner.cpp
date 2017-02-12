@@ -49,6 +49,34 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 		}
 		a_rule_inv_list.push_back(inv_list);
 	}
+
+	//build app_rule_w_st
+	app_rule_w_st.clear();
+	for (int i = 0; i < n; i ++)
+	{
+		vector<pair<t_rule, int>> rule_w_st;
+		for (int rule_id : applicable_rule_ids[i])
+		{
+			t_rule rule = rules[rule_id];
+			for (auto st = 0; st < tokens[i].size(); st ++)
+			{
+				if (st + rule.first.size() > tokens[i].size())
+					break;
+				bool good = true;
+				for (auto j = 0; j < rule.first.size(); j ++)
+					if (tokens[i][st + j] != rule.first[j])
+					{
+						good = false;
+						break;
+					}
+				if (! good)
+					continue;
+				rule_w_st.emplace_back(rule, st);
+			}
+		}
+		app_rule_w_st.push_back(rule_w_st);
+	}
+
 	cerr << "Signature built." << endl;
 }
 
@@ -83,8 +111,9 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 	best_rule_count.clear();
 	for (auto cp : candidates)
 	{
-		double sim = greedy_get_similarity(cp.first, cp.second);
+		//double sim = greedy_get_similarity(cp.first, cp.second);
 		//double sim = sigmod13_get_similarity(cp.first, cp.second);
+		double sim = icde08_get_similarity(cp.first, cp.second);
 		//double sim = large_token_get_similarity(cp.first, cp.second);
 		if (sim >= Common::JAC_THRESHOLD)
 			ans.emplace_back(cells[cp.first], cells[cp.second]);
