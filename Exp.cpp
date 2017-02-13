@@ -60,3 +60,40 @@ void Exp::preprocess()
 		fout2.close();
 	}
 }
+
+void Exp::check()
+{
+	string file_name1 = "data/dept_names/sim_string_sim.txt";
+	string file_name2 = "data/dept_names/sim_string_jacct.txt";
+	ifstream fin1(file_name1.c_str());
+	ifstream fin2(file_name2.c_str());
+	vector<pair<string, string>> p1, p2;
+	string s1, s2, b;
+
+	while (getline(fin1, s1))
+	{
+		getline(fin1, s2);
+		getline(fin1, b);
+		if (s1 > s2)
+			swap(s1, s2);
+		p1.emplace_back(s1, s2);
+	}
+	while (getline(fin2, s1))
+	{
+		getline(fin2, s2);
+		getline(fin2, b);
+		if (s1 > s2)
+			swap(s1, s2);
+		p2.emplace_back(s1, s2);
+	}
+
+	for (auto cp : p2)
+	{
+		bool contain = false;
+		for (auto cp2 : p1)
+			if (cp == cp2)
+				contain = true;
+		if (! contain)
+			cout << cp.first << endl << cp.second << endl << endl;
+	}
+}

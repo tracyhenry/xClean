@@ -14,6 +14,9 @@ public:
 	//preprocess the raw data
 	static void preprocess();
 
+	//check
+	static void check();
+
 };
 
 

@@ -17,5 +17,6 @@ int main()
 	cout << elapsedTime << "s." << endl;
 
 //	Exp::preprocess();
+//	Exp::check();
 	return 0;
 }

@@ -63,6 +63,7 @@ double PolynomialJoiner::greedy_directed_get_similarity(int x, int y)
 	while (true)
 	{
 		double max_rule_gain = -1;
+		int best_n_good = -1;
 		int best_rule_id = -1;
 		for (auto i = 0; i < good_rules.size(); i ++)
 			if (! rule_used[i])
@@ -98,8 +99,9 @@ double PolynomialJoiner::greedy_directed_get_similarity(int x, int y)
 						n_bad ++;
 				}
 				double rule_gain = n_good / (n_good + n_bad);
-				if (rule_gain > max_rule_gain)
-					max_rule_gain = rule_gain, best_rule_id = i;
+				if (rule_gain > max_rule_gain ||
+						rule_gain == max_rule_gain && n_good > best_n_good)
+					max_rule_gain = rule_gain, best_n_good = n_good, best_rule_id = i;
 			}
 
 		//no applicable rules
