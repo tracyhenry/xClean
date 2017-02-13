@@ -8,9 +8,10 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 	: Joiner(r, s, w)
 {
 	//build t_signatures
+	struct timeval t1, t2;
+	gettimeofday(&t1, NULL);
 	t_sigs.clear();
 	e_sigs.clear();
-	t_large_sigs.clear();
 	for (int i = 0; i < n; i ++)
 	{
 		//construct a different set of applicable rules
@@ -26,10 +27,15 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 			applicable_rules.push_back(make_pair(t, t));
 		}
 
-		t_sigs.push_back(buildDpSigs(tokens[i], applicable_rules));
-//		e_sigs.push_back(buildExpansionSigs(tokens[i], applicable_rules));
-		t_large_sigs.push_back(buildDpLargeTokenSigs(tokens[i], applicable_rules));
+		if (Common::MEASURE == 0)
+			t_sigs.push_back(buildDpSigs(tokens[i], applicable_rules));
+		else
+			e_sigs.push_back(buildExpansionSigs(tokens[i], applicable_rules));
+
 	}
+	gettimeofday(&t2, NULL);
+	double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;
+	cout << endl << "Signature generation took : " << elapsedTime << "s." << endl << endl;
 
 	//build a_rule_inv_list
 	a_rule_inv_list.clear();
@@ -88,14 +94,18 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 	//build inverted lists
 	unordered_map<string, vector<int>> inv_list;
 	for (int i = 0; i < n; i ++)
-		for (string t : t_sigs[i])
+	{
+		unordered_set<string> &sig_set = (Common::MEASURE == 0 ? t_sigs[i] : e_sigs[i]);
+		for (string t : sig_set)
 			inv_list[t].push_back(i);
+	}
 
 	//generate candidates
 	for (int i = 0; i < n; i ++)
 	{
 		unordered_set<int> cur_set;
-		for (string t : o_sigs[i])
+		unordered_set<string> &sig_set = (Common::MEASURE == 0 ? o_sigs[i] : e_sigs[i]);
+		for (string t : sig_set)
 			for (int v : inv_list[t])
 				if (v != i)
 					cur_set.insert(v);
@@ -105,19 +115,27 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 			candidates.insert(cur_cp);
 		}
 	}
-	cout << candidates.size() << endl;
+	cout << "Number of candidate string pairs : " << candidates.size() << endl;
 
 	//calculate similarity for candidate pairs
+	struct timeval t1, t2;
+	gettimeofday(&t1, NULL);
 	best_rule_count.clear();
 	for (auto cp : candidates)
 	{
-		double sim = greedy_get_similarity(cp.first, cp.second);
-		//double sim = sigmod13_get_similarity(cp.first, cp.second);
+		double sim;
+		if (Common::MEASURE == 0)
+			sim = greedy_get_similarity(cp.first, cp.second);
+		else
+			sim = sigmod13_get_similarity(cp.first, cp.second);
 		//double sim = icde08_get_similarity(cp.first, cp.second);
 		//double sim = large_token_get_similarity(cp.first, cp.second);
 		if (sim >= Common::JAC_THRESHOLD)
 			ans.emplace_back(cells[cp.first], cells[cp.second]);
 	}
+	gettimeofday(&t2, NULL);
+	double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;
+	cout << endl << "Candidate verification took : " << elapsedTime << "s." << endl << endl;
 
 	//sort the rules
 	vector<pair<int, t_rule>> sort_array;

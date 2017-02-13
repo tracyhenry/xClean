@@ -100,7 +100,7 @@ double PolynomialJoiner::greedy_directed_get_similarity(int x, int y)
 				}
 				double rule_gain = n_good / (n_good + n_bad);
 				if (rule_gain > max_rule_gain ||
-						rule_gain == max_rule_gain && n_good > best_n_good)
+						(rule_gain == max_rule_gain && n_good > best_n_good))
 					max_rule_gain = rule_gain, best_n_good = n_good, best_rule_id = i;
 			}
 

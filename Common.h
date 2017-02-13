@@ -80,12 +80,15 @@ public:
 	//parameters
 	static double JAC_THRESHOLD;
 	static double VLDB09_JAC_THRESHOLD;
+	static bool ENABLE_DELTA;
+	static int DICTIONARY;		//0 -- lcs, 1 -- vldb09
+	static int MEASURE;			//0 -- sim, 1 -- sigmod13, 2 -- jaccard
+
+	static int DELTA_ABBR_LEN;
 	static int LHS_SIZE_LIM;
 	static int BAD_THRESHOLD;
 	static int LHS_FREQ_THRESHOLD;
 	static int APPLICABLE_THRESHOLD;
-	static int DELTA_ABBR_LEN;
-	static bool ENABLE_DELTA;
 };
 
 
