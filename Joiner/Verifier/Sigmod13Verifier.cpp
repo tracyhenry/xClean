@@ -63,7 +63,6 @@ double PolynomialJoiner::sigmod13_get_similarity(int x, int y)
 	for (auto cp : cy)
 		dy.insert(cp.first);
 
-	vector<t_rule> best_rules;
 	while (dx.size() || dy.size())
 	{
 		double max_rg = 0;
@@ -94,9 +93,6 @@ double PolynomialJoiner::sigmod13_get_similarity(int x, int y)
 			else
 				sy[t] ++;
 
-		//add count
-		best_rules.push_back(best_rule);
-
 		//remove best rule
 		if (i == 1)
 			dx.erase(best_rule);
@@ -104,12 +100,7 @@ double PolynomialJoiner::sigmod13_get_similarity(int x, int y)
 			dy.erase(best_rule);
 	}
 
-	double sim = max(Common::jaccard(sx, sy), Common::jaccard(token_maps[x], token_maps[y]));;
-	if (sim >= Common::JAC_THRESHOLD)
-		for (t_rule rule : best_rules)
-			best_rule_count[rule] ++;
-
-	return sim;
+	return max(Common::jaccard(sx, sy), Common::jaccard(token_maps[x], token_maps[y]));
 }
 
 double PolynomialJoiner::rule_gain(t_rule rule, umpsi token_map, int y)

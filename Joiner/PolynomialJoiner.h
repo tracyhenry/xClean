@@ -22,9 +22,6 @@ private:
 	//signatures
 	vector<unordered_set<string>> t_sigs, e_sigs, t_large_sigs;
 
-	//best rule counting
-	unordered_map<t_rule, int, rule_hash> best_rule_count;
-
 	//inverted list for applicable rules, speed up verification
 	vector<unordered_map<string, unordered_set<int>>> a_rule_inv_list;
 

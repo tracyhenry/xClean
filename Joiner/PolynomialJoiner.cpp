@@ -120,7 +120,6 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 	//calculate similarity for candidate pairs
 	struct timeval t1, t2;
 	gettimeofday(&t1, NULL);
-	best_rule_count.clear();
 	for (auto cp : candidates)
 	{
 		double sim;
@@ -137,15 +136,5 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 	double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;
 	cout << endl << "Candidate verification took : " << elapsedTime << "s." << endl << endl;
 
-	//sort the rules
-	vector<pair<int, t_rule>> sort_array;
-	for (auto cp : best_rule_count)
-		sort_array.emplace_back(cp.second, cp.first);
-	sort(sort_array.begin(), sort_array.end());
-	for (auto cp : sort_array)
-	{
-		Common::print_rule(cp.second);
-		cout << "\t" << cp.first << endl;
-	}
 	return ans;
 }
