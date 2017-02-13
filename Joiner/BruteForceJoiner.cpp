@@ -10,9 +10,9 @@ BruteForceJoiner::BruteForceJoiner(vector<t_rule> r, vector<string> s, vector<in
 {
 }
 
-vector<pair<string, string>> BruteForceJoiner::getJoinedStringPairs()
+vector<pair<double, pair<string, string>>> BruteForceJoiner::getJoinedStringPairs()
 {
-	vector<pair<string, string>> ans_pairs;
+	vector<pair<double, pair<string, string>>> ans_pairs;
 
 	//check
 	for (int i = 0; i < n; i ++)
@@ -78,7 +78,7 @@ vector<pair<string, string>> BruteForceJoiner::getJoinedStringPairs()
 				max_sim = max(max_sim, Common::jaccard(cur_map, token_maps[j]));
 			}
 			if (max_sim >= Common::JAC_THRESHOLD)
-				ans_pairs.emplace_back(cells[i], cells[j]);
+				ans_pairs.emplace_back(max_sim, make_pair(cells[i], cells[j]));
 		}
 
 	//return

@@ -16,7 +16,7 @@ public:
 	BruteForceJoiner(vector<t_rule>, vector<string>, vector<int>);
 
 	//overwrite the virtual method
-	vector<pair<string, string>> getJoinedStringPairs();
+	vector<pair<double, pair<string, string>>> getJoinedStringPairs();
 };
 
 

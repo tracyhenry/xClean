@@ -17,15 +17,15 @@ vector<t_rule> Vldb09::gen_rules()
 
 	//build example pairs
 	JaccardJoiner *jacJoiner = new JaccardJoiner(vector<t_rule>(), cells, weights, Common::VLDB09_JAC_THRESHOLD);
-	vector<pair<string, string>> examples = jacJoiner->getJoinedStringPairs();
+	vector<pair<double, pair<string, string>>> examples = jacJoiner->getJoinedStringPairs();
 	cout << "example size: " << examples.size() << endl;
 
 	//algorithm
 	unordered_map<t_rule, int, rule_hash> rule_freq;
 	for (auto cp : examples)
 	{
-		vector<string> tks1 = Common::get_tokens(cp.first);
-		vector<string> tks2 = Common::get_tokens(cp.second);
+		vector<string> tks1 = Common::get_tokens(cp.second.first);
+		vector<string> tks2 = Common::get_tokens(cp.second.second);
 		vector<bool> u1(tks1.size()), u2(tks2.size());
 		while (1)
 		{

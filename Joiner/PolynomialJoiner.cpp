@@ -86,9 +86,9 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<in
 	cerr << "Signature built." << endl;
 }
 
-vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
+vector<pair<double, pair<string, string>>> PolynomialJoiner::getJoinedStringPairs()
 {
-	vector<pair<string, string>> ans;
+	vector<pair<double, pair<string, string>>> ans;
 	unordered_set<pair<int, int>, pairii_hash> candidates;
 
 	//build inverted lists
@@ -130,7 +130,7 @@ vector<pair<string, string>> PolynomialJoiner::getJoinedStringPairs()
 		//double sim = icde08_get_similarity(cp.first, cp.second);
 		//double sim = large_token_get_similarity(cp.first, cp.second);
 		if (sim >= Common::JAC_THRESHOLD)
-			ans.emplace_back(cells[cp.first], cells[cp.second]);
+			ans.emplace_back(sim, make_pair(cells[cp.first], cells[cp.second]));
 	}
 	gettimeofday(&t2, NULL);
 	double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;

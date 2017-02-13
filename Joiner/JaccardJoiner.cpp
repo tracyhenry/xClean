@@ -11,7 +11,7 @@ JaccardJoiner::JaccardJoiner(vector<t_rule> r, vector<string> s, vector<int> w, 
 	this->threshold = threshold;
 }
 
-vector<pair<string, string>> JaccardJoiner::getJoinedStringPairs()
+vector<pair<double, pair<string, string>>> JaccardJoiner::getJoinedStringPairs()
 {
 	//build inverted lists
 	unordered_map<string, vector<int>> inv_list;
@@ -36,13 +36,14 @@ vector<pair<string, string>> JaccardJoiner::getJoinedStringPairs()
 	}
 
 	//verify
-	vector<pair<string, string>> ans;
+	vector<pair<double, pair<string, string>>> ans;
 	for (auto cp : candidates)
 	{
 		int x = cp.first;
 		int y = cp.second;
-		if (Common::jaccard(token_maps[x], token_maps[y]) >= threshold)
-			ans.emplace_back(cells[x], cells[y]);
+		double sim = Common::jaccard(token_maps[x], token_maps[y]);
+		if (sim >= threshold)
+			ans.emplace_back(sim, make_pair(cells[x], cells[y]));
 	}
 	return ans;
 }

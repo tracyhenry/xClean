@@ -15,7 +15,7 @@ public:
 	Joiner(vector<t_rule>, vector<string>, vector<int>);
 
 	//join
-	virtual vector<pair<string, string>> getJoinedStringPairs() = 0;
+	virtual vector<pair<double, pair<string, string>>> getJoinedStringPairs() = 0;
 
 protected:
 	//set of rules

@@ -66,11 +66,11 @@ Solver::Solver(string string_file_name, string weights_file_name)
 	//joins
 	cerr << "Joining......" << endl;
 	Joiner *joiner = new PolynomialJoiner(rules, cells, weights);
-	vector<pair<string, string>> joinedStringPairs = joiner->getJoinedStringPairs();
+	vector<pair<double, pair<string, string>>> joinedStringPairs = joiner->getJoinedStringPairs();
 
 	//output
 	cout << joinedStringPairs.size() << endl;
 	sort(joinedStringPairs.begin(), joinedStringPairs.end());
 	for (auto cp : joinedStringPairs)
-		cout << cp.first << endl << cp.second << endl << endl;
+		cout << cp.second.first << endl << cp.second.second << endl << cp.first << endl << endl;
 }

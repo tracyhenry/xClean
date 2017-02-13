@@ -15,7 +15,7 @@ public:
 	JaccardJoiner(vector<t_rule>, vector<string>, vector<int>, double);
 
 	//overwrite the virtual method
-	vector<pair<string, string>> getJoinedStringPairs();
+	vector<pair<double, pair<string, string>>> getJoinedStringPairs();
 
 private:
 	//jaccard threshold
