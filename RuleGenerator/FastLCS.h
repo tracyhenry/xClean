@@ -14,7 +14,7 @@ class FastLCS : public RuleGenerator
 {
 public:
 	//constructor
-	FastLCS(vector<string>, vector<int>);
+	FastLCS(vector<string>);
 
 	//overwrite the virtual method
 	vector<t_rule> gen_rules();

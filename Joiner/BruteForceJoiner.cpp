@@ -5,8 +5,8 @@
 #include "BruteForceJoiner.h"
 using namespace std;
 
-BruteForceJoiner::BruteForceJoiner(vector<t_rule> r, vector<string> s, vector<int> w)
-	: Joiner(r, s, w)
+BruteForceJoiner::BruteForceJoiner(vector<t_rule> r, vector<string> s)
+	: Joiner(r, s)
 {
 }
 

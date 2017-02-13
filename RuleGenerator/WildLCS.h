@@ -12,7 +12,7 @@ class WildLCS : public RuleGenerator
 {
 public:
 	//constructor
-	WildLCS(vector<string>, vector<int>);
+	WildLCS(vector<string>);
 
 	//overwrite the virtual method
 	vector<t_rule> gen_rules();

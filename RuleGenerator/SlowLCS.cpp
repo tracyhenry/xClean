@@ -4,8 +4,8 @@
 
 #include "SlowLCS.h"
 
-SlowLCS::SlowLCS(vector<string> s, vector<int> w)
-	: RuleGenerator(s, w)
+SlowLCS::SlowLCS(vector<string> s)
+	: RuleGenerator(s)
 {
 	//count occurrences
 	occurrence.clear();

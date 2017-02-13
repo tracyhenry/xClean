@@ -6,14 +6,14 @@
 #include "FastLCS.h"
 using namespace std;
 
-NLPRule::NLPRule(vector<string> s, vector<int> w) :
-	RuleGenerator(s, w)
+NLPRule::NLPRule(vector<string> s) :
+	RuleGenerator(s)
 {
 }
 
 vector<t_rule> NLPRule::gen_rules()
 {
-	RuleGenerator *wildLCS = new FastLCS(cells, weights);
+	RuleGenerator *wildLCS = new FastLCS(cells);
 	vector<t_rule> initial_rule_set = wildLCS->gen_rules();
 	delete wildLCS;
 

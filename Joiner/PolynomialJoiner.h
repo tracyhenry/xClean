@@ -13,7 +13,7 @@ class PolynomialJoiner : public Joiner
 public:
 	//constructors
 	PolynomialJoiner() {}
-	PolynomialJoiner(vector<t_rule>, vector<string>, vector<int>);
+	PolynomialJoiner(vector<t_rule>, vector<string>);
 
 	//overwrite the virtual method
 	vector<pair<double, pair<string, string>>> getJoinedStringPairs();

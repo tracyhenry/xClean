@@ -14,7 +14,7 @@
 #include <fstream>
 using namespace std;
 
-Solver::Solver(string string_file_name, string weights_file_name)
+Solver::Solver(string string_file_name)
 {
 	//read string from file
 	ifstream fin1(string_file_name.c_str());
@@ -24,16 +24,10 @@ Solver::Solver(string string_file_name, string weights_file_name)
 	fin1.close();
 	n = cells.size();
 
-	//read weights from file
-	ifstream fin2(weights_file_name.c_str());
-	weights.resize(n);
-	for (int i = 0; i < n; i ++)
-		fin2 >> weights[i];
-
 	//generate rules
 	cerr << "Generating rules......" << endl;
-	RuleGenerator *ruleGenerator = new BadBoy(cells, weights);
-//	RuleGenerator *ruleGenerator = new Vldb09(cells, weights);
+	RuleGenerator *ruleGenerator = new BadBoy(cells);
+//	RuleGenerator *ruleGenerator = new Vldb09(cells);
 	vector<t_rule> rules = ruleGenerator->gen_rules();
 	cout << "# Rule: " << rules.size() * 2 << endl;
 
@@ -60,12 +54,9 @@ Solver::Solver(string string_file_name, string weights_file_name)
 	for (auto i = 0; i < min((int) sort_array.size(), 10); i ++)
 		cout << sort_array[i].second<< " : " << sort_array[i].first << endl;
 
-
-//	cout << rules.size() << endl;
-
 	//joins
 	cerr << "Joining......" << endl;
-	Joiner *joiner = new PolynomialJoiner(rules, cells, weights);
+	Joiner *joiner = new PolynomialJoiner(rules, cells);
 	vector<pair<double, pair<string, string>>> joinedStringPairs = joiner->getJoinedStringPairs();
 
 	//output

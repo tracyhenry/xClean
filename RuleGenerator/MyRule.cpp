@@ -7,14 +7,14 @@
 
 using namespace std;
 
-MyRule::MyRule(vector<string> s, vector<int> w)
-	: RuleGenerator(s, w)
+MyRule::MyRule(vector<string> s)
+	: RuleGenerator(s)
 {
 }
 
 vector<t_rule> MyRule::gen_rules()
 {
-	RuleGenerator *fastLCS = new FastLCS(cells, weights);
+	RuleGenerator *fastLCS = new FastLCS(cells);
 	vector<t_rule> initial_rule_set = fastLCS->gen_rules();
 	delete fastLCS;
 

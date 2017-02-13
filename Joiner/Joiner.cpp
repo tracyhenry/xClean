@@ -5,8 +5,8 @@
 #include "Joiner.h"
 using namespace std;
 
-Joiner::Joiner(vector<t_rule> r, vector<string> s, vector<int> w)
-		: rules(r), cells(s), weights(w)
+Joiner::Joiner(vector<t_rule> r, vector<string> s)
+		: rules(r), cells(s)
 {
 	this->r = (int) r.size();
 	this->n = (int) s.size();
@@ -142,7 +142,7 @@ void Joiner::gen_global_ranking()
 				string t = "";
 				for (int k = st; k <= en; k ++)
 					t += tokens[i][k] + (k == en ? "" :  " ");
-				g_token_map[t] += weights[i];
+				g_token_map[t] ++;
 			}
 
 	vector<pair<int, string>> sort_array;

@@ -5,8 +5,8 @@
 #include "WildLCS.h"
 using namespace std;
 
-WildLCS::WildLCS(vector<string> s, vector<int> w)
-		: RuleGenerator(s, w)
+WildLCS::WildLCS(vector<string> s)
+		: RuleGenerator(s)
 {
 	//build trie
 	trie.clear(), trie.resize(1);

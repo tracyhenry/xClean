@@ -4,10 +4,9 @@
 
 #include "RuleGenerator.h"
 
-RuleGenerator::RuleGenerator(vector<string> s, vector<int> w)
+RuleGenerator::RuleGenerator(vector<string> s)
 {
 	cells = s;
-	weights = w;
 	n = cells.size();
 
 	//build token sets and token maps

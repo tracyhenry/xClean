@@ -6,14 +6,14 @@
 #include "MyRule.h"
 using namespace std;
 
-BadBoy::BadBoy(vector<string> s, vector<int> w)
-	:RuleGenerator(s, w)
+BadBoy::BadBoy(vector<string> s)
+	:RuleGenerator(s)
 {
 }
 
 vector<t_rule> BadBoy::gen_rules()
 {
-	RuleGenerator *simpleNLP = new MyRule(cells, weights);
+	RuleGenerator *simpleNLP = new MyRule(cells);
 	vector<t_rule> initial_rule_set = simpleNLP->gen_rules();
 	delete simpleNLP;
 

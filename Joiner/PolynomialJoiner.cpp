@@ -4,8 +4,8 @@
 
 #include "PolynomialJoiner.h"
 
-PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s, vector<int> w)
-	: Joiner(r, s, w)
+PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s)
+	: Joiner(r, s)
 {
 	//build t_signatures
 	struct timeval t1, t2;

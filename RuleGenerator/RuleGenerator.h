@@ -13,7 +13,7 @@ class RuleGenerator
 public:
 	//constructor
 	RuleGenerator() {}
-	RuleGenerator(vector<string>, vector<int>);
+	RuleGenerator(vector<string>);
 
 	//abstract method for generating rules
 	virtual vector<t_rule> gen_rules() = 0;
@@ -24,9 +24,6 @@ public:
 protected:
 	//cells
 	vector<string> cells;
-
-	//weights of cells
-	vector<int> weights;
 
 	//number of cells
 	int n;

@@ -12,7 +12,7 @@ class SlowLCS : public RuleGenerator
 {
 public:
 	//constructor
-	SlowLCS(vector<string>, vector<int>);
+	SlowLCS(vector<string>);
 
 	//overwrite the virtual method
 	vector<t_rule> gen_rules();

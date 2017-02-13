@@ -12,7 +12,7 @@ class Vldb09 : public RuleGenerator
 {
 public:
 	//constructor
-	Vldb09(vector<string>, vector<int>);
+	Vldb09(vector<string>);
 
 	//overwrite virtual method
 	vector<t_rule> gen_rules();

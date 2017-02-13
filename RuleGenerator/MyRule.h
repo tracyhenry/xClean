@@ -14,7 +14,7 @@ class MyRule: public RuleGenerator
 {
 public:
 	//constructor
-	MyRule(vector<string>, vector<int>);
+	MyRule(vector<string>);
 
 	//overwrite virtual methods
 	vector<t_rule> gen_rules();

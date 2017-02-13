@@ -13,14 +13,11 @@ using namespace std;
 class Solver
 {
 public:
-	Solver(string, string);
+	Solver(string);
 
 protected:
 	//strings
 	vector<string> cells;
-
-	//weights
-	vector<int> weights;
 
 	//number of cells
 	int n;

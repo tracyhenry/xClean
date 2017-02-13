@@ -5,8 +5,8 @@
 #include "JaccardJoiner.h"
 using namespace std;
 
-JaccardJoiner::JaccardJoiner(vector<t_rule> r, vector<string> s, vector<int> w, double threshold)
-	: Joiner(r, s, w)
+JaccardJoiner::JaccardJoiner(vector<t_rule> r, vector<string> s, double threshold)
+	: Joiner(r, s)
 {
 	this->threshold = threshold;
 }

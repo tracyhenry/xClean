@@ -13,7 +13,7 @@ class BruteForceJoiner : public Joiner
 public:
 	//constructors
 	BruteForceJoiner() {}
-	BruteForceJoiner(vector<t_rule>, vector<string>, vector<int>);
+	BruteForceJoiner(vector<t_rule>, vector<string>);
 
 	//overwrite the virtual method
 	vector<pair<double, pair<string, string>>> getJoinedStringPairs();

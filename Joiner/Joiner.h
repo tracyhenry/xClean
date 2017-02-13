@@ -12,7 +12,7 @@ class Joiner
 public:
 	//constructors
 	Joiner() {}
-	Joiner(vector<t_rule>, vector<string>, vector<int>);
+	Joiner(vector<t_rule>, vector<string>);
 
 	//join
 	virtual vector<pair<double, pair<string, string>>> getJoinedStringPairs() = 0;
@@ -24,9 +24,6 @@ protected:
 
 	//cells
 	vector<string> cells;
-
-	//weights of cells
-	vector<int> weights;
 
 	//number of cells
 	int n;

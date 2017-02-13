@@ -4,8 +4,8 @@
 
 #include "FastLCS.h"
 
-FastLCS::FastLCS(vector<string> s, vector<int> w)
-		: RuleGenerator(s, w)
+FastLCS::FastLCS(vector<string> s)
+		: RuleGenerator(s)
 {
 	//build trie
 	trie.clear(), trie.resize(1);

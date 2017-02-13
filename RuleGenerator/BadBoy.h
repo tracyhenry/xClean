@@ -13,7 +13,7 @@ class BadBoy : public RuleGenerator
 {
 public:
 	//Constructor
-	BadBoy(vector<string>, vector<int>);
+	BadBoy(vector<string>);
 
 	//overwrite virtual methods
 	vector<t_rule> gen_rules();

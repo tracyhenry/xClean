@@ -6,8 +6,8 @@
 #include "../Joiner/JaccardJoiner.h"
 using namespace std;
 
-Vldb09::Vldb09(vector<string> s, vector<int> w)
-	: RuleGenerator(s, w)
+Vldb09::Vldb09(vector<string> s)
+	: RuleGenerator(s)
 {
 }
 
@@ -16,7 +16,7 @@ vector<t_rule> Vldb09::gen_rules()
 	vector<t_rule> rules;
 
 	//build example pairs
-	JaccardJoiner *jacJoiner = new JaccardJoiner(vector<t_rule>(), cells, weights, Common::VLDB09_JAC_THRESHOLD);
+	JaccardJoiner *jacJoiner = new JaccardJoiner(vector<t_rule>(), cells, Common::VLDB09_JAC_THRESHOLD);
 	vector<pair<double, pair<string, string>>> examples = jacJoiner->getJoinedStringPairs();
 	cout << "example size: " << examples.size() << endl;
 

@@ -12,7 +12,7 @@ class JaccardJoiner : public Joiner
 {
 public:
 	//constructor
-	JaccardJoiner(vector<t_rule>, vector<string>, vector<int>, double);
+	JaccardJoiner(vector<t_rule>, vector<string>, double);
 
 	//overwrite the virtual method
 	vector<pair<double, pair<string, string>>> getJoinedStringPairs();

@@ -13,7 +13,7 @@ class NLPRule : public RuleGenerator
 {
 public:
 	//constructor
-	NLPRule(vector<string>, vector<int>);
+	NLPRule(vector<string>);
 
 	//overwrite virtual method
 	vector<t_rule> gen_rules();
