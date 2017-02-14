@@ -72,6 +72,7 @@ void Exp::check()
 	{
 		getline(fin1, s2);
 		getline(fin1, b);
+		getline(fin1, b);
 		if (s1 > s2)
 			swap(s1, s2);
 		p1.emplace_back(s1, s2);
@@ -79,9 +80,48 @@ void Exp::check()
 
 	srand(time(0));
 	cout << p1.size() << endl;
-	for (auto i = 0; i < 20; i ++)
+	for (auto i = 0; i < 50; i ++)
 	{
 		int x = rand() % p1.size();
 		cout << p1[x].first << endl << p1[x].second << endl << endl;
+	}
+}
+
+void Exp::check2()
+{
+	string file_name1 = "data/dept_names/sim_string_sim.txt";
+	string file_name2 = "data/dept_names/sim_string_sigmod13.txt";
+	ifstream fin1(file_name1.c_str());
+	ifstream fin2(file_name2.c_str());
+	vector<pair<string, string>> p1, p2;
+	string s1, s2, b;
+
+	while (getline(fin1, s1))
+	{
+		getline(fin1, s2);
+		getline(fin1, b);
+		getline(fin1, b);
+		if (s1 > s2)
+			swap(s1, s2);
+		p1.emplace_back(s1, s2);
+	}
+	while (getline(fin2, s1))
+	{
+		getline(fin2, s2);
+		getline(fin2, b);
+		getline(fin2, b);
+		if (s1 > s2)
+			swap(s1, s2);
+		p2.emplace_back(s1, s2);
+	}
+
+	for (auto cp : p2)
+	{
+		bool contain = false;
+		for (auto cp2 : p1)
+			if (cp == cp2)
+				contain = true;
+		if (! contain)
+			cout << cp.first << endl << cp.second << endl << endl;
 	}
 }

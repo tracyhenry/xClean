@@ -16,6 +16,7 @@ public:
 
 	//check
 	static void check();
+	static void check2();
 
 };
 

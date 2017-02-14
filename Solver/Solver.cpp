@@ -31,9 +31,6 @@ Solver::Solver(string string_file_name)
 	vector<t_rule> rules = ruleGenerator->gen_rules();
 	cout << "# Rule: " << rules.size() * 2 << endl;
 
-//	for (t_rule rule : rules)
-// 		Common::print_rule(rule);
-
 	//add reverse rules
 	for (int i = 0, n = (int) rules.size(); i < n; i ++)
 		rules.emplace_back(make_pair(rules[i].second, rules[i].first));
