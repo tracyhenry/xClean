@@ -6,11 +6,12 @@ using namespace std;
 
 int main()
 {
-	Solver *solver = new Solver("data/dept_names/dept_names.txt");
+//	Solver *solver = new Solver("data/dept_names/dept_names.txt");
 //	Solver *solver = new Solver("data/course_names/course_names.txt");
 //	Solver *solver = new Solver("data/area_names/area_names.txt");
 
 //	Exp::preprocess();
 //	Exp::check();
+	Exp::varyDictionary();
 	return 0;
 }

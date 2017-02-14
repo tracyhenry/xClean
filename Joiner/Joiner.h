@@ -17,6 +17,10 @@ public:
 	//join
 	virtual vector<pair<double, pair<string, string>>> getJoinedStringPairs() = 0;
 
+	//virtual destructor
+	virtual ~Joiner() = default;
+
+
 protected:
 	//set of rules
 	vector<t_rule> rules;

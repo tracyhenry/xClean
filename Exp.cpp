@@ -3,7 +3,14 @@
 //
 
 #include "Exp.h"
+#include "Joiner/Joiner.h"
+#include "Joiner/PolynomialJoiner.h"
+#include "Solver/Solver.h"
 using namespace std;
+
+unordered_set<string> Exp::file_names = unordered_set<string>({"data/dept_names/dept_names.txt",
+															   "data/course_names/course_names.txt",
+															   "data/area_names/area_names.txt"});
 
 void Exp::preprocess()
 {
@@ -123,5 +130,78 @@ void Exp::check2()
 				contain = true;
 		if (! contain)
 			cout << cp.first << endl << cp.second << endl << endl;
+	}
+}
+
+void Exp::varyDictionary()
+{
+	Common::set_default();
+	Common::JAC_THRESHOLD = 0.65;
+
+	Solver *solver;
+	//vldb 09
+	for (auto i = 0; i < 30; i ++)
+		cout << endl;
+	cout << "--------------------------" << endl;
+	cout << "VLDB09 dictionary, jac = 0.5" << endl;
+	cout << "--------------------------" << endl << endl;
+	Common::DICTIONARY = 1;
+	Common::VLDB09_JAC_THRESHOLD = 0.5;
+	for (string f : file_names)
+	{
+		for (auto i = 0; i < 10; i ++)
+			cout << endl;
+		cout << f << " : " << endl << endl;
+		solver = new Solver(f);
+		delete solver;
+	}
+
+	for (auto i = 0; i < 30; i ++)
+		cout << endl;
+	cout << "--------------------------" << endl;
+	cout << "VLDB09 dictionary, jac = 0.8" << endl;
+	cout << "--------------------------" << endl << endl;
+	Common::DICTIONARY = 1;
+	Common::VLDB09_JAC_THRESHOLD = 0.8;
+	for (string f : file_names)
+	{
+		for (auto i = 0; i < 10; i ++)
+			cout << endl;
+		cout << f << " : " << endl << endl;
+		solver = new Solver(f);
+		delete solver;
+	}
+
+	//lcs
+	for (auto i = 0; i < 30; i ++)
+		cout << endl;
+	cout << "--------------------------" << endl;
+	cout << "LCS dictionary, delta = 0" << endl;
+	cout << "--------------------------" << endl << endl;
+	Common::DICTIONARY = 0;
+	Common::ENABLE_DELTA = false;
+	for (string f : file_names)
+	{
+		for (auto i = 0; i < 10; i ++)
+			cout << endl;
+		cout << f << " : " << endl << endl;
+		solver = new Solver(f);
+		delete solver;
+	}
+
+	for (auto i = 0; i < 30; i ++)
+		cout << endl;
+	cout << "--------------------------" << endl;
+	cout << "LCS dictionary, delta = 1" << endl;
+	cout << "--------------------------" << endl << endl;
+	Common::DICTIONARY = 0;
+	Common::ENABLE_DELTA = true;
+	for (string f : file_names)
+	{
+		for (auto i = 0; i < 10; i ++)
+			cout << endl;
+		cout << f << " : " << endl << endl;
+		solver = new Solver(f);
+		delete solver;
 	}
 }

@@ -11,12 +11,19 @@ using namespace std;
 class Exp
 {
 public:
+	//datasets
+	static unordered_set<string> file_names;
+
 	//preprocess the raw data
 	static void preprocess();
 
 	//check
 	static void check();
 	static void check2();
+
+	//effectiveness
+	static void varyDictionary();
+	static void varyMeasure();
 
 };
 

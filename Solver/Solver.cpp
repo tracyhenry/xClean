@@ -25,11 +25,19 @@ Solver::Solver(string string_file_name)
 	n = cells.size();
 
 	//generate rules
+	struct timeval t1, t2;
+	gettimeofday(&t1, NULL);
 	cerr << "Generating rules......" << endl;
-	RuleGenerator *ruleGenerator = new BadBoy(cells);
-//	RuleGenerator *ruleGenerator = new Vldb09(cells);
+	RuleGenerator *ruleGenerator;
+	if (Common::DICTIONARY == 0)
+		ruleGenerator = new BadBoy(cells);
+	else
+		ruleGenerator = new Vldb09(cells);
 	vector<t_rule> rules = ruleGenerator->gen_rules();
 	cout << "# Rule: " << rules.size() * 2 << endl;
+	gettimeofday(&t2, NULL);
+	double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;
+	cout << endl << "Dictionary generation took : " << elapsedTime << "s." << endl << endl;
 
 	//add reverse rules
 	for (int i = 0, n = (int) rules.size(); i < n; i ++)
@@ -61,4 +69,7 @@ Solver::Solver(string string_file_name)
 	sort(joinedStringPairs.begin(), joinedStringPairs.end());
 	for (auto cp : joinedStringPairs)
 		cout << cp.second.first << endl << cp.second.second << endl << cp.first << endl << endl;
+
+	delete ruleGenerator;
+	delete joiner;
 }
