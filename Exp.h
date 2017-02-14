@@ -5,6 +5,8 @@
 #ifndef XCLEAN_EXP_H
 #define XCLEAN_EXP_H
 #include "Common.h"
+#include "Solver/Solver.h"
+
 using namespace std;
 
 
@@ -25,6 +27,8 @@ public:
 	static void varyDictionary();
 	static void varyMeasure();
 
+	//run solver
+	static void runSolver();
 };
 
 
