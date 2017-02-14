@@ -139,8 +139,6 @@ void Exp::runSolver()
 {
 	for (string f : file_names)
 	{
-		if (f != "data/area_names/area_names.txt")
-			continue;
 		for (auto i = 0; i < 10; i ++)
 			cout << endl;
 		cout << f << " : " << endl << endl;
