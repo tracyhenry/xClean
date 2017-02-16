@@ -13,21 +13,24 @@ using namespace std;
 class Exp
 {
 public:
-	//datasets
+	// datasets
 	static unordered_set<string> file_names;
 
-	//preprocess the raw data
+	// preprocess the raw data
 	static void preprocess();
 
-	//check
+	// check
 	static void check();
 	static void check2();
 
-	//effectiveness
+	// effectiveness
 	static void varyDictionary();
 	static void varyMeasure();
 
-	//run solver
+	// #candidate & signature generation time
+	static void varyThreshold();
+
+	// run solver
 	static void runSolver();
 };
 

@@ -117,6 +117,9 @@ vector<pair<double, pair<string, string>>> PolynomialJoiner::getJoinedStringPair
 	}
 	cout << "Number of candidate string pairs : " << candidates.size() << endl;
 
+	if (! Common::DO_JOIN)
+		return ans;
+
 	//calculate similarity for candidate pairs
 	struct timeval t1, t2;
 	gettimeofday(&t1, NULL);

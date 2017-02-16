@@ -7,6 +7,7 @@
 #include "Joiner/PolynomialJoiner.h"
 #include "Solver/Solver.h"
 #include "Joiner/JaccardJoiner.h"
+#include "RuleGenerator/BadBoy.h"
 
 using namespace std;
 
@@ -226,6 +227,10 @@ void Exp::varyMeasure()
 	cout << "--------------------------" << endl;
 	for (string f : file_names)
 	{
+		for (auto i = 0; i < 10; i ++)
+			cout << endl;
+		cout << f << " : " << endl << endl;
+
 		vector<string> cells;
 		ifstream fin1(f.c_str());
 		for (string cell; getline(fin1, cell); )
@@ -239,5 +244,77 @@ void Exp::varyMeasure()
 		for (auto cp : joinedStringPairs)
 			cout << cp.second.first << endl << cp.second.second << endl << cp.first << endl << endl;
 		delete jacJoiner;
+	}
+}
+
+void Exp::varyThreshold()
+{
+	Common::set_default();
+	Common::DICTIONARY = 0;
+	Common::ENABLE_DELTA = false;
+	Common::DO_JOIN = false;
+
+	//vary threshold
+	for (Common::JAC_THRESHOLD = 0.7; Common::JAC_THRESHOLD <= 0.9; Common::JAC_THRESHOLD += 0.1)
+	{
+		//sigmod 13
+		for (auto i = 0; i < 30; i ++)
+			cout << endl;
+		Common::MEASURE = 1;
+		cout << "--------------------------" << endl;
+		cout << "SIGMOD 13, JAC_THRESHOLD = " << Common::JAC_THRESHOLD << " :" << endl;
+		cout << "--------------------------" << endl;
+
+		//vary datasets
+		for (string f : file_names)
+		{
+			for (auto i = 0; i < 10; i ++)
+				cout << endl;
+			cout << f << " : " << endl << endl;
+
+			vector<string> cells;
+			ifstream fin1(f.c_str());
+			for (string cell; getline(fin1, cell); )
+				cells.push_back(cell);
+			fin1.close();
+
+			RuleGenerator *ruleGenerator = new BadBoy(cells);
+			vector<t_rule> rules = ruleGenerator->gen_rules();
+
+			Joiner *joiner = new PolynomialJoiner(rules, cells);
+			joiner->getJoinedStringPairs();
+			delete ruleGenerator;
+			delete joiner;
+		}
+
+		//our sim measure
+		for (auto i = 0; i < 30; i ++)
+			cout << endl;
+		Common::MEASURE = 0;
+		cout << "--------------------------" << endl;
+		cout << "Sim, JAC_THRESHOLD = " << Common::JAC_THRESHOLD << " :" << endl;
+		cout << "--------------------------" << endl;
+
+		//vary datasets
+		for (string f : file_names)
+		{
+			for (auto i = 0; i < 10; i ++)
+				cout << endl;
+			cout << f << " : " << endl << endl;
+
+			vector<string> cells;
+			ifstream fin1(f.c_str());
+			for (string cell; getline(fin1, cell); )
+				cells.push_back(cell);
+			fin1.close();
+
+			RuleGenerator *ruleGenerator = new BadBoy(cells);
+			vector<t_rule> rules = ruleGenerator->gen_rules();
+
+			Joiner *joiner = new PolynomialJoiner(rules, cells);
+			joiner->getJoinedStringPairs();
+			delete ruleGenerator;
+			delete joiner;
+		}
 	}
 }

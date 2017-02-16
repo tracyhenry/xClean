@@ -81,6 +81,7 @@ public:
 	static double JAC_THRESHOLD;
 	static double VLDB09_JAC_THRESHOLD;
 	static bool ENABLE_DELTA;
+	static bool DO_JOIN;
 	static int DICTIONARY;		//0 -- lcs, 1 -- vldb09
 	static int MEASURE;			//0 -- sim, 1 -- sigmod13, 2 -- jaccard
 

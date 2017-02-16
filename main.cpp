@@ -12,6 +12,7 @@ int main()
 
 //	Exp::preprocess();
 //	Exp::check();
-	Exp::varyDictionary();
+//	Exp::varyDictionary();
+	Exp::varyThreshold();
 	return 0;
 }

@@ -8,6 +8,7 @@ using namespace std;
 double Common::JAC_THRESHOLD = 0.8;
 double Common::VLDB09_JAC_THRESHOLD = 0.6;
 bool Common::ENABLE_DELTA = false;
+bool Common::DO_JOIN = true;
 int Common::DICTIONARY = 0;
 int Common::MEASURE = 0;
 int Common::DELTA_ABBR_LEN = 1;
@@ -117,6 +118,7 @@ void Common::set_default()
 	JAC_THRESHOLD = 0.8;
 	VLDB09_JAC_THRESHOLD = 0.6;
 	ENABLE_DELTA = false;
+	DO_JOIN = true;
 	DICTIONARY = 0;
 	MEASURE = 0;
 	DELTA_ABBR_LEN = 1;
