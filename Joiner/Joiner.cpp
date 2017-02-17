@@ -120,12 +120,14 @@ void Joiner::gen_expansion_set()
 	expansion_set.clear();
 	for (int i = 0; i < n; i ++)
 	{
-		umpsi cur_expansion_set = token_maps[i];
+		unordered_set<string> cur_expansion_set;
+		for (auto cp : token_maps[i])
+			cur_expansion_set.insert(cp.first);
 		for (int rule_id : applicable_rule_ids[i])
 		{
 			t_rule rule = rules[rule_id];
 			for (string t : rule.second)
-				cur_expansion_set[t] ++;
+				cur_expansion_set.insert(t);
 		}
 		expansion_set.push_back(cur_expansion_set);
 	}

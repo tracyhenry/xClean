@@ -44,7 +44,7 @@ protected:
 	vector<vector<int>> applicable_rule_ids;
 
 	//expansion sets
-	vector<umpsi> expansion_set;
+	vector<unordered_set<string>> expansion_set;
 
 	//global token rank list
 	vector<string> global_list;
