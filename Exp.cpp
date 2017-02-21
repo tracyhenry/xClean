@@ -280,6 +280,8 @@ void Exp::varyThreshold()
 
 			RuleGenerator *ruleGenerator = new BadBoy(cells);
 			vector<t_rule> rules = ruleGenerator->gen_rules();
+			for (int i = 0, n = (int) rules.size(); i < n; i ++)
+				rules.emplace_back(make_pair(rules[i].second, rules[i].first));
 
 			Joiner *joiner = new PolynomialJoiner(rules, cells);
 			joiner->getJoinedStringPairs();
@@ -310,6 +312,9 @@ void Exp::varyThreshold()
 
 			RuleGenerator *ruleGenerator = new BadBoy(cells);
 			vector<t_rule> rules = ruleGenerator->gen_rules();
+			for (int i = 0, n = (int) rules.size(); i < n; i ++)
+				rules.emplace_back(make_pair(rules[i].second, rules[i].first));
+
 
 			Joiner *joiner = new PolynomialJoiner(rules, cells);
 			joiner->getJoinedStringPairs();
