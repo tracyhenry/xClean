@@ -24,6 +24,17 @@ Solver::Solver(string string_file_name)
 	fin1.close();
 	n = cells.size();
 
+	//freq
+	umpsi freq;
+	int sum_tokens = 0;
+	for (string s : cells)
+	{
+		vector<string> tokens = Common::get_tokens(s);
+		for (string t : tokens)
+			freq[t] ++;
+		sum_tokens += tokens.size();
+	}
+
 	//generate rules
 	struct timeval t1, t2;
 	gettimeofday(&t1, NULL);
@@ -44,7 +55,7 @@ Solver::Solver(string string_file_name)
 		rules.emplace_back(make_pair(rules[i].second, rules[i].first));
 
 	//calculate number of distinct lhs
-	unordered_map<string, int> lhs_set;
+	umpsi lhs_set;
 	for (t_rule rule : rules)
 		if ((rule.first.size() < rule.second.size()) ||
 				(rule.first.size() == 1 && rule.first[0].size() < rule.second[0].size()))
@@ -58,6 +69,13 @@ Solver::Solver(string string_file_name)
 	sort(sort_array.begin(), sort_array.end(), greater<pair<int, string>>());
 	for (auto i = 0; i < min((int) sort_array.size(), 10); i ++)
 		cout << sort_array[i].second<< " : " << sort_array[i].first << endl;
+
+	//frequency of abbreviations having multiple full forms
+	double sum_freq = 0;
+	for (auto cp : lhs_set)
+		if (cp.second > 5)
+			sum_freq += (double) freq[cp.first] / (double) sum_tokens;
+	cout << "Frequency of naughty abbreviations: " << sum_freq << endl;
 
 	//joins
 	cerr << "Joining......" << endl;
