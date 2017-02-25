@@ -2,6 +2,7 @@
 // Created by Wenbo Tao on 2/11/17.
 //
 
+#include <set>
 #include "Exp.h"
 #include "Joiner/Joiner.h"
 #include "Joiner/PolynomialJoiner.h"
@@ -73,28 +74,44 @@ void Exp::preprocess()
 
 void Exp::check()
 {
-	string file_name1 = "data/dept_names/sim_string_sigmod13.txt";
-	ifstream fin1(file_name1.c_str());
-	vector<pair<string, string>> p1;
-	string s1, s2, b;
+	string folder = "exp/measure/";
+	string files[] = {"area"};
+	string methods[] = {"sim", "sigmod"};
+	set<pair<string, string>> str_pairs;
+	for (string file : files)
+		for (string method : methods)
+		{
+			string file_name = folder + file + "/" + method + ".log";
+			ifstream fin(file_name.c_str());
 
-	while (getline(fin1, s1))
-	{
-		getline(fin1, s2);
-		getline(fin1, b);
-		getline(fin1, b);
-		if (s1 > s2)
-			swap(s1, s2);
-		p1.emplace_back(s1, s2);
-	}
+			string s1, s2, ss;
+			getline(fin, ss);
+			int n = atoi(ss.c_str());
 
-	srand(time(0));
-	cout << p1.size() << endl;
-	for (auto i = 0; i < 50; i ++)
-	{
-		int x = rand() % p1.size();
-		cout << p1[x].first << endl << p1[x].second << endl << endl;
-	}
+			for (auto j = 0; j < n; j ++)
+			{
+				getline(fin, s1);
+				getline(fin, s2);
+				getline(fin, ss);
+				double sim = atof(ss.c_str());
+				getline(fin, ss);
+				if (sim < 0.7)
+					continue;
+				if (s1.find("new orleans") != string::npos || s2.find("new orleans") != string::npos)
+					continue;
+				if (s1 > s2)
+					swap(s1, s2);
+				str_pairs.insert(make_pair(s1, s2));
+			}
+		}
+
+	vector<pair<string, string>> str_pairs_vector;
+	for (auto cp : str_pairs)
+		str_pairs_vector.push_back(cp);
+
+	random_shuffle(str_pairs_vector.begin(), str_pairs_vector.end());
+	for (auto i = 0; i < str_pairs_vector.size() && i < 100000; i ++)
+		cout << str_pairs_vector[i].first << endl << str_pairs_vector[i].second << endl << endl;
 }
 
 void Exp::check2()
@@ -150,9 +167,9 @@ void Exp::runSolver()
 void Exp::varyDictionary()
 {
 	Common::set_default();
-	Common::JAC_THRESHOLD = 0.65;
+	Common::JAC_THRESHOLD = 0.7;
 	Common::MEASURE = 0;
-
+/*
 	//vldb 09, jac threshold = 0.5
 	for (auto i = 0; i < 30; i ++)
 		cout << endl;
@@ -172,7 +189,7 @@ void Exp::varyDictionary()
 	Common::DICTIONARY = 1;
 	Common::VLDB09_JAC_THRESHOLD = 0.75;
 	runSolver();
-
+*/
 	//lcs, delta = 0
 	for (auto i = 0; i < 30; i ++)
 		cout << endl;
@@ -320,6 +337,164 @@ void Exp::varyThreshold()
 			joiner->getJoinedStringPairs();
 			delete ruleGenerator;
 			delete joiner;
+		}
+	}
+}
+
+void Exp::genDirty()
+{
+	string folder = "exp/measure/";
+	string files[] = {"area"};
+	string methods[] = {"sim", "sigmod"};
+
+	for (string file : files)
+	{
+		unordered_set<string> left, right;
+		string file_name = "exp/quality_data/" + file + "/match.txt";
+		ifstream fin1(file_name.c_str());
+		string s1, s2, ss;
+		while (getline(fin1, s1))
+		{
+			getline(fin1, s2);
+			getline(fin1, ss);
+			if (s1.back() != ' ')
+				s1 += " ";
+			if (s2.back() != ' ')
+				s2 += " ";
+			left.insert(s1);
+			right.insert(s2);
+		}
+		fin1.close();
+
+		unordered_set<string> dirty_record_set;
+		for (string method : methods)
+		{
+			file_name = folder + file + "/" + method + ".log";
+			ifstream fin(file_name.c_str());
+
+			getline(fin, ss);
+			int n = atoi(ss.c_str());
+			for (auto j = 0; j < n; j ++)
+			{
+				getline(fin, s1);
+				getline(fin, s2);
+				getline(fin, ss);
+				double sim = atof(ss.c_str());
+				getline(fin, ss);
+
+				if (left.count(s1))
+					if (s2.find("new orleans") == string::npos)
+						dirty_record_set.insert(s2);
+				if (left.count(s2))
+					if (s1.find("new orleans") == string::npos)
+						dirty_record_set.insert(s1);
+			}
+		}
+
+		vector<string> dirty_records;
+		for (auto s : dirty_record_set)
+			dirty_records.push_back(s);
+		random_shuffle(dirty_records.begin(), dirty_records.end());
+		for (int i = 0; i < 100; i ++)
+			cout << dirty_records[i] << endl;
+	}
+}
+
+void Exp::calculatePRF()
+{
+	string files[] = {"course", "dept", "area"};
+	string methods[] = {"sim", "jaccard", "sigmod"};
+
+	for (string file : files)
+	{
+		cout << file << " : " << endl << endl;
+		unordered_set<string> left, right;
+		set<pair<string, string>> true_pairs;
+		string file_name, s1, s2, ss;
+
+		//match.txt
+		file_name = "exp/quality_data/" + file + "/match.txt";
+		ifstream fin1(file_name.c_str());
+		while (getline(fin1, s1))
+		{
+			getline(fin1, s2);
+			getline(fin1, ss);
+			if (s1.back() != ' ')
+				s1 += " ";
+			if (s2.back() != ' ')
+				s2 += " ";
+			if (left.count(s1))
+				cout << s1 << endl;
+			left.insert(s1);
+			if (right.count(s2))
+				cout << s2 << endl;
+			right.insert(s2);
+			true_pairs.insert(make_pair(s1, s2));
+		}
+		fin1.close();
+
+		//dirty.txt
+		file_name = "exp/quality_data/" + file + "/dirty.txt";
+		ifstream fin2(file_name.c_str());
+		while (getline(fin2, s1))
+		{
+			if (s1.back() != ' ')
+				s1 += " ";
+			if (right.count(s1))
+				cout << s1 << endl;
+			right.insert(s1);
+		}
+
+		//check duplicates
+		cout << left.size() << " " << right.size() << endl;
+		if (left.size() != 100 || right.size() != 200)
+			cout << "There is duplicates !!!" << endl;
+
+		//precision & recall
+		for (string method : methods)
+		{
+			for (double th = 0.7; th <= 0.9; th += 0.1)
+			{
+				cout << "threshold : " << th << endl;
+				string log_file_name = "exp/measure/" + file + "/" + method + ".log";
+				ifstream fin3(log_file_name.c_str());
+				getline(fin3, ss);
+				int n = atoi(ss.c_str());
+				int correct = 0;
+				int total = 0;
+
+				for (int i = 0; i < n; i ++)
+				{
+					double sim;
+					getline(fin3, s1);
+					getline(fin3, s2);
+					getline(fin3, ss);
+					sim = atof(ss.c_str());
+					getline(fin3, ss);
+					if (sim < th)
+						continue;
+
+					if ((left.count(s1) && right.count(s2)) ||
+						(left.count(s2) && right.count(s1)))
+					{
+						total ++;
+						if (true_pairs.count(make_pair(s1, s2)) ||
+							true_pairs.count(make_pair(s2, s1)))
+							correct ++;
+					}
+				}
+
+//				cout << method << " : " << endl << "Presicion : " << correct << " / " << total << endl;
+//				cout << "Recall : " << correct << " / " << true_pairs.size() << endl;
+
+				cout << method << " : " << endl;
+				double p = correct / (double) total;
+				double r = correct / (double) true_pairs.size();
+				cout << "Precision : " << p << endl;
+				cout << "Recall : " << r << endl;
+				cout << "F1 Score: " << (p + r > 0 ? 2 * p * r / (p + r) : 0) << endl << endl;
+
+			}
 		}
 	}
 }

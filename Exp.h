@@ -32,6 +32,12 @@ public:
 
 	// run solver
 	static void runSolver();
+
+	//calculate precision and recall
+	static void calculatePRF();
+
+	//generate dirty records
+	static void genDirty();
 };
 
 

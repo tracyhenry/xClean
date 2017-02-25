@@ -16,6 +16,7 @@ vector<t_rule> MyRule::gen_rules()
 {
 	RuleGenerator *fastLCS = new FastLCS(cells);
 	vector<t_rule> initial_rule_set = fastLCS->gen_rules();
+	cout << "LCS rule set size : " << initial_rule_set.size() << endl;
 	delete fastLCS;
 
 	vector<pair<double, t_rule>> sort_array;

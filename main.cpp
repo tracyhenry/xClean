@@ -12,7 +12,11 @@ int main()
 
 //	Exp::preprocess();
 //	Exp::check();
-//	Exp::varyDictionary();
-	Exp::varyThreshold();
+	Exp::varyDictionary();
+//	Exp::varyThreshold();
+//	Exp::check();
+//	Exp::calculatePRF();
+//	Exp::check();
+//	Exp::genDirty();
 	return 0;
 }
