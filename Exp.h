@@ -38,6 +38,9 @@ public:
 
 	//generate dirty records
 	static void genDirty();
+
+	//dictionary runtime scalability
+	static void dictionary_scale();
 };
 
 

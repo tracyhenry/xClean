@@ -68,9 +68,6 @@ FastLCS::FastLCS(vector<string> s)
 	double max_b = 0;
 	for (auto cp : b_factor)
 		max_b = max(max_b, (double) cp.second);
-
-	cout << "Branching factor: " << sum_b / trie.size() / b_factor.size() << endl;
-	cout << "Max factor: " << max_b / trie.size() << endl;
 }
 
 vector<t_rule> FastLCS::gen_rules()

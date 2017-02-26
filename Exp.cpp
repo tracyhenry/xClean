@@ -9,6 +9,7 @@
 #include "Solver/Solver.h"
 #include "Joiner/JaccardJoiner.h"
 #include "RuleGenerator/BadBoy.h"
+#include "RuleGenerator/FastLCS.h"
 
 using namespace std;
 
@@ -495,6 +496,62 @@ void Exp::calculatePRF()
 				cout << "F1 Score: " << (p + r > 0 ? 2 * p * r / (p + r) : 0) << endl << endl;
 
 			}
+		}
+	}
+}
+
+void Exp::dictionary_scale()
+{
+	Common::set_default();
+	Common::DICTIONARY = 0;
+
+	RuleGenerator *ruleGenerator;
+	for (string f : file_names)
+	{
+		cout << f << endl << endl;
+		vector<string> cells;
+		ifstream fin1(f.c_str());
+		for (string cell; getline(fin1, cell); )
+			cells.push_back(cell);
+		random_shuffle(cells.begin(), cells.end());
+		int N = (int) cells.size();
+		int n = N / 4;
+		fin1.close();
+
+		cout << "\t delta = 0 : " << endl << endl;
+		Common::ENABLE_DELTA = false;
+
+		for (int i = 1; i <= 4; i ++)
+		{
+			vector<string> cells_partial;
+			for (auto j = 0; j < n * i; j ++)
+				cells_partial.push_back(cells[j]);
+			struct timeval t1, t2;
+			gettimeofday(&t1, NULL);
+			ruleGenerator = new FastLCS(cells_partial);
+			ruleGenerator->gen_rules();
+			gettimeofday(&t2, NULL);
+			double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;
+			cout << "\t\t i = " << i << " : " << elapsedTime << "s." << endl << endl;
+			delete ruleGenerator;
+		}
+
+		cout << "\t delta = 1 : " << endl << endl;
+		Common::ENABLE_DELTA = true;
+
+		for (int i = 1; i <= 4; i ++)
+		{
+			vector<string> cells_partial;
+			for (auto j = 0; j < n * i; j ++)
+				cells_partial.push_back(cells[j]);
+			struct timeval t1, t2;
+			gettimeofday(&t1, NULL);
+			ruleGenerator = new FastLCS(cells_partial);
+			ruleGenerator->gen_rules();
+			gettimeofday(&t2, NULL);
+			double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;
+			cout << "\t\t i = " << i << " : " << elapsedTime << "s." << endl << endl;
+			delete ruleGenerator;
 		}
 	}
 }
