@@ -571,8 +571,6 @@ void Exp::joinalgo_scale()
 
 	for (string f : file_names)
 	{
-		if (f.find("area") == string::npos)
-			continue;
 		cout << f << endl << endl;
 
 		//read files
