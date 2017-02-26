@@ -571,6 +571,8 @@ void Exp::joinalgo_scale()
 
 	for (string f : file_names)
 	{
+		if (f.find("area") == string::npos)
+			continue;
 		cout << f << endl << endl;
 
 		//read files
@@ -585,7 +587,7 @@ void Exp::joinalgo_scale()
 
 		//generate rules
 		vector<t_rule> rules;
-		ruleGenerator = new FastLCS(cells);
+		ruleGenerator = new BadBoy(cells);
 		rules = ruleGenerator->gen_rules();
 		delete ruleGenerator;
 
