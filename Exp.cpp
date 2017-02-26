@@ -192,6 +192,7 @@ void Exp::varyDictionary()
 	Common::VLDB09_JAC_THRESHOLD = 0.75;
 	runSolver();
 */
+
 	//lcs, delta = 0
 	for (auto i = 0; i < 30; i ++)
 		cout << endl;

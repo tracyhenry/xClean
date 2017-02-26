@@ -15,6 +15,7 @@ vector<t_rule> BadBoy::gen_rules()
 {
 	RuleGenerator *simpleNLP = new MyRule(cells);
 	vector<t_rule> initial_rule_set = simpleNLP->gen_rules();
+	cout << "After Myrule : " << initial_rule_set.size() << endl;
 	delete simpleNLP;
 
 	//token frequency

@@ -9,7 +9,7 @@ FastLCS::FastLCS(vector<string> s)
 {
 	//build trie
 	trie.clear(), trie.resize(1);
-	contain_word.clear(), contain_word.push_back("");
+	contain_word.clear(), contain_word.push_back(unordered_set<string>());
 
 	for (int i = 0; i < n; i ++)
 		for (string s : tokens[i])
@@ -25,11 +25,11 @@ FastLCS::FastLCS(vector<string> s)
 				{
 					trie[cur_node][s[j]] = (int) trie.size();
 					trie.push_back(unordered_map<char, int>());
-					contain_word.push_back("");
+					contain_word.push_back(unordered_set<string>());
 				}
 				cur_node = trie[cur_node][s[j]];
 			}
-			contain_word[cur_node] = s;
+			contain_word[cur_node].insert(s);
 
 			if (! Common::ENABLE_DELTA)
 				continue;
@@ -40,18 +40,19 @@ FastLCS::FastLCS(vector<string> s)
 				if (t.size() < Common::DELTA_ABBR_LEN)
 					break;
 
-				int cur_node = 0;
+				cur_node = 0;
 				for (auto j = 0; j < t.size(); j ++)
 				{
 					if (! trie[cur_node].count(t[j]))
 					{
 						trie[cur_node][t[j]] = (int) trie.size();
 						trie.push_back(unordered_map<char, int>());
-						contain_word.push_back("");
+						contain_word.push_back(unordered_set<string>());
 					}
 					cur_node = trie[cur_node][t[j]];
 				}
-				contain_word[cur_node] = s;
+				if (contain_word[cur_node].empty())
+					contain_word[cur_node].insert(s);
 			}
 		}
 
@@ -124,10 +125,10 @@ vector<t_rule> FastLCS::gen_rules()
 
 					//for every node in the previous iteration
 					for (int node : nodes[cur_iter])
-						if (contain_word[node].size())
+						for (string abbr : contain_word[node])
 						{
 							vector<string> lhs;
-							lhs.push_back(contain_word[node]);
+							lhs.push_back(abbr);
 							if (stop_words.count(lhs[0]))
 								continue;
 

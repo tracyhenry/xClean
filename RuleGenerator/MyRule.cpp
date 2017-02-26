@@ -91,9 +91,10 @@ vector<t_rule> MyRule::gen_rules()
 		for (int i = 0; i < len_l; i ++)
 		{
 			int st = (m_inds.size() ? m_inds.back() + 1 : 0);
-			while (rhs[st] != lhs[i])
+			while (st < rhs.size() && rhs[st] != lhs[i])
 				st ++;
-			m_inds.push_back(st);
+			if (st < rhs.size())
+				m_inds.push_back(st);
 		}
 
 		//check vowels

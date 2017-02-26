@@ -22,5 +22,5 @@ public:
 private:
 	//trie
 	vector<unordered_map<char, int>> trie;
-	vector<string> contain_word;
+	vector<unordered_set<string>> contain_word;
 };
