@@ -171,7 +171,7 @@ void Exp::varyDictionary()
 	Common::set_default();
 	Common::JAC_THRESHOLD = 0.7;
 	Common::MEASURE = 0;
-/*
+
 	//vldb 09, jac threshold = 0.5
 	for (auto i = 0; i < 30; i ++)
 		cout << endl;
@@ -191,7 +191,6 @@ void Exp::varyDictionary()
 	Common::DICTIONARY = 1;
 	Common::VLDB09_JAC_THRESHOLD = 0.75;
 	runSolver();
-*/
 
 	//lcs, delta = 0
 	for (auto i = 0; i < 30; i ++)
@@ -622,16 +621,19 @@ void Exp::show_datasets()
 		fin1.close();
 
 		int max_token_len = 0, min_token_len = 100, sum_token_len = 0;
+		int sum_token_sq = 0;
 		for (string cell : cells)
 		{
 			vector<string> tokens = Common::get_tokens(cell);
 			max_token_len = max(max_token_len, (int) tokens.size());
 			min_token_len = min(min_token_len, (int) tokens.size());
 			sum_token_len += (int) tokens.size();
+			sum_token_sq += (int) tokens.size() * ((int) tokens.size() + 1) / 2;
 		}
 		cout << "max #token : " << max_token_len << endl;
 		cout << "min #token : " << min_token_len << endl;
 		cout << "avg #token : " << (double) sum_token_len / cells.size() << endl;
+		cout << "search space : " << (long long) sum_token_sq * sum_token_len << endl;
 		cout << endl;
 	}
 }
