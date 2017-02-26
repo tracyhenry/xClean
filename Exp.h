@@ -41,6 +41,9 @@ public:
 
 	//dictionary runtime scalability
 	static void dictionary_scale();
+
+	//join algorithm scalability
+	static void joinalgo_scale();
 };
 
 

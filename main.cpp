@@ -18,6 +18,7 @@ int main()
 //	Exp::calculatePRF();
 //	Exp::check();
 //	Exp::genDirty();
-	Exp::dictionary_scale();
+//	Exp::dictionary_scale();
+	Exp::joinalgo_scale();
 	return 0;
 }

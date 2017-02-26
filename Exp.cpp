@@ -165,6 +165,7 @@ void Exp::runSolver()
 		delete solver;
 	}
 }
+
 void Exp::varyDictionary()
 {
 	Common::set_default();
@@ -552,6 +553,55 @@ void Exp::dictionary_scale()
 			double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;
 			cout << "\t\t i = " << i << " : " << elapsedTime << "s." << endl << endl;
 			delete ruleGenerator;
+		}
+	}
+}
+
+void Exp::joinalgo_scale()
+{
+	Common::set_default();
+	Common::DICTIONARY = 0;
+	Common::ENABLE_DELTA = false;
+	Common::MEASURE = 0;
+	Common::JAC_THRESHOLD = 0.8;
+	Common::DO_JOIN = true;
+
+	RuleGenerator *ruleGenerator;
+	Joiner *joiner;
+
+	for (string f : file_names)
+	{
+		cout << f << endl << endl;
+
+		//read files
+		vector<string> cells;
+		ifstream fin1(f.c_str());
+		for (string cell; getline(fin1, cell); )
+			cells.push_back(cell);
+		random_shuffle(cells.begin(), cells.end());
+		int N = (int) cells.size();
+		int n = N / 4;
+		fin1.close();
+
+		//generate rules
+		vector<t_rule> rules;
+		ruleGenerator = new FastLCS(cells);
+		rules = ruleGenerator->gen_rules();
+		delete ruleGenerator;
+
+		for (int i = 1; i <= 4; i ++)
+		{
+			vector<string> cells_partial;
+			for (auto j = 0; j < n * i; j ++)
+				cells_partial.push_back(cells[j]);
+			struct timeval t1, t2;
+			gettimeofday(&t1, NULL);
+			joiner = new PolynomialJoiner(rules, cells_partial);
+			joiner->getJoinedStringPairs();
+			gettimeofday(&t2, NULL);
+			double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;
+			cout << "\t i = " << i << " : " << elapsedTime << "s." << endl << endl;
+			delete joiner;
 		}
 	}
 }
