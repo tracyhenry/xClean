@@ -19,6 +19,8 @@ int main()
 //	Exp::check();
 //	Exp::genDirty();
 //	Exp::dictionary_scale();
-	Exp::joinalgo_scale();
+//	Exp::joinalgo_scale();
+	Exp::show_datasets();
+
 	return 0;
 }

@@ -606,3 +606,32 @@ void Exp::joinalgo_scale()
 		}
 	}
 }
+
+void Exp::show_datasets()
+{
+	for (string f : file_names)
+	{
+		for (auto i = 0; i < 10; i++)
+			cout << endl;
+		cout << f << " : " << endl << endl;
+
+		vector<string> cells;
+		ifstream fin1(f.c_str());
+		for (string cell; getline(fin1, cell);)
+			cells.push_back(cell);
+		fin1.close();
+
+		int max_token_len = 0, min_token_len = 100, sum_token_len = 0;
+		for (string cell : cells)
+		{
+			vector<string> tokens = Common::get_tokens(cell);
+			max_token_len = max(max_token_len, (int) tokens.size());
+			min_token_len = min(min_token_len, (int) tokens.size());
+			sum_token_len += (int) tokens.size();
+		}
+		cout << "max #token : " << max_token_len << endl;
+		cout << "min #token : " << min_token_len << endl;
+		cout << "avg #token : " << (double) sum_token_len / cells.size() << endl;
+		cout << endl;
+	}
+}
