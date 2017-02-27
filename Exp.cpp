@@ -405,7 +405,7 @@ void Exp::genDirty()
 void Exp::calculatePRF()
 {
 	string files[] = {"course", "dept", "area"};
-	string methods[] = {"sim", "jaccard", "sigmod"};
+	string methods[] = {"lcs_0", "lcs_1", "vldb09_0.5", "vldb09_0.75"};
 
 	for (string file : files)
 	{
@@ -458,7 +458,7 @@ void Exp::calculatePRF()
 			for (double th = 0.7; th <= 0.9; th += 0.1)
 			{
 				cout << "threshold : " << th << endl;
-				string log_file_name = "exp/measure/" + file + "/" + method + ".log";
+				string log_file_name = "exp/dictionary/" + method + "_" + file + "_names.txt";
 				ifstream fin3(log_file_name.c_str());
 				getline(fin3, ss);
 				int n = atoi(ss.c_str());
@@ -476,6 +476,10 @@ void Exp::calculatePRF()
 					if (sim < th)
 						continue;
 
+					if (s1.back() != ' ')
+						s1 += " ";
+					if (s2.back() != ' ')
+						s2 += " ";
 					if ((left.count(s1) && right.count(s2)) ||
 						(left.count(s2) && right.count(s1)))
 					{
@@ -495,7 +499,6 @@ void Exp::calculatePRF()
 				cout << "Precision : " << p << endl;
 				cout << "Recall : " << r << endl;
 				cout << "F1 Score: " << (p + r > 0 ? 2 * p * r / (p + r) : 0) << endl << endl;
-
 			}
 		}
 	}
