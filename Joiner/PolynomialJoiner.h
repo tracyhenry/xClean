@@ -19,6 +19,10 @@ public:
 	vector<pair<double, pair<string, string>>> getJoinedStringPairs();
 
 private:
+
+	//the maximum number of tokens a string could have
+	int k;
+
 	//signatures
 	vector<unordered_set<string>> t_sigs, e_sigs, t_large_sigs;
 

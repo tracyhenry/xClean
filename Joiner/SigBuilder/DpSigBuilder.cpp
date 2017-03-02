@@ -8,7 +8,7 @@ using namespace std;
 unordered_set<string> PolynomialJoiner::buildDpSigs(vector<string> tokens, vector<t_rule> applicable_rules)
 {
 	//limit on the number of tokens in the transformed string
-	int LIM = 20;
+	int LIM = (int) ((double) k / Common::JAC_THRESHOLD);
 
 	//generate for each starting point, an inverted list of applicable rules
 	vector<unordered_map<pair<int, int>, vector<int>, pairii_hash>> rule_inv(tokens.size());

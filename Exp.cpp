@@ -172,24 +172,34 @@ void Exp::varyDictionary()
 	Common::JAC_THRESHOLD = 0.7;
 	Common::MEASURE = 0;
 
-	//vldb 09, jac threshold = 0.5
+	//vldb 09, jac threshold = 0.4
 	for (auto i = 0; i < 30; i ++)
 		cout << endl;
 	cout << "--------------------------" << endl;
-	cout << "VLDB09 dictionary, jac = 0.5" << endl;
+	cout << "VLDB09 dictionary, jac = 0.4" << endl;
 	cout << "--------------------------" << endl << endl;
 	Common::DICTIONARY = 1;
-	Common::VLDB09_JAC_THRESHOLD = 0.5;
+	Common::VLDB09_JAC_THRESHOLD = 0.4;
 	runSolver();
 
-	//vldb 09, jac threshold = 0.75
+	//vldb 09, jac threshold = 0.6
 	for (auto i = 0; i < 30; i ++)
 		cout << endl;
 	cout << "--------------------------" << endl;
-	cout << "VLDB09 dictionary, jac = 0.75" << endl;
+	cout << "VLDB09 dictionary, jac = 0.6" << endl;
 	cout << "--------------------------" << endl << endl;
 	Common::DICTIONARY = 1;
-	Common::VLDB09_JAC_THRESHOLD = 0.75;
+	Common::VLDB09_JAC_THRESHOLD = 0.6;
+	runSolver();
+
+	//vldb 09, jac threshold = 0.8
+	for (auto i = 0; i < 30; i ++)
+		cout << endl;
+	cout << "--------------------------" << endl;
+	cout << "VLDB09 dictionary, jac = 0.8" << endl;
+	cout << "--------------------------" << endl << endl;
+	Common::DICTIONARY = 1;
+	Common::VLDB09_JAC_THRESHOLD = 0.8;
 	runSolver();
 
 	//lcs, delta = 0

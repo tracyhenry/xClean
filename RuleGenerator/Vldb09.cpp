@@ -49,10 +49,39 @@ vector<t_rule> Vldb09::gen_rules()
 				break;
 		}
 		for (auto i = 0; i < tks1.size(); i ++)
-			for (auto j = 0; j < tks2.size(); j ++)
-				if (! u1[i] && ! u2[j])
-//					if (freq[tks1[i]] < 1000 && freq[tks2[j]] < 1000)
-					rule_freq[make_pair(vector<string>(1, tks1[i]), vector<string>(1, tks2[j]))] ++;
+		{
+			if (u1[i] || freq[tks1[i]] > Common::LHS_FREQ_THRESHOLD)
+				continue;
+			for (auto x = 0; x < tks2.size(); x ++)
+				for (auto y = x; y < tks2.size(); y ++)
+				{
+					if (u2[y] || (x == y && freq[tks2[y]] > Common::LHS_FREQ_THRESHOLD))
+						continue;
+					vector<string> lhs, rhs;
+					lhs.push_back(tks1[i]);
+					for (auto j = x; j <= y; j ++)
+						rhs.push_back(tks2[j]);
+
+					rule_freq[make_pair(lhs, rhs)] ++;
+				}
+		}
+		for (auto i = 0; i < tks2.size(); i ++)
+		{
+			if (u2[i] || freq[tks2[i]] > Common::LHS_FREQ_THRESHOLD)
+				continue;
+			for (auto x = 0; x < tks1.size(); x ++)
+				for (auto y = x; y < tks1.size(); y ++)
+				{
+					if (u1[y] || (x == y && freq[tks1[y]] > Common::LHS_FREQ_THRESHOLD))
+						continue;
+					vector<string> lhs, rhs;
+					lhs.push_back(tks2[i]);
+					for (auto j = x; j <= y; j ++)
+						rhs.push_back(tks1[j]);
+
+					rule_freq[make_pair(lhs, rhs)] ++;
+				}
+		}
 	}
 
 	vector<pair<int, t_rule>> sort_array;
@@ -64,9 +93,8 @@ vector<t_rule> Vldb09::gen_rules()
 	cout << sort_array.size() << endl;
 	cout << "--------" << endl;
 
-//	int threshold = (Common::VLDB09_JAC_THRESHOLD >= 0.75 ? 1 : 8);
-	int threshold = 1;
-	for (auto i = 0; i < sort_array.size() && i < 2500 && sort_array[i].first >= threshold; i ++)
+	for (auto i = 0; i < sort_array.size() && i < 10000; i ++)
 		rules.push_back(sort_array[i].second);
+
 	return rules;
 }

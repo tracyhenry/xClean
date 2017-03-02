@@ -7,6 +7,11 @@
 PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s)
 	: Joiner(r, s)
 {
+	//calculate k
+	k = 0;
+	for (int i = 0; i < n; i ++)
+		k = max(k, (int) tokens[i].size());
+
 	//build t_signatures
 	struct timeval t1, t2;
 	gettimeofday(&t1, NULL);

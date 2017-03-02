@@ -51,8 +51,8 @@ FastLCS::FastLCS(vector<string> s)
 					}
 					cur_node = trie[cur_node][t[j]];
 				}
-				if (contain_word[cur_node].empty())
-					contain_word[cur_node].insert(s);
+				//if (contain_word[cur_node].empty())
+				contain_word[cur_node].insert(s);
 			}
 		}
 
