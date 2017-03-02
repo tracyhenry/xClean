@@ -15,12 +15,13 @@ int main()
 //	Exp::varyDictionary();
 //	Exp::varyThreshold();
 //	Exp::check();
-//	Exp::calculatePRF();
+//	Exp::calculateMeasurePRF();
+//	Exp::calculateDictPRF();
 //	Exp::check();
 //	Exp::genDirty();
 //	Exp::dictionary_scale();
 //	Exp::joinalgo_scale();
-	Exp::show_datasets();
+//	Exp::show_datasets();
 
 	return 0;
 }

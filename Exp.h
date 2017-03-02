@@ -33,8 +33,11 @@ public:
 	// run solver
 	static void runSolver();
 
-	//calculate precision and recall
-	static void calculatePRF();
+	//calculate Measure PRF
+	static void calculateMeasurePRF();
+
+	//calculate dictionary PRF
+	static void calculateDictPRF();
 
 	//generate dirty records
 	static void genDirty();

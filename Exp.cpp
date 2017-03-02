@@ -402,7 +402,106 @@ void Exp::genDirty()
 	}
 }
 
-void Exp::calculatePRF()
+void Exp::calculateMeasurePRF()
+{
+	string files[] = {"course", "dept", "area"};
+	string methods[] = {"sim", "jaccard", "sigmod"};
+
+	for (string file : files)
+	{
+		cout << file << " : " << endl << endl;
+		unordered_set<string> left, right;
+		set<pair<string, string>> true_pairs;
+		string file_name, s1, s2, ss;
+
+		//match.txt
+		file_name = "exp/quality_data/" + file + "/match.txt";
+		ifstream fin1(file_name.c_str());
+		while (getline(fin1, s1))
+		{
+			getline(fin1, s2);
+			getline(fin1, ss);
+			if (s1.back() != ' ')
+				s1 += " ";
+			if (s2.back() != ' ')
+				s2 += " ";
+			if (left.count(s1))
+				cout << s1 << endl;
+			left.insert(s1);
+			if (right.count(s2))
+				cout << s2 << endl;
+			right.insert(s2);
+			true_pairs.insert(make_pair(s1, s2));
+		}
+		fin1.close();
+
+		//dirty.txt
+		file_name = "exp/quality_data/" + file + "/dirty.txt";
+		ifstream fin2(file_name.c_str());
+		while (getline(fin2, s1))
+		{
+			if (s1.back() != ' ')
+				s1 += " ";
+			if (right.count(s1))
+				cout << s1 << endl;
+			right.insert(s1);
+		}
+
+		//check duplicates
+		cout << left.size() << " " << right.size() << endl;
+		if (left.size() != 100 || right.size() != 200)
+			cout << "There is duplicates !!!" << endl;
+
+		//precision & recall
+		for (string method : methods)
+		{
+			for (double th = 0.7; th <= 0.9; th += 0.1)
+			{
+				cout << "threshold : " << th << endl;
+				string log_file_name = "exp/measure/" + file + "/" + method + ".log";
+				ifstream fin3(log_file_name.c_str());
+				getline(fin3, ss);
+				int n = atoi(ss.c_str());
+				int correct = 0;
+				int total = 0;
+
+				for (int i = 0; i < n; i ++)
+				{
+					double sim;
+					getline(fin3, s1);
+					getline(fin3, s2);
+					getline(fin3, ss);
+					sim = atof(ss.c_str());
+					getline(fin3, ss);
+					if (sim < th)
+						continue;
+
+					if ((left.count(s1) && right.count(s2)) ||
+						(left.count(s2) && right.count(s1)))
+					{
+						total ++;
+						if (true_pairs.count(make_pair(s1, s2)) ||
+							true_pairs.count(make_pair(s2, s1)))
+							correct ++;
+					}
+				}
+
+//				cout << method << " : " << endl << "Presicion : " << correct << " / " << total << endl;
+//				cout << "Recall : " << correct << " / " << true_pairs.size() << endl;
+
+				cout << method << " : " << endl;
+				double p = correct / (double) total;
+				double r = correct / (double) true_pairs.size();
+				cout << "Precision : " << p << endl;
+				cout << "Recall : " << r << endl;
+				cout << "F1 Score: " << (p + r > 0 ? 2 * p * r / (p + r) : 0) << endl << endl;
+
+			}
+		}
+	}
+}
+
+void Exp::calculateDictPRF()
 {
 	string files[] = {"course", "dept", "area"};
 	string methods[] = {"lcs_0", "lcs_1", "vldb09_0.5", "vldb09_0.75"};
@@ -503,7 +602,6 @@ void Exp::calculatePRF()
 		}
 	}
 }
-
 void Exp::dictionary_scale()
 {
 	Common::set_default();
