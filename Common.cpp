@@ -16,6 +16,7 @@ int Common::LHS_SIZE_LIM = 1;
 int Common::BAD_THRESHOLD = 10;
 int Common::LHS_FREQ_THRESHOLD = 100;
 int Common::APPLICABLE_THRESHOLD = 15;
+int Common::SIG_LEN_LIM = 30;
 
 vector<string> Common::get_tokens(string s)
 {
@@ -126,4 +127,5 @@ void Common::set_default()
 	BAD_THRESHOLD = 10;
 	LHS_FREQ_THRESHOLD = 100;
 	APPLICABLE_THRESHOLD = 15;
+	SIG_LEN_LIM = 30;
 }

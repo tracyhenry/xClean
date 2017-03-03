@@ -24,19 +24,15 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s)
 		for (int rule_id : applicable_rule_ids[i])
 			applicable_rules.push_back(rules[rule_id]);
 
-		for (auto cp : matchable_tokens[i])
-		{
-			vector<string> t;
-			for (int j = cp.first; j <= cp.second; j ++)
-				t.push_back(tokens[i][j]);
-			applicable_rules.push_back(make_pair(t, t));
-		}
-
+		for (string t : tokens[i])
+			applicable_rules.emplace_back(vector<string>(1, t), vector<string>(1, t));
 		if (Common::MEASURE == 0)
 			t_sigs.push_back(buildDpSigs(tokens[i], applicable_rules));
-		else
+		else if (Common::MEASURE == 1)
 			e_sigs.push_back(buildExpansionSigs(tokens[i], applicable_rules));
-
+		else if (Common::MEASURE == 2)
+			e_sigs.push_back(buildJacctSigs(tokens[i], applicable_rules));
+		cout << t_sigs[i].size() << endl;
 	}
 	gettimeofday(&t2, NULL);
 	double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;
@@ -100,7 +96,7 @@ vector<pair<double, pair<string, string>>> PolynomialJoiner::getJoinedStringPair
 	unordered_map<string, vector<int>> inv_list;
 	for (int i = 0; i < n; i ++)
 	{
-		unordered_set<string> &sig_set = (Common::MEASURE == 0 ? t_sigs[i] : e_sigs[i]);
+		unordered_set<string> &sig_set (Common::MEASURE == 0 ? t_sigs[i] : (Common::MEASURE == 1 ? e_sigs[i] : t_sigs[i]));
 		for (string t : sig_set)
 			inv_list[t].push_back(i);
 	}
@@ -109,7 +105,7 @@ vector<pair<double, pair<string, string>>> PolynomialJoiner::getJoinedStringPair
 	for (int i = 0; i < n; i ++)
 	{
 		unordered_set<int> cur_set;
-		unordered_set<string> &sig_set = (Common::MEASURE == 0 ? o_sigs[i] : e_sigs[i]);
+		unordered_set<string> &sig_set = (Common::MEASURE == 0 ? o_sigs[i] : (Common::MEASURE == 1 ? e_sigs[i] : t_sigs[i]));
 		for (string t : sig_set)
 			for (int v : inv_list[t])
 				if (v != i)

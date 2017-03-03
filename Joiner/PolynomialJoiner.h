@@ -34,6 +34,8 @@ private:
 
 	//Sig builders
 	unordered_set<string> buildDpSigs(vector<string>, vector<t_rule>);
+	unordered_set<string> buildDpSigsSlow(vector<string>, vector<t_rule>);
+	unordered_set<string> buildJacctSigs(vector<string>, vector<t_rule>);
 	unordered_set<string> buildExpansionSigs(vector<string>, vector<t_rule>);
 	unordered_set<string> buildDpLargeTokenSigs(vector<string>, vector<t_rule>);
 

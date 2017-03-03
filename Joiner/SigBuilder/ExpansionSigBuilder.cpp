@@ -6,7 +6,7 @@ using namespace std;
 
 unordered_set<string> PolynomialJoiner::buildExpansionSigs(vector<string> tokens, vector<t_rule> rules)
 {
-	int LIM = 30;
+	int LIM = Common::SIG_LEN_LIM;
 
 	//expansion set
 	unordered_set<string> exp_set;

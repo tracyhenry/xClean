@@ -90,6 +90,7 @@ public:
 	static int BAD_THRESHOLD;
 	static int LHS_FREQ_THRESHOLD;
 	static int APPLICABLE_THRESHOLD;
+	static int SIG_LEN_LIM;
 };
 
 
