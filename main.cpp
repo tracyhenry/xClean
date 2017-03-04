@@ -22,6 +22,6 @@ int main()
 //	Exp::dictionary_scale();
 //	Exp::joinalgo_scale();
 //	Exp::show_datasets();
-
+//	Exp::testRuleCompression();
 	return 0;
 }

@@ -84,6 +84,7 @@ public:
 	static bool DO_JOIN;
 	static int DICTIONARY;		//0 -- lcs, 1 -- vldb09
 	static int MEASURE;			//0 -- sim, 1 -- sigmod13, 2 -- jaccard
+	static bool FAST_SIG;
 
 	static int DELTA_ABBR_LEN;
 	static int LHS_SIZE_LIM;

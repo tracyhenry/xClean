@@ -27,7 +27,7 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s)
 		for (string t : tokens[i])
 			applicable_rules.emplace_back(vector<string>(1, t), vector<string>(1, t));
 		if (Common::MEASURE == 0)
-			t_sigs.push_back(buildDpSigs(tokens[i], applicable_rules));
+			t_sigs.push_back(Common::FAST_SIG ? buildDpSigs(tokens[i], applicable_rules) : buildDpSigsSlow(tokens[i], applicable_rules));
 		else if (Common::MEASURE == 1)
 			e_sigs.push_back(buildExpansionSigs(tokens[i], applicable_rules));
 		else if (Common::MEASURE == 2)

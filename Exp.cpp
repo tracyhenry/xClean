@@ -734,3 +734,59 @@ void Exp::show_datasets()
 		cout << endl;
 	}
 }
+
+void Exp::testRuleCompression()
+{
+	Common::set_default();
+	Common::DICTIONARY = 0;
+	Common::ENABLE_DELTA = false;
+	Common::MEASURE = 0;
+	Common::DO_JOIN = false;
+
+	//vary threshold
+	for (Common::JAC_THRESHOLD = 0.7; Common::JAC_THRESHOLD <= 0.9; Common::JAC_THRESHOLD += 0.1)
+	{
+		for (int compress = 0; compress < 2; compress ++)
+		{
+			Common::FAST_SIG = (compress != 0);
+			for (auto i = 0; i < 30; i ++)
+				cout << endl;
+
+			if (Common::FAST_SIG)
+			{
+				cout << "--------------------------" << endl;
+				cout << "Compress, JAC_THRESHOLD = " << Common::JAC_THRESHOLD << " :" << endl;
+				cout << "--------------------------" << endl;
+			} else
+			{
+				cout << "--------------------------" << endl;
+				cout << "No compress, JAC_THRESHOLD = " << Common::JAC_THRESHOLD << " :" << endl;
+				cout << "--------------------------" << endl;
+			}
+
+			//vary datasets
+			for (string f : file_names)
+			{
+				for (auto i = 0; i < 10; i ++)
+					cout << endl;
+				cout << f << " : " << endl << endl;
+
+				vector<string> cells;
+				ifstream fin1(f.c_str());
+				for (string cell; getline(fin1, cell); )
+					cells.push_back(cell);
+				fin1.close();
+
+				RuleGenerator *ruleGenerator = new BadBoy(cells);
+				vector<t_rule> rules = ruleGenerator->gen_rules();
+				for (int i = 0, n = (int) rules.size(); i < n; i ++)
+					rules.emplace_back(make_pair(rules[i].second, rules[i].first));
+
+				Joiner *joiner = new PolynomialJoiner(rules, cells);
+				joiner->getJoinedStringPairs();
+				delete ruleGenerator;
+				delete joiner;
+			}
+		}
+	}
+}

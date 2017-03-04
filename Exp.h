@@ -50,6 +50,9 @@ public:
 
 	//dataset details
 	static void show_datasets();
+
+	//rule compression
+	static void testRuleCompression();
 };
 
 
