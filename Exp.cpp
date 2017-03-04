@@ -286,69 +286,55 @@ void Exp::varyThreshold()
 	//vary threshold
 	for (Common::JAC_THRESHOLD = 0.7; Common::JAC_THRESHOLD <= 0.9; Common::JAC_THRESHOLD += 0.1)
 	{
-		//sigmod 13
-		for (auto i = 0; i < 30; i ++)
-			cout << endl;
-		Common::MEASURE = 1;
-		cout << "--------------------------" << endl;
-		cout << "SIGMOD 13, JAC_THRESHOLD = " << Common::JAC_THRESHOLD << " :" << endl;
-		cout << "--------------------------" << endl;
-
-		//vary datasets
-		for (string f : file_names)
+		for (Common::MEASURE = 0; Common::MEASURE <= 2; Common::MEASURE ++)
 		{
-			for (auto i = 0; i < 10; i ++)
+			//skip sigmod 13
+			if (Common::MEASURE == 1)
+				continue;
+			for (auto i = 0; i < 30; i ++)
 				cout << endl;
-			cout << f << " : " << endl << endl;
 
-			vector<string> cells;
-			ifstream fin1(f.c_str());
-			for (string cell; getline(fin1, cell); )
-				cells.push_back(cell);
-			fin1.close();
+			if (Common::MEASURE == 0)
+			{
+				cout << "--------------------------" << endl;
+				cout << "Sim, JAC_THRESHOLD = " << Common::JAC_THRESHOLD << " :" << endl;
+				cout << "--------------------------" << endl;
+			} else if (Common::MEASURE == 1)
+			{
+				cout << "--------------------------" << endl;
+				cout << "SIGMOD 13, JAC_THRESHOLD = " << Common::JAC_THRESHOLD << " :" << endl;
+				cout << "--------------------------" << endl;
+			} else
+			{
+				cout << "--------------------------" << endl;
+				cout << "Jacct, JAC_THRESHOLD = " << Common::JAC_THRESHOLD << " :" << endl;
+				cout << "--------------------------" << endl;
+			}
 
-			RuleGenerator *ruleGenerator = new BadBoy(cells);
-			vector<t_rule> rules = ruleGenerator->gen_rules();
-			for (int i = 0, n = (int) rules.size(); i < n; i ++)
-				rules.emplace_back(make_pair(rules[i].second, rules[i].first));
+			//vary datasets
+			for (string f : file_names)
+			{
+				for (auto i = 0; i < 10; i ++)
+					cout << endl;
+				cout << f << " : " << endl << endl;
 
-			Joiner *joiner = new PolynomialJoiner(rules, cells);
-			joiner->getJoinedStringPairs();
-			delete ruleGenerator;
-			delete joiner;
-		}
+				vector<string> cells;
+				ifstream fin1(f.c_str());
+				for (string cell; getline(fin1, cell); )
+					cells.push_back(cell);
+				fin1.close();
 
-		//our sim measure
-		for (auto i = 0; i < 30; i ++)
-			cout << endl;
-		Common::MEASURE = 0;
-		cout << "--------------------------" << endl;
-		cout << "Sim, JAC_THRESHOLD = " << Common::JAC_THRESHOLD << " :" << endl;
-		cout << "--------------------------" << endl;
-
-		//vary datasets
-		for (string f : file_names)
-		{
-			for (auto i = 0; i < 10; i ++)
-				cout << endl;
-			cout << f << " : " << endl << endl;
-
-			vector<string> cells;
-			ifstream fin1(f.c_str());
-			for (string cell; getline(fin1, cell); )
-				cells.push_back(cell);
-			fin1.close();
-
-			RuleGenerator *ruleGenerator = new BadBoy(cells);
-			vector<t_rule> rules = ruleGenerator->gen_rules();
-			for (int i = 0, n = (int) rules.size(); i < n; i ++)
-				rules.emplace_back(make_pair(rules[i].second, rules[i].first));
+				RuleGenerator *ruleGenerator = new BadBoy(cells);
+				vector<t_rule> rules = ruleGenerator->gen_rules();
+				for (int i = 0, n = (int) rules.size(); i < n; i ++)
+					rules.emplace_back(make_pair(rules[i].second, rules[i].first));
 
 
-			Joiner *joiner = new PolynomialJoiner(rules, cells);
-			joiner->getJoinedStringPairs();
-			delete ruleGenerator;
-			delete joiner;
+				Joiner *joiner = new PolynomialJoiner(rules, cells);
+				joiner->getJoinedStringPairs();
+				delete ruleGenerator;
+				delete joiner;
+			}
 		}
 	}
 }

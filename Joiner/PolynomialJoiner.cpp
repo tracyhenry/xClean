@@ -31,8 +31,7 @@ PolynomialJoiner::PolynomialJoiner(vector<t_rule> r, vector<string> s)
 		else if (Common::MEASURE == 1)
 			e_sigs.push_back(buildExpansionSigs(tokens[i], applicable_rules));
 		else if (Common::MEASURE == 2)
-			e_sigs.push_back(buildJacctSigs(tokens[i], applicable_rules));
-		cout << t_sigs[i].size() << endl;
+			t_sigs.push_back(buildJacctSigs(tokens[i], applicable_rules));
 	}
 	gettimeofday(&t2, NULL);
 	double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;
