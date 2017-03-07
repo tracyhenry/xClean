@@ -706,6 +706,8 @@ void Exp::joinalgo_scale()
 		vector<t_rule> rules;
 		ruleGenerator = new BadBoy(cells);
 		rules = ruleGenerator->gen_rules();
+		for (int i = 0, n = (int) rules.size(); i < n; i ++)
+			rules.emplace_back(make_pair(rules[i].second, rules[i].first));
 		delete ruleGenerator;
 
 		for (int i = 1; i <= 4; i ++)
