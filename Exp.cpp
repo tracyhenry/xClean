@@ -2,7 +2,6 @@
 // Created by Wenbo Tao on 2/11/17.
 //
 
-#include <set>
 #include "Exp.h"
 #include "Joiner/Joiner.h"
 #include "Joiner/PolynomialJoiner.h"
@@ -75,44 +74,66 @@ void Exp::preprocess()
 
 void Exp::check()
 {
-	string folder = "exp/measure/";
-	string files[] = {"area"};
-	string methods[] = {"sim", "sigmod"};
-	set<pair<string, string>> str_pairs;
+	string folder = "exp/dictionary/";
+	string files[] = {"dept"};
+	map<pair<string, string>, double> mp;
 	for (string file : files)
-		for (string method : methods)
+	{
+		string lcs0 = folder + "lcs_0_" + file + "_names.txt";
+		string lcs1 = folder + "lcs_1_" + file + "_names.txt";
+		ifstream fin1(lcs0.c_str());
+		ifstream fin2(lcs1.c_str());
+
+		string ss, s1, s2;
+
+		//read lcs0 file
+		getline(fin1, ss);
+		int n = atoi(ss.c_str());
+		for (int i = 0; i < n; i ++)
 		{
-			string file_name = folder + file + "/" + method + ".log";
-			ifstream fin(file_name.c_str());
+			double sim;
+			getline(fin1, s1);
+			getline(fin1, s2);
+			getline(fin1, ss);
+			sim = atof(ss.c_str());
+			getline(fin1, ss);
 
-			string s1, s2, ss;
-			getline(fin, ss);
-			int n = atoi(ss.c_str());
-
-			for (auto j = 0; j < n; j ++)
-			{
-				getline(fin, s1);
-				getline(fin, s2);
-				getline(fin, ss);
-				double sim = atof(ss.c_str());
-				getline(fin, ss);
-				if (sim < 0.7)
-					continue;
-				if (s1.find("new orleans") != string::npos || s2.find("new orleans") != string::npos)
-					continue;
-				if (s1 > s2)
-					swap(s1, s2);
-				str_pairs.insert(make_pair(s1, s2));
-			}
+			if (s1 > s2)
+				swap(s1, s2);
+			auto cp = make_pair(s1, s2);
+			mp[cp] = max(mp[cp], sim);
 		}
 
-	vector<pair<string, string>> str_pairs_vector;
-	for (auto cp : str_pairs)
-		str_pairs_vector.push_back(cp);
+		//read lcs1 file
+		getline(fin2, ss);
+		n = atoi(ss.c_str());
+		for (int i = 0; i < n; i ++)
+		{
+			double sim;
+			getline(fin2, s1);
+			getline(fin2, s2);
+			getline(fin2, ss);
+			sim = atof(ss.c_str());
+			getline(fin2, ss);
 
-	random_shuffle(str_pairs_vector.begin(), str_pairs_vector.end());
-	for (auto i = 0; i < str_pairs_vector.size() && i < 100000; i ++)
-		cout << str_pairs_vector[i].first << endl << str_pairs_vector[i].second << endl << endl;
+			if (s1 > s2)
+				swap(s1, s2);
+			auto cp = make_pair(s1, s2);
+			mp[cp] = max(mp[cp], sim);
+		}
+
+		vector<pair<double, pair<string, string>>> s_arr;
+		for (auto cp : mp)
+			s_arr.emplace_back(cp.second, cp.first);
+		sort(s_arr.begin(), s_arr.end());
+
+		//output
+		string output_file_name = file + ".txt";
+		ofstream fout(output_file_name.c_str());
+		fout << s_arr.size() << endl;
+		for (auto i = 0; i < s_arr.size(); i ++)
+			fout << s_arr[i].second.first << endl << s_arr[i].second.second << endl << s_arr[i].first << endl << endl;
+	}
 }
 
 void Exp::check2()
@@ -500,7 +521,7 @@ void Exp::calculateMeasurePRF()
 void Exp::calculateDictPRF()
 {
 	string files[] = {"course", "dept", "area"};
-	string methods[] = {"lcs_0", "lcs_1", "vldb09_0.5", "vldb09_0.75"};
+	string methods[] = {"lcs_0", "lcs_1", "vldb09_0.4", "vldb09_0.6", "vldb09_0.8"};
 
 	for (string file : files)
 	{
@@ -598,6 +619,7 @@ void Exp::calculateDictPRF()
 		}
 	}
 }
+
 void Exp::dictionary_scale()
 {
 	Common::set_default();

@@ -4,6 +4,8 @@
 
 #ifndef XCLEAN_COMMON_H
 #define XCLEAN_COMMON_H
+#include <map>
+#include <set>
 #include <cmath>
 #include <vector>
 #include <string>
