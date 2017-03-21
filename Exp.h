@@ -53,6 +53,9 @@ public:
 
 	//rule compression
 	static void testRuleCompression();
+
+	//generate smaller subset
+	static void genSubset();
 };
 
 

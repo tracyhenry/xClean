@@ -74,65 +74,66 @@ void Exp::preprocess()
 
 void Exp::check()
 {
-	string folder = "exp/dictionary/";
-	string files[] = {"dept"};
-	map<pair<string, string>, double> mp;
+	string methods[] = {"sigmod", "sim"};
+	string files[] = {"course", "dept", "area"};
+
 	for (string file : files)
 	{
-		string lcs0 = folder + "lcs_0_" + file + "_names.txt";
-		string lcs1 = folder + "lcs_1_" + file + "_names.txt";
-		ifstream fin1(lcs0.c_str());
-		ifstream fin2(lcs1.c_str());
+		string small_file_name = "data/" + file + "_names/" + file + "_names_small.txt";
+		ifstream fin1(small_file_name.c_str());
+		unordered_set<string> cells;
+		for (string cell; getline(fin1, cell); )
+			cells.insert(cell);
+		fin1.close();
 
-		string ss, s1, s2;
-
-		//read lcs0 file
-		getline(fin1, ss);
-		int n = atoi(ss.c_str());
-		for (int i = 0; i < n; i ++)
+		unordered_set<string> pair_string_set;
+		int count = 0;
+		for (string method : methods)
 		{
-			double sim;
-			getline(fin1, s1);
-			getline(fin1, s2);
-			getline(fin1, ss);
-			sim = atof(ss.c_str());
-			getline(fin1, ss);
+			string result_file_name = "exp/measure/" + file + "/" + method + ".log";
+			ifstream fin2(result_file_name.c_str());
+			string ss, s1, s2;
+			getline(fin2, ss);
+			int n = atoi(ss.c_str());
 
-			if (s1 > s2)
-				swap(s1, s2);
-			auto cp = make_pair(s1, s2);
-			mp[cp] = max(mp[cp], sim);
+			for (int i = 0; i < n; i ++)
+			{
+				double sim;
+				getline(fin2, s1);
+				getline(fin2, s2);
+				getline(fin2, ss);
+				sim = atof(ss.c_str());
+				getline(fin2, ss);
+
+				if (method == "sigmod" && sim < 0.68)
+					continue;
+				if (cells.count(s1) && cells.count(s2))
+				{
+					if (s1 > s2)
+						swap(s1, s2);
+					string pair_string = s1 + "___" + s2;
+					if (! pair_string_set.count(pair_string))
+					{
+						pair_string_set.insert(pair_string);
+						count ++;
+					}
+				}
+			}
+			fin2.close();
 		}
 
-		//read lcs1 file
-		getline(fin2, ss);
-		n = atoi(ss.c_str());
-		for (int i = 0; i < n; i ++)
+		//output to candidate file
+		string cand_file_name = "data/" + file + "_names/" + file + "_names_cand.txt";
+		ofstream fout(cand_file_name.c_str());
+		fout << count << endl;
+		for (string s : pair_string_set)
 		{
-			double sim;
-			getline(fin2, s1);
-			getline(fin2, s2);
-			getline(fin2, ss);
-			sim = atof(ss.c_str());
-			getline(fin2, ss);
-
-			if (s1 > s2)
-				swap(s1, s2);
-			auto cp = make_pair(s1, s2);
-			mp[cp] = max(mp[cp], sim);
+			auto pos = s.find("___");
+			string s1 = s.substr(0, pos);
+			string s2 = s.substr(pos + 3);
+			fout << endl << s1 << endl << s2 << endl << endl;
 		}
-
-		vector<pair<double, pair<string, string>>> s_arr;
-		for (auto cp : mp)
-			s_arr.emplace_back(cp.second, cp.first);
-		sort(s_arr.begin(), s_arr.end());
-
-		//output
-		string output_file_name = file + ".txt";
-		ofstream fout(output_file_name.c_str());
-		fout << s_arr.size() << endl;
-		for (auto i = 0; i < s_arr.size(); i ++)
-			fout << s_arr[i].second.first << endl << s_arr[i].second.second << endl << s_arr[i].first << endl << endl;
+		fout.close();
 	}
 }
 
@@ -512,7 +513,6 @@ void Exp::calculateMeasurePRF()
 				cout << "Precision : " << p << endl;
 				cout << "Recall : " << r << endl;
 				cout << "F1 Score: " << (p + r > 0 ? 2 * p * r / (p + r) : 0) << endl << endl;
-
 			}
 		}
 	}
@@ -820,5 +820,55 @@ void Exp::testRuleCompression()
 				delete joiner;
 			}
 		}
+	}
+}
+
+void Exp::genSubset()
+{
+	string folder = "data/";
+	string files[] = {"course", "dept", "area"};
+	srand(time(NULL));
+	for (string file : files)
+	{
+		string file_name = folder + file + "_names/" + file + "_names.txt";
+		string out_file_name = folder + file + "_names/" + file + "_names_small.txt";
+		ifstream fin(file_name.c_str());
+		ofstream fout(out_file_name.c_str());
+		vector<string> cells;
+		int N;
+		for (string cell; getline(fin, cell); )
+		{
+			N ++;
+			bool ok = true;
+			if (cell.find("new orleans la") != string::npos)
+				ok = false;
+			for (auto c = 0; c < cell.size(); c ++)
+				if (isdigit(cell[c]))
+					ok = false;
+			if (file == "dept")
+				ok = true;
+			if (ok)
+				cells.push_back(cell);
+		}
+
+		unordered_set<int> used_ids;
+		if (file != "dept")
+			N = (int) (N * 0.05);
+		else
+			N = (int) cells.size();
+		for (int i = 0; i < N; i ++)
+		{
+			int x;
+			while (1)
+			{
+				x = (int) ((long long) rand() * (long long) rand() % (long long) cells.size());
+				if (! used_ids.count(x))
+					break;
+			}
+			used_ids.insert(x);
+			fout << cells[x] << endl;
+		}
+		fin.close();
+		fout.close();
 	}
 }

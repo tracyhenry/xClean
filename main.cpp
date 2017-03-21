@@ -11,7 +11,6 @@ int main()
 //	Solver *solver = new Solver("data/area_names/area_names.txt");
 
 //	Exp::preprocess();
-//	Exp::check();
 //	Exp::varyDictionary();
 //	Exp::varyThreshold();
 //	Exp::check();
@@ -23,5 +22,7 @@ int main()
 //	Exp::joinalgo_scale();
 //	Exp::show_datasets();
 //	Exp::testRuleCompression();
+//	Exp::genSubset();
+//	Exp::check();
 	return 0;
 }
