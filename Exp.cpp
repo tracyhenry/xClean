@@ -422,53 +422,41 @@ void Exp::genDirty()
 
 void Exp::calculateMeasurePRF()
 {
-	string files[] = {"course", "dept", "area"};
-	string methods[] = {"sim", "jaccard", "sigmod"};
+	string files[] = {"course"};//, "dept", "area"};
+	string methods[] = {"sim", "sigmod"}; // "jaccard"
 
 	for (string file : files)
 	{
 		cout << file << " : " << endl << endl;
-		unordered_set<string> left, right;
+		unordered_set<string> cells;
 		set<pair<string, string>> true_pairs;
 		string file_name, s1, s2, ss;
 
-		//match.txt
-		file_name = "exp/quality_data/" + file + "/match.txt";
-		ifstream fin1(file_name.c_str());
+		//cells
+		string cell_file_name = "data/" + file + "_names/" + file + "_names_small.txt";
+		ifstream fin1(cell_file_name.c_str());
 		while (getline(fin1, s1))
 		{
-			getline(fin1, s2);
-			getline(fin1, ss);
+			if (s1.back() != ' ')
+				s1 += " ";
+			cells.insert(s1);
+		}
+		fin1.close();
+
+		//gt
+		string gt_file_name = "data/" + file + "_names/" + file + "_names_small_gt.txt";
+		ifstream fin2(gt_file_name.c_str());
+		while (getline(fin2, s1))
+		{
+			getline(fin2, s2);
+			getline(fin2, ss);
 			if (s1.back() != ' ')
 				s1 += " ";
 			if (s2.back() != ' ')
 				s2 += " ";
-			if (left.count(s1))
-				cout << s1 << endl;
-			left.insert(s1);
-			if (right.count(s2))
-				cout << s2 << endl;
-			right.insert(s2);
 			true_pairs.insert(make_pair(s1, s2));
 		}
-		fin1.close();
-
-		//dirty.txt
-		file_name = "exp/quality_data/" + file + "/dirty.txt";
-		ifstream fin2(file_name.c_str());
-		while (getline(fin2, s1))
-		{
-			if (s1.back() != ' ')
-				s1 += " ";
-			if (right.count(s1))
-				cout << s1 << endl;
-			right.insert(s1);
-		}
-
-		//check duplicates
-		cout << left.size() << " " << right.size() << endl;
-		if (left.size() != 100 || right.size() != 200)
-			cout << "There is duplicates !!!" << endl;
+		fin2.close();
 
 		//precision & recall
 		for (string method : methods)
@@ -494,13 +482,13 @@ void Exp::calculateMeasurePRF()
 					if (sim < th)
 						continue;
 
-					if ((left.count(s1) && right.count(s2)) ||
-						(left.count(s2) && right.count(s1)))
+					if (cells.count(s1) && cells.count(s2))
 					{
 						total ++;
+						bool f = false;
 						if (true_pairs.count(make_pair(s1, s2)) ||
 							true_pairs.count(make_pair(s2, s1)))
-							correct ++;
+							correct ++, f = true;
 					}
 				}
 
@@ -520,58 +508,46 @@ void Exp::calculateMeasurePRF()
 
 void Exp::calculateDictPRF()
 {
-	string files[] = {"course", "dept", "area"};
+	string files[] = {"course"};//, "dept", "area"};
 	string methods[] = {"lcs_0", "lcs_1", "vldb09_0.4", "vldb09_0.6", "vldb09_0.8"};
 
 	for (string file : files)
 	{
 		cout << file << " : " << endl << endl;
-		unordered_set<string> left, right;
+		unordered_set<string> cells;
 		set<pair<string, string>> true_pairs;
 		string file_name, s1, s2, ss;
 
-		//match.txt
-		file_name = "exp/quality_data/" + file + "/match.txt";
-		ifstream fin1(file_name.c_str());
+		//cells
+		string cell_file_name = "data/" + file + "_names/" + file + "_names_small.txt";
+		ifstream fin1(cell_file_name.c_str());
 		while (getline(fin1, s1))
 		{
-			getline(fin1, s2);
-			getline(fin1, ss);
+			if (s1.back() != ' ')
+				s1 += " ";
+			cells.insert(s1);
+		}
+		fin1.close();
+
+		//gt
+		string gt_file_name = "data/" + file + "_names/" + file + "_names_small_gt.txt";
+		ifstream fin2(gt_file_name.c_str());
+		while (getline(fin2, s1))
+		{
+			getline(fin2, s2);
+			getline(fin2, ss);
 			if (s1.back() != ' ')
 				s1 += " ";
 			if (s2.back() != ' ')
 				s2 += " ";
-			if (left.count(s1))
-				cout << s1 << endl;
-			left.insert(s1);
-			if (right.count(s2))
-				cout << s2 << endl;
-			right.insert(s2);
 			true_pairs.insert(make_pair(s1, s2));
 		}
-		fin1.close();
-
-		//dirty.txt
-		file_name = "exp/quality_data/" + file + "/dirty.txt";
-		ifstream fin2(file_name.c_str());
-		while (getline(fin2, s1))
-		{
-			if (s1.back() != ' ')
-				s1 += " ";
-			if (right.count(s1))
-				cout << s1 << endl;
-			right.insert(s1);
-		}
-
-		//check duplicates
-		cout << left.size() << " " << right.size() << endl;
-		if (left.size() != 100 || right.size() != 200)
-			cout << "There is duplicates !!!" << endl;
+		fin2.close();
 
 		//precision & recall
 		for (string method : methods)
 		{
-			for (double th = 0.7; th <= 0.9; th += 0.1)
+			for (double th = 0.7; th <= 0.7; th += 0.1)
 			{
 				cout << "threshold : " << th << endl;
 				string log_file_name = "exp/dictionary/" + method + "_" + file + "_names.txt";
@@ -596,8 +572,7 @@ void Exp::calculateDictPRF()
 						s1 += " ";
 					if (s2.back() != ' ')
 						s2 += " ";
-					if ((left.count(s1) && right.count(s2)) ||
-						(left.count(s2) && right.count(s1)))
+					if (cells.count(s1) && cells.count(s2))
 					{
 						total ++;
 						if (true_pairs.count(make_pair(s1, s2)) ||
