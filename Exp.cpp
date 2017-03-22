@@ -86,7 +86,7 @@ void Exp::check()
 			cells.insert(cell);
 		fin1.close();
 
-		unordered_set<string> pair_string_set;
+		set<string> pair_string_set;
 		int count = 0;
 		for (string method : methods)
 		{
@@ -105,9 +105,9 @@ void Exp::check()
 				sim = atof(ss.c_str());
 				getline(fin2, ss);
 
-				if (method == "sigmod" && sim < 0.68)
+				if (method == "sigmod" && sim < 0.78)
 					continue;
-				if (cells.count(s1) && cells.count(s2))
+				if (cells.count(s1) && cells.count(s2) && s1[0] == s2[0])
 				{
 					if (s1 > s2)
 						swap(s1, s2);
@@ -123,7 +123,7 @@ void Exp::check()
 		}
 
 		//output to candidate file
-		string cand_file_name = "data/" + file + "_names/" + file + "_names_cand.txt";
+		string cand_file_name = "data/" + file + "_names/" + file + "_names_small_cand.txt";
 		ofstream fout(cand_file_name.c_str());
 		fout << count << endl;
 		for (string s : pair_string_set)
