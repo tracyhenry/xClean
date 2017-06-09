@@ -12,9 +12,13 @@
 
 using namespace std;
 
-unordered_set<string> Exp::file_names = unordered_set<string>({"data/dept_names/dept_names.txt",
+/*unordered_set<string> Exp::file_names = unordered_set<string>({"data/dept_names/dept_names.txt",
 															   "data/course_names/course_names.txt",
-															   "data/area_names/area_names.txt"});
+															   "data/area_names/area_names.txt",
+															   "data/disease_names/disease_names.txt"
+															  });
+*/
+unordered_set<string> Exp::file_names = unordered_set<string>({"data/disease_names/disease_names.txt"});
 
 void Exp::preprocess()
 {
@@ -139,41 +143,45 @@ void Exp::check()
 
 void Exp::check2()
 {
-	string file_name1 = "data/dept_names/sim_string_sim.txt";
-	string file_name2 = "data/dept_names/sim_string_sigmod13.txt";
-	ifstream fin1(file_name1.c_str());
-	ifstream fin2(file_name2.c_str());
-	vector<pair<string, string>> p1, p2;
-	string s1, s2, b;
+	string infile_name = "data/disease_names/disease_names.txt";
+	string outfile_name = "data/disease_names/hand_dict.txt";
+	ifstream fin(infile_name.c_str());
+	ofstream fout(outfile_name.c_str());
 
-	while (getline(fin1, s1))
-	{
-		getline(fin1, s2);
-		getline(fin1, b);
-		getline(fin1, b);
-		if (s1 > s2)
-			swap(s1, s2);
-		p1.emplace_back(s1, s2);
-	}
-	while (getline(fin2, s1))
-	{
-		getline(fin2, s2);
-		getline(fin2, b);
-		getline(fin2, b);
-		if (s1 > s2)
-			swap(s1, s2);
-		p2.emplace_back(s1, s2);
-	}
+	unordered_set<string> names;
+	string s;
+	while (getline(fin, s))
+		names.insert(s);
 
-	for (auto cp : p2)
+	while (1)
 	{
-		bool contain = false;
-		for (auto cp2 : p1)
-			if (cp == cp2)
-				contain = true;
-		if (! contain)
-			cout << cp.first << endl << cp.second << endl << endl;
+		bool flag = false;
+		for (auto it = names.begin(); it != names.end(); it ++)
+		{
+			string ss = (*it);
+			vector<string> tokens = Common::get_tokens(ss);
+			string acronym = "";
+			for (auto i = 0; i < tokens.size(); i ++)
+				acronym += tokens[i][0];
+			if (names.count(acronym))
+			{
+				flag = true;
+				names.erase(acronym);
+				names.erase(ss);
+				fout << acronym << endl << ss << endl << endl;
+				break;
+			}
+		}
+		if (! flag)
+			break;
 	}
+	fout << endl << endl << endl;
+	vector<string> names_sort;
+	for (auto ss : names)
+		names_sort.push_back(ss);
+	sort(names_sort.begin(), names_sort.end());
+	for (auto ss : names_sort)
+		fout << ss << endl;
 }
 
 void Exp::runSolver()
@@ -422,8 +430,8 @@ void Exp::genDirty()
 
 void Exp::calculateMeasurePRF()
 {
-	string files[] = {"course"};//, "dept", "area"};
-	string methods[] = {"sim", "sigmod"}; // "jaccard"
+	string files[] = {"disease"};
+	string methods[] = {"sim", "sigmod", "jaccard"};
 
 	for (string file : files)
 	{
@@ -446,6 +454,7 @@ void Exp::calculateMeasurePRF()
 		//gt
 		string gt_file_name = "data/" + file + "_names/" + file + "_names_small_gt.txt";
 		ifstream fin2(gt_file_name.c_str());
+		unordered_set<string> lc;
 		while (getline(fin2, s1))
 		{
 			getline(fin2, s2);
@@ -455,6 +464,7 @@ void Exp::calculateMeasurePRF()
 			if (s2.back() != ' ')
 				s2 += " ";
 			true_pairs.insert(make_pair(s1, s2));
+			lc.insert(s1);
 		}
 		fin2.close();
 
@@ -463,7 +473,7 @@ void Exp::calculateMeasurePRF()
 		{
 			for (double th = 0.7; th <= 0.9; th += 0.1)
 			{
-				cout << "threshold : " << th << endl;
+				//cout << "threshold : " << th << endl;
 				string log_file_name = "exp/measure/" + file + "/" + method + ".log";
 				ifstream fin3(log_file_name.c_str());
 				getline(fin3, ss);
@@ -482,6 +492,16 @@ void Exp::calculateMeasurePRF()
 					if (sim < th)
 						continue;
 
+					if (s1.back() != ' ')
+						s1 += " ";
+					if (s2.back() != ' ')
+						s2 += " ";
+
+					if (file == "disease" && lc.count(s1) && lc.count(s2))
+						continue;
+					if (file == "disease" && ! lc.count(s1) && ! lc.count(s2))
+						continue;
+
 					if (cells.count(s1) && cells.count(s2))
 					{
 						total ++;
@@ -489,26 +509,31 @@ void Exp::calculateMeasurePRF()
 						if (true_pairs.count(make_pair(s1, s2)) ||
 							true_pairs.count(make_pair(s2, s1)))
 							correct ++, f = true;
+						if (th > 0.75 && method == "sim" && ! f)
+							cout << endl << s1 << endl << s2 << endl << endl;
 					}
 				}
 
 //				cout << method << " : " << endl << "Presicion : " << correct << " / " << total << endl;
 //				cout << "Recall : " << correct << " / " << true_pairs.size() << endl;
-
+/*
 				cout << method << " : " << endl;
 				double p = correct / (double) total;
 				double r = correct / (double) true_pairs.size();
-				cout << "Precision : " << p << endl;
-				cout << "Recall : " << r << endl;
-				cout << "F1 Score: " << (p + r > 0 ? 2 * p * r / (p + r) : 0) << endl << endl;
+				double f = (p + r > 0 ? 2 * p * r / (p + r) : 0);
+				printf("Precision : %.2lf\n", p);
+				printf("Recall : %.2lf\n", r);
+				printf("F1 Score : %.2lf\n", f);
+				cout << endl;*/
 			}
+			cout << endl << endl << endl << endl;
 		}
 	}
 }
 
 void Exp::calculateDictPRF()
 {
-	string files[] = {"course"};//, "dept", "area"};
+	string files[] = {"disease"};
 	string methods[] = {"lcs_0", "lcs_1", "vldb09_0.4", "vldb09_0.6", "vldb09_0.8"};
 
 	for (string file : files)
@@ -532,6 +557,7 @@ void Exp::calculateDictPRF()
 		//gt
 		string gt_file_name = "data/" + file + "_names/" + file + "_names_small_gt.txt";
 		ifstream fin2(gt_file_name.c_str());
+		unordered_set<string> lc;
 		while (getline(fin2, s1))
 		{
 			getline(fin2, s2);
@@ -541,6 +567,7 @@ void Exp::calculateDictPRF()
 			if (s2.back() != ' ')
 				s2 += " ";
 			true_pairs.insert(make_pair(s1, s2));
+			lc.insert(s1);
 		}
 		fin2.close();
 
@@ -572,6 +599,12 @@ void Exp::calculateDictPRF()
 						s1 += " ";
 					if (s2.back() != ' ')
 						s2 += " ";
+
+					if (lc.count(s1) && lc.count(s2))
+						continue;
+					if (! lc.count(s1) && ! lc.count(s2))
+						continue;
+
 					if (cells.count(s1) && cells.count(s2))
 					{
 						total ++;
@@ -587,9 +620,11 @@ void Exp::calculateDictPRF()
 				cout << method << " : " << endl;
 				double p = correct / (double) total;
 				double r = correct / (double) true_pairs.size();
-				cout << "Precision : " << p << endl;
-				cout << "Recall : " << r << endl;
-				cout << "F1 Score: " << (p + r > 0 ? 2 * p * r / (p + r) : 0) << endl << endl;
+				double f = (p + r > 0 ? 2 * p * r / (p + r) : 0);
+				printf("Precision : %.2lf\n", p);
+				printf("Recall : %.2lf\n", r);
+				printf("F1 Score : %.2lf\n", f);
+				cout << endl;
 			}
 		}
 	}
