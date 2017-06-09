@@ -6,7 +6,7 @@ using namespace std;
 
 int main()
 {
-	Solver *solver = new Solver("data/disease_names/disease_names.txt");
+//	Solver *solver = new Solver("data/disease_names/disease_names.txt");
 //	Solver *solver = new Solver("data/dept_names/dept_names.txt");
 //	Solver *solver = new Solver("data/course_names/course_names.txt");
 //	Solver *solver = new Solver("data/area_names/area_names.txt");
@@ -15,7 +15,6 @@ int main()
 //	Exp::varyDictionary();
 //	Exp::varyThreshold();
 //	Exp::varyMeasure();
-//	Exp::check();
 //	Exp::calculateMeasurePRF();
 //	Exp::calculateDictPRF();
 //	Exp::check();
@@ -26,6 +25,5 @@ int main()
 //	Exp::show_datasets();
 //	Exp::testRuleCompression();
 //	Exp::genSubset()
-//	Exp::check();
 	return 0;
 }

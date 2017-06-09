@@ -534,7 +534,7 @@ void Exp::calculateMeasurePRF()
 void Exp::calculateDictPRF()
 {
 	string files[] = {"disease"};
-	string methods[] = {"lcs_0", "lcs_1", "vldb09_0.4", "vldb09_0.6", "vldb09_0.8"};
+	string methods[] = {"hand", "lcs_0", "lcs_1", "vldb09_0.4", "vldb09_0.6", "vldb09_0.8"};
 
 	for (string file : files)
 	{
