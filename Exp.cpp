@@ -509,14 +509,14 @@ void Exp::calculateMeasurePRF()
 						if (true_pairs.count(make_pair(s1, s2)) ||
 							true_pairs.count(make_pair(s2, s1)))
 							correct ++, f = true;
-						if (th > 0.75 && method == "sim" && ! f)
-							cout << endl << s1 << endl << s2 << endl << endl;
+//						if (th > 0.75 && method == "sim" && ! f)
+//							cout << endl << s1 << endl << s2 << endl << endl;
 					}
 				}
 
 //				cout << method << " : " << endl << "Presicion : " << correct << " / " << total << endl;
 //				cout << "Recall : " << correct << " / " << true_pairs.size() << endl;
-/*
+
 				cout << method << " : " << endl;
 				double p = correct / (double) total;
 				double r = correct / (double) true_pairs.size();
@@ -524,7 +524,7 @@ void Exp::calculateMeasurePRF()
 				printf("Precision : %.2lf\n", p);
 				printf("Recall : %.2lf\n", r);
 				printf("F1 Score : %.2lf\n", f);
-				cout << endl;*/
+				cout << endl;
 			}
 			cout << endl << endl << endl << endl;
 		}
@@ -533,7 +533,7 @@ void Exp::calculateMeasurePRF()
 
 void Exp::calculateDictPRF()
 {
-	string files[] = {"disease"};
+	string files[] = {"dept", "disease"};
 	string methods[] = {"hand", "lcs_0", "lcs_1", "vldb09_0.4", "vldb09_0.6", "vldb09_0.8"};
 
 	for (string file : files)
@@ -600,17 +600,20 @@ void Exp::calculateDictPRF()
 					if (s2.back() != ' ')
 						s2 += " ";
 
-					if (lc.count(s1) && lc.count(s2))
+					if (file == "disease" && lc.count(s1) && lc.count(s2))
 						continue;
-					if (! lc.count(s1) && ! lc.count(s2))
+					if (file == "disease" && ! lc.count(s1) && ! lc.count(s2))
 						continue;
 
 					if (cells.count(s1) && cells.count(s2))
 					{
 						total ++;
+						bool f = false;
 						if (true_pairs.count(make_pair(s1, s2)) ||
 							true_pairs.count(make_pair(s2, s1)))
-							correct ++;
+							f = true, correct ++;
+//						if (method == "lcs_0" && ! f)
+//							cout << endl << endl << s1 << endl << s2 << endl << endl << endl;
 					}
 				}
 

@@ -6,6 +6,8 @@ using namespace std;
 
 int main()
 {
+//	Common::JAC_THRESHOLD = 0.7;
+//	Common::DICTIONARY = 2;
 //	Solver *solver = new Solver("data/disease_names/disease_names.txt");
 //	Solver *solver = new Solver("data/dept_names/dept_names.txt");
 //	Solver *solver = new Solver("data/course_names/course_names.txt");
@@ -16,7 +18,7 @@ int main()
 //	Exp::varyThreshold();
 //	Exp::varyMeasure();
 //	Exp::calculateMeasurePRF();
-//	Exp::calculateDictPRF();
+	Exp::calculateDictPRF();
 //	Exp::check();
 //	Exp::check2();
 //	Exp::genDirty();

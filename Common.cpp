@@ -10,7 +10,6 @@ double Common::VLDB09_JAC_THRESHOLD = 0.6;
 bool Common::ENABLE_DELTA = false;
 bool Common::DO_JOIN = true;
 bool Common::FAST_SIG = true;
-bool Common::MEDICAL = true;
 int Common::DICTIONARY = 0;
 int Common::MEASURE = 0;
 int Common::DELTA_ABBR_LEN = 1;
