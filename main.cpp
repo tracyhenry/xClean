@@ -6,12 +6,12 @@ using namespace std;
 
 int main()
 {
-//	Common::JAC_THRESHOLD = 0.7;
-//	Common::DICTIONARY = 2;
+	Common::JAC_THRESHOLD = 0.7;
+	Common::DICTIONARY = 3;
 //	Solver *solver = new Solver("data/disease_names/disease_names.txt");
 //	Solver *solver = new Solver("data/dept_names/dept_names.txt");
 //	Solver *solver = new Solver("data/course_names/course_names.txt");
-//	Solver *solver = new Solver("data/area_names/area_names.txt");
+	Solver *solver = new Solver("data/area_names/area_names.txt");
 
 //	Exp::preprocess();
 //	Exp::varyDictionary();

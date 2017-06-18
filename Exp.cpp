@@ -153,9 +153,6 @@ void Exp::check2()
 		string s1, s2, s3;
 		while (getline(fin, s1) && getline(fin, s2))
 		{
-			if (s1 == "" || s2 == "")
-				continue;
-
 			//dedup
 			string concat = s1 + "___xxx___" + s2;
 			if (dict_set.count(concat))
@@ -179,6 +176,9 @@ void Exp::check2()
 				if (! flag)
 					break;
 			}
+			if (s1 == "" || s2 == "")
+				continue;
+
 			dictionary.emplace_back(s1, s2);
 		}
 		fin.close();
@@ -537,8 +537,8 @@ void Exp::calculateMeasurePRF()
 
 void Exp::calculateDictPRF()
 {
-	string files[] = {"dept", "disease"};
-	string methods[] = {"hand", "lcs_0", "lcs_1", "vldb09_0.4", "vldb09_0.6", "vldb09_0.8"};
+	string files[] = {"dept", "disease", "course", "area"};
+	string methods[] = {"hand", "gp", "lcs_0", "lcs_1", "vldb09_0.4", "vldb09_0.6", "vldb09_0.8"};
 
 	for (string file : files)
 	{

@@ -12,6 +12,7 @@
 #include "../RuleGenerator/NLPRule.h"
 #include "../RuleGenerator/Vldb09.h"
 #include "../RuleGenerator/HandDict.h"
+#include "../RuleGenerator/GPDict.h"
 #include <fstream>
 using namespace std;
 
@@ -45,8 +46,11 @@ Solver::Solver(string string_file_name)
 		ruleGenerator = new BadBoy(cells);
 	else if (Common::DICTIONARY == 1)
 		ruleGenerator = new Vldb09(cells);
-	else
+	else if (Common::DICTIONARY == 2)
 		ruleGenerator = new HandDict(string_file_name);
+	else
+		ruleGenerator = new GPDict();
+
 	vector<t_rule> rules = ruleGenerator->gen_rules();
 	cout << "# Rule: " << rules.size() * 2 << endl;
 	gettimeofday(&t2, NULL);
