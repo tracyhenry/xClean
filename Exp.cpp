@@ -143,45 +143,49 @@ void Exp::check()
 
 void Exp::check2()
 {
-	string infile_name = "data/disease_names/disease_names.txt";
-	string outfile_name = "data/disease_names/hand_dict.txt";
-	ifstream fin(infile_name.c_str());
-	ofstream fout(outfile_name.c_str());
-
-	unordered_set<string> names;
-	string s;
-	while (getline(fin, s))
-		names.insert(s);
-
-	while (1)
+	string ids[] = {"1000", "2000", "3000", "4000", "5000", "8000", "20000", "25000", "45000", "60000"};
+	unordered_set<string> dict_set;
+	vector<pair<string, string>> dictionary;
+	for (string id : ids)
 	{
-		bool flag = false;
-		for (auto it = names.begin(); it != names.end(); it ++)
+		string file_name = "data/gp_dict_" + id + ".txt";
+		ifstream fin(file_name.c_str());
+		string s1, s2, s3;
+		while (getline(fin, s1) && getline(fin, s2))
 		{
-			string ss = (*it);
-			vector<string> tokens = Common::get_tokens(ss);
-			string acronym = "";
-			for (auto i = 0; i < tokens.size(); i ++)
-				acronym += tokens[i][0];
-			if (names.count(acronym))
+			if (s1 == "" || s2 == "")
+				continue;
+
+			//dedup
+			string concat = s1 + "___xxx___" + s2;
+			if (dict_set.count(concat))
+				continue;
+			dict_set.insert(concat);
+
+			//process s2
+			for (auto i = 0; i < s2.size(); i ++)
+				if (s2[i] == '-' || s2[i] == '/' || s2[i] == '/')
+					s2[i] = ' ';
+			while (1)
 			{
-				flag = true;
-				names.erase(acronym);
-				names.erase(ss);
-				fout << acronym << endl << ss << endl << endl;
-				break;
+				bool flag = false;
+				for (auto i = 1; i < s2.size(); i ++)
+					if (s2[i] == ' ' && s2[i - 1] == ' ')
+					{
+						s2.erase(i, 1);
+						flag = true;
+						break;
+					}
+				if (! flag)
+					break;
 			}
+			dictionary.emplace_back(s1, s2);
 		}
-		if (! flag)
-			break;
+		fin.close();
 	}
-	fout << endl << endl << endl;
-	vector<string> names_sort;
-	for (auto ss : names)
-		names_sort.push_back(ss);
-	sort(names_sort.begin(), names_sort.end());
-	for (auto ss : names_sort)
-		fout << ss << endl;
+	ofstream fout("data/gp_dict.txt");
+	for (auto cp : dictionary)
+		fout << cp.first << endl << cp.second << endl << endl;
 }
 
 void Exp::runSolver()

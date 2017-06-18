@@ -18,7 +18,7 @@ int main()
 //	Exp::varyThreshold();
 //	Exp::varyMeasure();
 //	Exp::calculateMeasurePRF();
-	Exp::calculateDictPRF();
+//	Exp::calculateDictPRF();
 //	Exp::check();
 //	Exp::check2();
 //	Exp::genDirty();
