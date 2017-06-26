@@ -56,6 +56,9 @@ public:
 
 	//generate smaller subset
 	static void genSubset();
+
+	//generate data for loading to db
+	void genDBData();
 };
 
 

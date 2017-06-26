@@ -889,3 +889,66 @@ void Exp::genSubset()
 		fout.close();
 	}
 }
+
+void Exp::genDBData()
+{
+	string files[] = {"dept"};
+	for (string file : files)
+	{
+		ifstream fin("/data/" + file + "_names/" + file + "_names.txt");
+		vector<string> cells;
+		string cell;
+		for (string cell; getline(fin, cell); )
+			cells.push_back(cell);
+
+		fin.close();
+		auto n = cells.size();
+
+		//generate rules
+		struct timeval t1, t2;
+		gettimeofday(&t1, NULL);
+		cerr << "Generating rules......" << endl;
+		RuleGenerator *ruleGenerator;
+		ruleGenerator = new BadBoy(cells);
+		vector<t_rule> rules = ruleGenerator->gen_rules();
+		for (int i = 0, m = (int) rules.size(); i < m; i ++)
+			rules.emplace_back(make_pair(rules[i].second, rules[i].first));
+
+		//generate applicable rules
+		unordered_map<string, vector<string>> rule_hash;
+		for (auto i = 0; i < rules.size(); i ++)
+		{
+			string lhs, rhs;
+			for (auto j = 0; j < rules[i].first.size(); j ++)
+				lhs += rules[i].first[j] + " ";
+			for (auto j = 0; j < rules[i].second.size(); j ++)
+				rhs += rules[i].second[j] + " ";
+			if (! rule_hash.count(lhs))
+				rule_hash[lhs].clear();
+			rule_hash[lhs].push_back(rhs);
+		}
+		vector<string> app_rules;
+		for (auto i = 0; i < n; i ++)
+		{
+			string cur_app_rules = "";
+			vector<string> tokens = Common::get_tokens(cells[i]);
+			for (auto x = 0; x < tokens.size(); x ++)
+				for (auto y = x; y < tokens.size(); y ++)
+				{
+					string cur_lhs = "";
+					for (auto j = x; j <= y; j ++)
+						cur_lhs += tokens[j] + " ";
+					if (rule_hash.count(cur_lhs))
+						for (auto cur_rhs : rule_hash[cur_lhs])
+						{
+							string cur_rule = cur_lhs + "|" + cur_rhs + "**";
+							cur_app_rules += cur_rule;
+						}
+				}
+			app_rules.push_back(cur_app_rules);
+		}
+
+		//generate text file for name table
+
+	}
+}
