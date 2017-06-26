@@ -141,3 +141,8 @@ vector<pair<double, pair<string, string>>> PolynomialJoiner::getJoinedStringPair
 
 	return ans;
 }
+
+unordered_set<string> PolynomialJoiner::get_t_sigs(int x)
+{
+	return t_sigs[x];
+}

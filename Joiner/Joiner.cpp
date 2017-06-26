@@ -170,3 +170,16 @@ void Joiner::gen_original_signatures()
 		o_large_sigs.push_back(buildOriginalLargeTokenSigs(i));
 	}
 }
+
+vector<t_rule> Joiner::get_applicable_rules(int x)
+{
+	vector<t_rule> app_rules;
+	for (auto id : applicable_rule_ids[x])
+		app_rules.push_back(rules[id]);
+	return app_rules;
+}
+
+unordered_set<string> Joiner::get_o_sigs(int x)
+{
+	return o_sigs[x];
+}

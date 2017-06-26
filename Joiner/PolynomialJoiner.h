@@ -18,6 +18,9 @@ public:
 	//overwrite the virtual method
 	vector<pair<double, pair<string, string>>> getJoinedStringPairs();
 
+	//get sigs
+	unordered_set<string> get_t_sigs(int x);
+
 private:
 
 	//the maximum number of tokens a string could have

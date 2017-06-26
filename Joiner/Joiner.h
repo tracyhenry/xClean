@@ -20,6 +20,11 @@ public:
 	//virtual destructor
 	virtual ~Joiner() = default;
 
+	//get applicable rules
+	vector<t_rule> get_applicable_rules(int);
+
+	//get original signatures
+	unordered_set<string> get_o_sigs(int);
 
 protected:
 	//set of rules
