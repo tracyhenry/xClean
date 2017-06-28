@@ -6,8 +6,6 @@ using namespace std;
 
 int main()
 {
-//	Common::JAC_THRESHOLD = 0.7;
-//	Common::DICTIONARY = 3;
 //	Solver *solver = new Solver("data/disease_names/disease_names.txt");
 //	Solver *solver = new Solver("data/dept_names/dept_names.txt");
 //	Solver *solver = new Solver("data/course_names/course_names.txt");
@@ -27,5 +25,6 @@ int main()
 //	Exp::show_datasets();
 //	Exp::testRuleCompression();
 //	Exp::genSubset()
+//	Exp::genDBData();
 	return 0;
 }

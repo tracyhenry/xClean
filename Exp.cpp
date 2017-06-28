@@ -895,7 +895,7 @@ void Exp::genDBData()
 	string files[] = {"dept"};
 	for (string file : files)
 	{
-		ifstream fin("/data/" + file + "_names/" + file + "_names.txt");
+		ifstream fin("data/" + file + "_names/" + file + "_names.txt");
 		vector<string> cells;
 		string cell;
 		for (string cell; getline(fin, cell); )
@@ -914,41 +914,52 @@ void Exp::genDBData()
 		for (int i = 0, m = (int) rules.size(); i < m; i ++)
 			rules.emplace_back(make_pair(rules[i].second, rules[i].first));
 
-		//generate applicable rules
-		unordered_map<string, vector<string>> rule_hash;
-		for (auto i = 0; i < rules.size(); i ++)
-		{
-			string lhs, rhs;
-			for (auto j = 0; j < rules[i].first.size(); j ++)
-				lhs += rules[i].first[j] + " ";
-			for (auto j = 0; j < rules[i].second.size(); j ++)
-				rhs += rules[i].second[j] + " ";
-			if (! rule_hash.count(lhs))
-				rule_hash[lhs].clear();
-			rule_hash[lhs].push_back(rhs);
-		}
-		vector<string> app_rules;
-		for (auto i = 0; i < n; i ++)
-		{
-			string cur_app_rules = "";
-			vector<string> tokens = Common::get_tokens(cells[i]);
-			for (auto x = 0; x < tokens.size(); x ++)
-				for (auto y = x; y < tokens.size(); y ++)
-				{
-					string cur_lhs = "";
-					for (auto j = x; j <= y; j ++)
-						cur_lhs += tokens[j] + " ";
-					if (rule_hash.count(cur_lhs))
-						for (auto cur_rhs : rule_hash[cur_lhs])
-						{
-							string cur_rule = cur_lhs + "|" + cur_rhs + "**";
-							cur_app_rules += cur_rule;
-						}
-				}
-			app_rules.push_back(cur_app_rules);
-		}
+		//construct the joiner
+		Common::JAC_THRESHOLD = 0.7;
+		PolynomialJoiner *joiner = new PolynomialJoiner(rules, cells);
 
 		//generate text file for name table
+		ofstream fout1("exp/db/" + file + "_name.txt");
+		for (auto i = 0; i < n; i ++)
+			fout1 << i << '\t' << cells[i] << endl;
+		fout1.close();
 
+		//generate text file for signature tables
+		ofstream fout2("exp/db/" + file + "_osig.txt");
+		ofstream fout3("exp/db/" + file + "_tsig.txt");
+		int osig_id = 0;
+		int tsig_id = 0;
+		for (auto i = 0; i < n; i ++)
+		{
+			//osig
+			unordered_set<string> o_sigs = joiner->get_o_sigs(i);
+			for (string sigstr : o_sigs)
+				fout2 << osig_id ++ << '\t' << i << '\t' << sigstr << endl;
+			//tsig
+			unordered_set<string> t_sigs = joiner->get_t_sigs(i);
+			for (string sigstr : t_sigs)
+				fout3 << tsig_id ++ << '\t' << i << '\t' << sigstr << endl;
+		}
+		fout2.close();
+		fout3.close();
+
+		//generate tex file for app_rule table
+		ofstream fout4("exp/db/" + file + "_apprule.txt");
+		for (auto i = 0; i < n; i ++)
+		{
+			vector<t_rule> app_rules = joiner->get_applicable_rules(i);
+			string app_rule_str = "";
+			for (t_rule rule : app_rules)
+			{
+				string cur_lhs = "", cur_rhs = "";
+				for (auto t : rule.first)
+					cur_lhs += t + " ";
+				for (auto t : rule.second)
+					cur_rhs += t + " ";
+				app_rule_str += cur_lhs + "|" + cur_rhs + "**";
+			}
+			fout4 << i << '\t' << i << '\t' << app_rule_str << endl;
+		}
+		fout4.close();
 	}
 }
