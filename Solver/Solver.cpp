@@ -18,19 +18,12 @@ using namespace std;
 
 Solver::Solver(string string_file_name)
 {
+	//read string from file
 	ifstream fin1(string_file_name.c_str());
-	for (string cell; getline(fin1, cell);)
+	for (string cell; getline(fin1, cell); )
 		cells.push_back(cell);
+
 	fin1.close();
-}
-
-Solver::Solver(vector<string> _cells)
-{
-	cells = _cells;
-}
-
-vector<pair<string, string>> Solver::solve()
-{
 	n = cells.size();
 
 	//freq
@@ -50,16 +43,16 @@ vector<pair<string, string>> Solver::solve()
 	cerr << "Generating rules......" << endl;
 	RuleGenerator *ruleGenerator;
 	if (Common::DICTIONARY == 0)
-		ruleGenerator = new MyRule(cells);
+		ruleGenerator = new BadBoy(cells);
 	else if (Common::DICTIONARY == 1)
 		ruleGenerator = new Vldb09(cells);
+	else if (Common::DICTIONARY == 2)
+		ruleGenerator = new HandDict(string_file_name);
 	else
 		ruleGenerator = new GPDict();
 
 	vector<t_rule> rules = ruleGenerator->gen_rules();
-//	for (auto r : rules)
-//		Common::print_rule(r);
-//	cout << "# Rule: " << rules.size() * 2 << endl;
+	cout << "# Rule: " << rules.size() * 2 << endl;
 	gettimeofday(&t2, NULL);
 	double elapsedTime = t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) / 1000000.0;
 	cout << endl << "Dictionary generation took : " << elapsedTime << "s." << endl << endl;
@@ -99,16 +92,9 @@ vector<pair<string, string>> Solver::solve()
 	//output
 	cout << joinedStringPairs.size() << endl;
 	sort(joinedStringPairs.begin(), joinedStringPairs.end());
-//	for (auto cp : joinedStringPairs)
-//		cout << cp.second.first << endl << cp.second.second << endl << cp.first << endl << endl;
-
-	//return vector pair
-	vector<pair<string, string>> results;
 	for (auto cp : joinedStringPairs)
-		results.emplace_back(cp.second.first, cp.second.second);
+		cout << cp.second.first << endl << cp.second.second << endl << cp.first << endl << endl;
 
 	delete ruleGenerator;
 	delete joiner;
-
-	return results;
 }

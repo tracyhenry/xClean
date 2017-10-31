@@ -5,7 +5,7 @@
 #include "Common.h"
 using namespace std;
 
-double Common::JAC_THRESHOLD = 0.7;
+double Common::JAC_THRESHOLD = 0.8;
 double Common::VLDB09_JAC_THRESHOLD = 0.6;
 bool Common::ENABLE_DELTA = false;
 bool Common::DO_JOIN = true;
