@@ -890,19 +890,20 @@ void Exp::genSubset()
 	}
 }
 
-void Exp::genDBData()
+void Exp::genDBData(double fraction)
 {
-	string files[] = {"dept"};
+	string files[] = {"area"};
 	for (string file : files)
 	{
 		ifstream fin("data/" + file + "_names/" + file + "_names.txt");
-		vector<string> cells;
+		vector<string> cells_full, cells;
 		string cell;
 		for (string cell; getline(fin, cell); )
-			cells.push_back(cell);
-
+			cells_full.push_back(cell);
 		fin.close();
-		auto n = cells.size();
+		auto n = cells_full.size() * fraction;
+		for (auto i = 0; i < n; i ++)
+			cells.push_back(cells_full[i]);
 
 		//generate rules
 		struct timeval t1, t2;
@@ -919,14 +920,14 @@ void Exp::genDBData()
 		PolynomialJoiner *joiner = new PolynomialJoiner(rules, cells);
 
 		//generate text file for name table
-		ofstream fout1("exp/db/" + file + "_name.txt");
+		ofstream fout1("exp/db/" + to_string(fraction) + file + "_name.txt");
 		for (auto i = 0; i < n; i ++)
 			fout1 << i << '\t' << cells[i] << endl;
 		fout1.close();
 
 		//generate text file for signature tables
-		ofstream fout2("exp/db/" + file + "_osig.txt");
-		ofstream fout3("exp/db/" + file + "_tsig.txt");
+		ofstream fout2("exp/db/" + to_string(fraction) + file + "_osig.txt");
+		ofstream fout3("exp/db/" + to_string(fraction) + file + "_tsig.txt");
 		int osig_id = 0;
 		int tsig_id = 0;
 		for (auto i = 0; i < n; i ++)
@@ -944,7 +945,7 @@ void Exp::genDBData()
 		fout3.close();
 
 		//generate tex file for app_rule table
-		ofstream fout4("exp/db/" + file + "_apprule.txt");
+		ofstream fout4("exp/db/" + to_string(fraction) + file + "_apprule.txt");
 		for (auto i = 0; i < n; i ++)
 		{
 			vector<t_rule> app_rules = joiner->get_applicable_rules(i);

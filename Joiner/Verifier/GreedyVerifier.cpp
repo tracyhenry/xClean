@@ -9,6 +9,8 @@ double PolynomialJoiner::greedy_get_similarity(int x, int y)
 {
 	double sim = max(greedy_directed_get_similarity(x, y),
 				greedy_directed_get_similarity(y, x));
+	if (cells[x] == "electrical eng & computer sci" && cells[y] == "dept of electrical engineering & computer science")
+		cout << "fuckyou!! " << sim << endl;
 	return sim;
 }
 

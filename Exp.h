@@ -58,7 +58,7 @@ public:
 	static void genSubset();
 
 	//generate data for loading to db
-	static void genDBData();
+	static void genDBData(double);
 };
 
 

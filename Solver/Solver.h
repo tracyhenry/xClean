@@ -14,6 +14,8 @@ class Solver
 {
 public:
 	Solver(string);
+	Solver(vector<string>);
+	vector<pair<string, string>> solve();
 
 protected:
 	//strings
